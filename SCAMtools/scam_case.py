@@ -116,17 +116,19 @@ class scam_case:
         #cmd = ( "cp ../../cime_config/usermods_dirs/scam_STUB/scripts/STUB_iop.nc ./")
         #sp.run(cd0 + cmd   ,    shell=True )
 
-        cmd = ( "cp ../../myPythonTools/STUB_iop.nc ./")
+        pyToolsDir = "../../myPythonTools/SCAMtools/"
+
+        cmd = ( "cp "+pyToolsDir+"STUB_iop.nc ./")
         sp.run(cd0 + cmd   ,    shell=True )
-        cmd = ( "cp ../../myPythonTools/user_nl_cice ./")
+        cmd = ( "cp "+pyToolsDir+"user_nl_cice ./")
         sp.run(cd0 + cmd   ,    shell=True )
 
         if (self.nlev==58) and (self.machine=='cheyenne'):
-            cmd = ( "cp ../../myPythonTools/user_nl_cam_L58_cheyenne ./user_nl_cam")
+            cmd = ( "cp "+pyToolsDir+"user_nl_cam_L58_cheyenne ./user_nl_cam")
         elif (self.nlev==93) and (self.machine=='cheyenne'):
-            cmd = ( "cp ../../myPythonTools/user_nl_cam_L93_cheyenne ./user_nl_cam")
+            cmd = ( "cp "+pyToolsDir+"user_nl_cam_L93_cheyenne ./user_nl_cam")
         else:
-            cmd = ( "cp ../../myPythonTools/user_nl_cam ./")
+            cmd = ( "cp "+pyToolsDir+"user_nl_cam ./")
 
         sp.run(cd0 + cmd   ,    shell=True )
 
@@ -262,10 +264,12 @@ class scam_case:
             + ensemble_root + "/"+case_tag+"/bld/")
         sp.run( cmd , shell=True )
 
-        cmd = ( "cp ../../myPythonTools/STUB_iop.nc"  + " "
+        pyToolsDir = "../../myPythonTools/SCAMtools/"
+
+        cmd = ( "cp "+pyToolsDir+"STUB_iop.nc"  + " "
             + ensemble_root + "/"+case_tag+"/run/")
         sp.run(cmd   ,    shell=True )
-        cmd = ( "cp ../../myPythonTools/ens_run.sh"  + " "
+        cmd = ( "cp "+pyToolsDir+"ens_run.sh"  + " "
             + ensemble_root + "/"+case_tag+"/run/")
         sp.run(cmd   ,    shell=True )
 
