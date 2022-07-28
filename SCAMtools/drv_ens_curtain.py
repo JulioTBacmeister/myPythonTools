@@ -14,4 +14,8 @@ for f in fl:
     bens=fsp[-2]
     bsp=bens.split('_ENS')
     base=bsp[-2]
-    print(base)
+    x = h0.h0scam(xp=xp,dir=ensdir,base=base)
+    print(x.__dict__)
+    cu=x.curtain('rtm_mfl')
+
+

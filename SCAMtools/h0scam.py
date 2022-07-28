@@ -1,19 +1,32 @@
 class h0scam:
 
-    def __init__(self, xp, dir ):
+    def __init__(self, xp, dir, base='NA', machine='NA'):
         self.case    = xp
         self.archdir = dir
+        self.basecase = base
+        self.machine = machine
 
     def curtain(self,fld):
         import numpy as np
         import xarray as xr
         import glob
         import txtutil as tx
+        import os
+        import subprocess as sp
 
-        
+        host=os.environ['HOST']
+        user=os.environ['USER']
+ 
+        if ('izumi' in host):
+            self.machine="izumi"
+        elif ('cheyenne' in host):
+            self.machine="cheyenne"        
+        elif ('thorodin' in host):
+            self.machine="thorodin"        
 
         xp=self.case
         dir=self.archdir
+        basedir=self.basecase
         #CplFreq=self.atm_ncpl
         #freqw = int( 86400./CplFreq )
         #freqs = str( freqw )
@@ -39,7 +52,7 @@ class h0scam:
         fl = sorted( glob.glob( dir +'/*cam.h0*') )
         nf = len( fl )
 
-        #fl=fl[0:10]
+        fl=fl[0:4]
         ird=0
         for f in fl:
             print(f)
@@ -102,7 +115,20 @@ class h0scam:
                 else:
                     ird=ird+1
 
-            cu.to_netcdf('/project/amp/juliob/scam/'+xp+'_'+fld+'.nc')
+
+            if (self.machine=='cheyenne'):
+                wrtdir='/glade/scratch/'+user+'/'
+            elif (self.machine=='thorodin') or (self.machine=='izumi'):
+                if (self.basecase != 'NA'):
+                    wrtdir='/project/amp/juliob/scam/archive/'+self.basecase+'/'+xp+'/'
+                else:
+                     wrtdir='/project/amp/juliob/scam/archive/'
+            else:
+                wrtdir='./'
+  
+            cmd1="mkdir -p "+wrtdir
+            sp.run(cmd1,shell=True)
+            cu.to_netcdf(wrtdir+xp+'_'+fld+'.nc')
 
         return cu
 
