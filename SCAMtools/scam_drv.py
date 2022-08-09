@@ -10,13 +10,14 @@ argv=sys.argv
 case=scm.scam_case()
 user=os.environ['USER']
 spawncase=False
+IOPcase=False
 
 print(case.scmlon)
 
 try:
-   opts, args = go.getopt( argv[1:], "i:j:y:m:d:t:l:x:n:q:c:S:M:N", 
+   opts, args = go.getopt( argv[1:], "i:j:y:m:d:t:l:x:n:q:c:S:M:NI:", 
                            ["lon=","lat=","year=","month=","day=","tag=","nlev=","coupler=","nsteps="
-                            ,"atm-ncpl=","compiler=","spawn=","machine=","NameByBuild="] )
+                            ,"atm-ncpl=","compiler=","spawn=","machine=","NameByBuild=","IOP="] )
 except:
     print( "something is wrong")
     exit()
@@ -54,15 +55,20 @@ for opt, arg in opts:
         spawncase = True
     elif opt in ("-N","--NameByBuild"):
         case.NameByBuild=True
+    elif opt in ("-I","--IOP"):
+        case.IOP = arg
+        IOPcase = True
 
 
 date=case.startdate
 print(date)
 
-if (spawncase == False):
+if (spawncase == False) and (IOPcase == False):
    case.base_case()
-else:
+elif (spawncase == True) and (IOPcase == False):
    case.spawn_case(basecase)
+elif (spawncase == False) and (IOPcase == True):
+   case.IOP_case()
 
 #fname = '../../cases/'+case_tag+'/'+'CaseInst.pysave'
 #with open( fname, 'wb') as fob:
