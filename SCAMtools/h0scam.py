@@ -27,11 +27,6 @@ class h0scam:
         xp=self.case
         dir=self.archdir
         basedir=self.basecase
-        #CplFreq=self.atm_ncpl
-        #freqw = int( 86400./CplFreq )
-        #freqs = str( freqw )
-        #freqs = freqs.strip()+'S'
-        #print('write interval='+freqs)
         
 
         fili=dir+'/atm_in'
@@ -52,7 +47,7 @@ class h0scam:
         fl = sorted( glob.glob( dir +'/*cam.h0*') )
         nf = len( fl )
 
-        fl=fl[0:4]
+        #fl=fl[0:4]
         ird=0
         for f in fl:
             print(f)
@@ -65,6 +60,7 @@ class h0scam:
                 nli=a.ilev.size
                 nt=a.time.size
   
+                # Start looping over multiple fields here .... 
                 aa=a[fld] #.isel(time=0)
                 print(aa.dims)
 
@@ -79,31 +75,30 @@ class h0scam:
                     varType = 'iprofile'
 
                 if (ird == 0):
-                    #Cook up time array
                     timeData=a.time.data
-                    #interval=a.time[1]-a.time[0]
-                    #intersec=  ( interval.data.astype(int) / 10**9 ) # this is in NANOseconds 
                     bigTime = xr.cftime_range( timeData[0]  , periods=nt*nf, freq=freqs , calendar="noleap" )
                     if varType == 'surface':
-                        dummy=np.zeros( nt*nf )
-                        dummy=dummy.reshape( nt*nf ,1,1)
-                        cu=xr.DataArray( dummy , coords=[bigTime,a.lat,a.lon], dims=['time','lat','lon'] , name=fld )                    
+                        dummy=np.zeros( [nt*nf] )
+                        #dummy=dummy.reshape( nt*nf ,1,1)
+                        #cu=xr.DataArray( dummy , coords=[bigTime,a.lat,a.lon], dims=['time','lat','lon'] , name=fld )                    
                     if varType == 'profile':
-                        dummy=np.zeros( nt*nf*nl )
-                        dummy=dummy.reshape( nt*nf,nl ,1,1)
-                        cu=xr.DataArray( dummy , coords=[bigTime,a.lev,a.lat,a.lon], dims=['time','lev','lat','lon'], name=fld  )                    
+                        dummy=np.zeros( [nt*nf,nl] )
+                        #dummy=dummy.reshape( nt*nf,nl ,1,1)
+                        #cu=xr.DataArray( dummy , coords=[bigTime,a.lev,a.lat,a.lon], dims=['time','lev','lat','lon'], name=fld  )                    
                     if varType == 'iprofile':
-                        dummy=np.zeros( nt*nf*nli )
-                        dummy=dummy.reshape( nt*nf,nli ,1,1)
-                        cu=xr.DataArray( dummy , coords=[bigTime,a.ilev,a.lat,a.lon], dims=['time','ilev','lat','lon'], name=fld  )                    
+                        dummy=np.zeros( [nt*nf,nli] )
+                        #dummy=dummy.reshape( nt*nf,nli ,1,1)
+                        #cu=xr.DataArray( dummy , coords=[bigTime,a.ilev,a.lat,a.lon], dims=['time','ilev','lat','lon'], name=fld  )                    
                         
-                    print('Prepped XARRAY for data with time')
+                    print('Prepped numpy ARRAY for data with time')
 
                 if varType == 'surface':
-                    #cu.values[  ird*nt :(ird+1)*nt-1, 0, 0] = aa[:,0,0] # why the heck is this wrong?????!!!!!
-                    cu.values[  ird*nt :(ird+1)*nt , 0, 0] = aa[:,0,0]  
+                    #cu.values[  ird*nt :(ird+1)*nt , 0, 0] = aa[:,0,0]  
+                    dummy[  ird*nt :(ird+1)*nt ] = aa[:,0,0]  
+ 
                 if varType == 'profile' or varType == 'iprofile':
-                    cu.values[  ird*nt :(ird+1)*nt , : , 0, 0] = aa[:,:,0,0]  
+                    #cu.values[  ird*nt :(ird+1)*nt , : , 0, 0] = aa[:,:,0,0]  
+                    dummy[  ird*nt :(ird+1)*nt , : ] = aa[:,:,0,0]  
 
                 ird=ird+1
 
@@ -116,19 +111,33 @@ class h0scam:
                     ird=ird+1
 
 
-            if (self.machine=='cheyenne'):
-                wrtdir='/glade/scratch/'+user+'/'
-            elif (self.machine=='thorodin') or (self.machine=='izumi'):
-                if (self.basecase != 'NA'):
-                    wrtdir='/project/amp/juliob/scam/archive/'+self.basecase+'/'+xp+'/'
-                else:
-                     wrtdir='/project/amp/juliob/scam/archive/'
+        if varType == 'surface':                
+            #dummy=dummy.reshape( nt*nf ,1,1)
+            #cu=xr.DataArray( dummy , coords=[bigTime,a.lat,a.lon], dims=['time','lat','lon'] , name=fld )                    
+            cu=xr.DataArray( dummy , coords=[bigTime], dims=['time'] , name=fld )                    
+        if varType == 'profile':                
+            #dummy=dummy.reshape( nt*nf,nl ,1,1)
+            #cu=xr.DataArray( dummy , coords=[bigTime,a.lev,a.lat,a.lon], dims=['time','lev','lat','lon'] , name=fld )                    
+            cu=xr.DataArray( dummy , coords=[bigTime,a.lev], dims=['time','lev'] , name=fld )                    
+        if varType == 'iprofile':                
+            #dummy=dummy.reshape( nt*nf,nli ,1,1)
+            #cu=xr.DataArray( dummy , coords=[bigTime,a.ilev,a.lat,a.lon], dims=['time','ilev','lat','lon'] , name=fld )                    
+            cu=xr.DataArray( dummy , coords=[bigTime,a.ilev], dims=['time','ilev'] , name=fld )                    
+
+        if (self.machine=='cheyenne'):
+            wrtdir='/glade/scratch/'+user+'/'
+        elif (self.machine=='thorodin') or (self.machine=='izumi'):
+            if (self.basecase != 'NA'):
+                wrtdir='/project/amp/juliob/scam/archive/pyProc/'  #'+self.basecase+'/'+xp+'/atm/pyProc/'
             else:
-                wrtdir='./'
+                wrtdir='/project/amp/juliob/scam/archive/pyProc/'
+        else:
+            wrtdir='./'
   
-            cmd1="mkdir -p "+wrtdir
-            sp.run(cmd1,shell=True)
-            cu.to_netcdf(wrtdir+xp+'_'+fld+'.nc')
+        cmd1="mkdir -p "+wrtdir
+        print('File write: '+wrtdir+xp+'_'+fld+'.nc')
+        sp.run(cmd1,shell=True)
+        cu.to_netcdf(wrtdir+xp+'_'+fld+'.nc')
 
         return cu
 

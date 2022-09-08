@@ -14,8 +14,11 @@ import h0scam as h0
 dir='/project/amp/juliob/scam/archive/nCTOPb2_L58_080.0E_30.0N_2010-07-01/atm/hist/'
 xp='nCTOPb2_L58_080.0E_30.0N_2010-07-01'
 
+
+xp='TEST_02_L58_180.0E_00.0_2010-01-01'
+dir='/project/amp/juliob/scam/archive/' + xp + '/atm/hist/'
+
 x = h0.h0scam(xp=xp,dir=dir)
+x.basecase=xp
 
-#x.ncmerge()
-
-cu=x.curtain('T')
+cu=x.curtain('U')
