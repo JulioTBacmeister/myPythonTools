@@ -22,6 +22,10 @@ except:
     print( "something is wrong")
     exit()
 
+
+
+##./scam_drv.py -i 180. -j 0 -t TEST_07 -n 69120 -m 1 -y 2010
+
 date=case.startdate
 print(date)
 

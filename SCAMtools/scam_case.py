@@ -11,6 +11,7 @@ class scam_case:
         self.nlev=58
         self.name="base_case"
         self.tag="case_tag"
+        self.clone="clone_tag"
         self.startdate=[2010,4,1]
         self.atm_ncpl=192
         self.mfilt=1

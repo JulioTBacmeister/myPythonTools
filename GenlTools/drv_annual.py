@@ -59,31 +59,20 @@ x = h.hfdata(xp=xp,dir=idir)
 y = h.hfdata(xp=xp,dir=odir)
 
 lfilo=[]
-m=month-1
-nd = days_in_month[m]
-for d in np.arange(nd):
-    dd=d+1
-    for h in np.arange(start=0,stop=23,step=6):
-        ss=h*3600
-        fili=x.filename( year=year,month=month,day=dd,second=ss,moniker='cam.h1')
-        print(fili)
-
-        if (point_ == True):
-           filo=y.filename( year=year,month=month,day=dd,second=ss,moniker='cam_point.h1')
-           y.point_output( fili, filo )
-        elif (lonfill_ == True):
-           filo=y.filename( year=year,month=month,day=dd,second=ss,moniker='cam_zonav.h1')
-           y.zonal_mean_lonfill( fili, filo )
-        elif (lonfill_ == False):
-           filo=y.filename( year=year,month=month,day=dd,second=ss,moniker='cam_yz.h1')
-           y.zonal_mean( fili, filo )
-
-        lfilo.append( filo ) 
+for m in np.arange(12):
+    mm=m+1
+    dd=1
+    ss=0
+    if (point_ == True):
+       filo=y.filename( year=year,month=mm,day=dd,second=ss,moniker='cam_point.h1')
+    elif (lonfill_ == True):
+       filo=y.filename( year=year,month=mm,day=dd,second=ss,moniker='cam_zonav.h1')
+    elif (lonfill_ == False):
+       filo=y.filename( year=year,month=mm,day=dd,second=ss,moniker='cam_yz.h1')
+       
+    lfilo.append( y.monthly_file ) 
       
 print(lfilo)
-print(y.monthly_file)
-print(y.yearly_file)
 
-if (lonfill_ == False):
-   ds=xr.open_mfdataset( lfilo )
-   ds.to_netcdf( y.monthly_file )
+ds=xr.open_mfdataset( lfilo )
+ds.to_netcdf( y.yearly_file )
