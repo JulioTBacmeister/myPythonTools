@@ -38,6 +38,17 @@ for opt, arg in opts:
         lonfill_=True
     elif opt in ("-P","--Point"):
         point_=True
+        point_loc=arg.split(',')
+        point_Lon=float( point_loc[0] )
+        point_Lat=float( point_loc[1] )
+        if ( point_Lat>=0 ):
+           Lat_str = str(point_Lat)+'N'
+        elif ( point_Lat<0 ):
+           Lat_str = str(abs(point_Lat))+'S'
+        if ( point_Lon<0 ):
+           Lon_str = str(point_Lon+360.)+'E'
+        elif ( point_Lon>=0 ):
+           Lon_str = str(point_Lon)+'E'
 
 if (point_ == True ):
    idir='/project/amp/juliob/CAM/'+xp+'/f09_omega/L58/2010/'
@@ -64,7 +75,7 @@ for m in np.arange(12):
     dd=1
     ss=0
     if (point_ == True):
-       filo=y.filename( year=year,month=mm,day=dd,second=ss,moniker='cam_point.h1')
+       filo=y.filename( year=year,month=month,day=dd,second=ss,moniker='cam_point_'+Lon_str+'_'+Lat_str+'.h1')
     elif (lonfill_ == True):
        filo=y.filename( year=year,month=mm,day=dd,second=ss,moniker='cam_zonav.h1')
     elif (lonfill_ == False):

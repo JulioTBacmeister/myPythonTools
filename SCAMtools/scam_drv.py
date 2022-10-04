@@ -15,9 +15,10 @@ IOPcase=False
 print(case.scmlon)
 
 try:
-   opts, args = go.getopt( argv[1:], "i:j:y:m:d:t:l:x:n:q:c:S:M:NI:", 
+   opts, args = go.getopt( argv[1:], "i:j:y:m:d:t:l:x:n:q:c:S:M:NI:B:", 
                            ["lon=","lat=","year=","month=","day=","tag=","nlev=","coupler=","nsteps="
-                            ,"atm-ncpl=","compiler=","spawn=","machine=","NameByBuild=","IOP="] )
+                            ,"atm-ncpl=","compiler=","spawn=","machine=","NameByBuild=","IOP="
+                            ,"basecase=" ] )
 except:
     print( "something is wrong")
     exit()
@@ -62,6 +63,9 @@ for opt, arg in opts:
     elif opt in ("-I","--IOP"):
         case.IOP = arg
         IOPcase = True
+    elif opt in ("-B","--basecase"):
+        basecase = arg
+        spawncase = True
 
 
 date=case.startdate
@@ -74,6 +78,3 @@ elif (spawncase == True) and (IOPcase == False):
 elif (spawncase == False) and (IOPcase == True):
    case.IOP_case()
 
-#fname = '../../cases/'+case_tag+'/'+'CaseInst.pysave'
-#with open( fname, 'wb') as fob:
-#   pickle.dump( case, fob )

@@ -26,17 +26,17 @@ endif
 
 conda activate adf_v0.07
 
-./drv_hf_zonal_mean.py -y 2010 -m 4 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 5 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 6 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 7 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 8 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 9 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 10 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 11 -P -X c6_3_59.f09_L58.CTL01
-./drv_hf_zonal_mean.py -y 2010 -m 12 -P -X c6_3_59.f09_L58.CTL01
-
-
+./drv_hf_zonal_mean.py -y 2010 -m 2 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 3 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 4 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 5 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 6 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 7 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 8 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 9 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 10 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 11 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
+./drv_hf_zonal_mean.py -y 2010 -m 12 -P 262.5,36.6 -X c6_3_59.f09_L58.CTL02
 
 #./drv_hf_zonal_yz.py --year=${year} --month=${month}
 

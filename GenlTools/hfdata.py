@@ -48,7 +48,7 @@ class hfdata:
         jj = np.argmin(  abs(lats-ilat) )
 
         print(lvar)
-
+        print( "Picking LON LAT=",ilon,ilat )
 
         for var in lvar:
             aa=a[var]
@@ -167,3 +167,15 @@ class hfdata:
 
 
         za.to_netcdf( ofile )
+
+
+    def add_phis(self, ifile , ofile, phis ):
+        import numpy as np
+        import xarray as xr
+
+        a=xr.open_dataset(ifile)
+        b=a
+        b['PHIS']=phis
+
+        b.to_netcdf( ofile )
+        print("Added PHIS to \n"+ofile)

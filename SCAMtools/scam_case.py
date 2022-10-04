@@ -79,9 +79,9 @@ class scam_case:
         ProjStr = str( self.project )
 
         if (self.NameByBuild == True):
-            case_tag = tag+'_'+MachStr+'_'+CompilerStr+'_'+CplStr+'_'+case_lev
+            case_name = tag+'_'+MachStr+'_'+CompilerStr+'_'+CplStr+'_'+case_lev
         else:
-            case_tag = tag+'_'+case_lev+'_'+case_lon+'_'+case_lat+'_'+case_yr+'-'+case_mon+'-'+case_day
+            case_name = tag+'_'+case_lev+'_'+case_lon+'_'+case_lat+'_'+case_yr+'-'+case_mon+'-'+case_day
 
         if ( self.coupler=="nuopc"):
             COMPSET="FSCAM"
@@ -90,9 +90,9 @@ class scam_case:
 
 
         #This is the actual case name for the 'base' case
-        print(case_tag)
-        self.name=case_tag
-        self.basecase=case_tag
+        print(case_name)
+        self.name=case_name
+        self.basecase=case_name
         self.isbasecase=True
 
         #-----------------------------------------------------
@@ -100,14 +100,14 @@ class scam_case:
         #  in a directory '../../cases' from 
         #  ${CESMROOT}/cime/scripts
         #-----------------------------------------------------
-        cmd1="mkdir -p ../../cases/"+case_tag
+        cmd1="mkdir -p ../../cases/"+case_name
 
         if (MachStr == 'cheyenne'):
-            cmd2="./create_newcase --case  ../../cases/"+case_tag+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/scam_STUB --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --project "+ ProjStr + " --run-unsupported"
+            cmd2="./create_newcase --case  ../../cases/"+case_name+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/scam_STUB --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --project "+ ProjStr + " --run-unsupported"
         else:
-            cmd2="./create_newcase --case  ../../cases/"+case_tag+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/scam_STUB --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --run-unsupported" 
+            cmd2="./create_newcase --case  ../../cases/"+case_name+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/scam_STUB --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --run-unsupported" 
 
-        cd0 = 'cd ../../cases/'+case_tag +';'
+        cd0 = 'cd ../../cases/'+case_name +';'
 
         #sp.run('date')
         sp.run(cmd2,shell=True)
@@ -134,7 +134,7 @@ class scam_case:
 
         sp.run(cd0 + cmd   ,    shell=True )
 
-        cmd = ( "./xmlchange DOUT_S_ROOT='/project/amp/"+user+"/scam/archive/"+case_tag+"'" + ";" +
+        cmd = ( "./xmlchange DOUT_S_ROOT='/project/amp/"+user+"/scam/archive/"+case_name+"'" + ";" +
                 "./xmlchange CAM_CONFIG_OPTS='-dyn eul -scam -phys cam_dev -nlev "+levstr+"'"+ ";" +
                 "./xmlchange ATM_NCPL="+NcplStr+";"+ 
                 "./xmlchange STOP_N="+NstepStr+";"+
@@ -158,9 +158,9 @@ class scam_case:
         print("Machine  = "+self.machine)
         print("Compiler = "+self.compiler)
         print("created and setup case=")
-        print("   ../../cases/"+case_tag )
+        print("   ../../cases/"+case_name )
         print("Should be ready to build and submit")
-        fname = '../../cases/'+case_tag+'/'+'env_build.xml'
+        fname = '../../cases/'+case_name+'/'+'env_build.xml'
 
         # find CIME_OUTPUT_ROOT
         fob=open(fname,"r")
@@ -173,7 +173,7 @@ class scam_case:
         fob.close()
 
         # write 'self' to pickle file in casedir
-        fname = '../../cases/'+case_tag+'/'+'BaseCaseSelf.pkL'
+        fname = '../../cases/'+case_name+'/'+'BaseCaseSelf.pkL'
         with open( fname, 'wb') as fob:
             pickle.dump( self, fob )
         fob.close()
@@ -197,7 +197,7 @@ class scam_case:
 
         #---------------------------------
         # These sould be inherited from 
-        # base case or hardwried here
+        # base case or hardwired here
         #---------------------------------
         self.basecase   = base.name
         self.isbasecase = False
@@ -207,6 +207,8 @@ class scam_case:
         self.atm_ncpl   = base.atm_ncpl
         self.cime_output_root = base.cime_output_root
         lev = base.nlev
+
+        print("This the cime output root ==>", self.cime_output_root)
 
         #-----------------------------------
         # These are specified in scam_drv.py
@@ -218,8 +220,9 @@ class scam_case:
         lat = self.scmlat
         lon = self.scmlon
         tag = self.tag
-        
 
+        isEnsembleMember = False
+        
         case_day = str(d).zfill(2)
         case_mon = str(m).zfill(2)
         case_yr  = str(y).zfill(4)
@@ -242,40 +245,53 @@ class scam_case:
         latstr = str(lat)
         levstr = str(lev)
 
-        case_tag  = tag+'_'+case_lev+'_'+case_lon+'_'+case_lat+'_'+case_yr+'-'+case_mon+'-'+case_day
-        self.name = case_tag
+        case_name  = tag+'_x_'+case_lev+'_'+case_lon+'_'+case_lat+'_'+case_yr+'-'+case_mon+'-'+case_day
+        self.name = case_name
 
-        ensemble_root = self.cime_output_root + '/' + self.basecase +'_ENS'
-        self.ensemble_root = ensemble_root
+        if ( isEnsembleMember == True):
+            ensemble_root = self.cime_output_root + '/' + self.basecase +'_ENS'
+            self.ensemble_root = ensemble_root
+            active_root = self.ensemble_root
+        else:
+            self.ensemble_root = 'N/A'
+            self.nsteps = base.nsteps
+            self.mfilt = self.nsteps
+            active_root = self.cime_output_root
 
+
+        print( " Spawned run directory : \n "+ active_root + "/"+case_name )
+        print( " self.mfilt  , base.mfilt  = ",self.mfilt,base.mfilt )
+        print( " self.nsteps , base.nsteps = ",self.nsteps,base.nsteps )
+        print( self.__dict__ )
+        
 
         # --------------
         # Clean before making new directory
         #----------------
-        cmd = ("rm -rf "+ ensemble_root + "/"+case_tag)
+        cmd = ("rm -rf "+ active_root + "/"+case_name)
         sp.run( cmd , shell=True )
 
-        cmd = ("mkdir -p "+ ensemble_root + "/"+case_tag+"/bld")
+        cmd = ("mkdir -p "+ active_root + "/"+case_name+"/bld")
         sp.run( cmd , shell=True )
 
         cmd = ("cp -r "+ self.cime_output_root + "/" +  base.name +"/run" + " "
-            + ensemble_root + "/"+case_tag+"/run")
+            + active_root + "/"+case_name+"/run")
         sp.run( cmd , shell=True )
  
         cmd = ("cp "+ self.cime_output_root + "/" +  base.name +"/bld/cesm.exe" + " "
-            + ensemble_root + "/"+case_tag+"/bld/")
+            + active_root + "/"+case_name+"/bld/")
         sp.run( cmd , shell=True )
 
         pyToolsDir = "../../myPythonTools/SCAMtools/"
 
         cmd = ( "cp "+pyToolsDir+"STUB_iop.nc"  + " "
-            + ensemble_root + "/"+case_tag+"/run/")
+            + active_root + "/"+case_name+"/run/")
         sp.run(cmd   ,    shell=True )
         cmd = ( "cp "+pyToolsDir+"ens_run.sh"  + " "
-            + ensemble_root + "/"+case_tag+"/run/")
+            + active_root + "/"+case_name+"/run/")
         sp.run(cmd   ,    shell=True )
 
-        cd0 ="cd "+ ensemble_root + "/" +  case_tag +"/run ;" 
+        cd0 ="cd "+ active_root + "/" +  case_name +"/run ;" 
 
         cmd = ( 
             "ncap2 --overwrite -s bdate="+case_date+" STUB_iop.nc STUB_iop.nc"+";"+
@@ -284,21 +300,21 @@ class scam_case:
         )
         sp.run(cd0 + cmd   ,    shell=True )
 
-        fili= ensemble_root + "/" +  case_tag +"/run/atm_in"
+        fili= active_root + "/" +  case_name +"/run/atm_in"
         tx.nmled(fili,'iopfile','"STUB_iop.nc"')
-        # Set history to make one file per day
+        # Set history to write mfilt stamps per file
         tx.nmled(fili,'mfilt',str(self.mfilt) )
 
         if (base.coupler=='nuopc'):
-            fili= ensemble_root + "/" +  case_tag +"/run/nuopc.runconfig"
-            tx.nmled(fili,'case_name',case_tag)
+            fili= active_root + "/" +  case_name +"/run/nuopc.runconfig"
+            tx.nmled(fili,'case_name',case_name)
             tx.nmled(fili,'start_ymd',case_date)
             tx.nmled(fili,'scol_lat',latstr)
             tx.nmled(fili,'scol_lon',lonstr)
 
         if (base.coupler=='mct'):
-            fili= ensemble_root + "/" +  case_tag +"/run/drv_in"
-            tx.nmled(fili,'case_name',case_tag)
+            fili= active_root + "/" +  case_name +"/run/drv_in"
+            tx.nmled(fili,'case_name',case_name)
             tx.nmled(fili,'start_ymd',case_date)
             tx.nmled(fili,'scmlat',latstr)
             tx.nmled(fili,'scmlon',lonstr)
@@ -349,7 +365,7 @@ class scam_case:
         ProjStr = str( self.project )
         IOPStr  = str( self.IOP )
 
-        case_tag = self.IOP+'_'+tag+'_'+MachStr+'_'+CompilerStr+'_'+CplStr+'_'+case_lev
+        case_name = self.IOP+'_'+tag+'_'+MachStr+'_'+CompilerStr+'_'+CplStr+'_'+case_lev
 
         if ( self.coupler=="nuopc"):
             COMPSET="FSCAM"
@@ -358,9 +374,9 @@ class scam_case:
 
 
         #This is the actual case name for the 'base' case
-        print(case_tag)
-        self.name=case_tag
-        self.basecase=case_tag
+        print(case_name)
+        self.name=case_name
+        self.basecase=case_name
         self.isbasecase=True
 
         #-----------------------------------------------------
@@ -368,14 +384,14 @@ class scam_case:
         #  in a directory '../../cases' from 
         #  ${CESMROOT}/cime/scripts
         #-----------------------------------------------------
-        cmd1="mkdir -p ../../cases/"+case_tag
+        cmd1="mkdir -p ../../cases/"+case_name
 
         if (MachStr == 'cheyenne'):
-            cmd2="./create_newcase --case  ../../cases/"+case_tag+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/" + IOPStr + " --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --project "+ ProjStr + " --run-unsupported"
+            cmd2="./create_newcase --case  ../../cases/"+case_name+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/" + IOPStr + " --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --project "+ ProjStr + " --run-unsupported"
         else:
-            cmd2="./create_newcase --case  ../../cases/"+case_tag+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/" + IOPStr + " --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --run-unsupported" 
+            cmd2="./create_newcase --case  ../../cases/"+case_name+ " --compset "+ COMPSET + " --res T42_T42 --driver " + CplStr + " --user-mods-dir ../../cime_config/usermods_dirs/" + IOPStr + " --walltime 01:00:00 --mach " + MachStr + " --pecount 1 --compiler "+ CompilerStr + " --run-unsupported" 
 
-        cd0 = 'cd ../../cases/'+case_tag +';'
+        cd0 = 'cd ../../cases/'+case_name +';'
 
         #sp.run('date')
         sp.run(cmd2,shell=True)
@@ -391,7 +407,7 @@ class scam_case:
         cmd = ( "cp "+pyToolsDir+"user_nl_cice ./")
         sp.run(cd0 + cmd   ,    shell=True )
 
-        cmd = ( "./xmlchange DOUT_S_ROOT='/project/amp/"+user+"/scam/archive/"+case_tag+"'" + ";" +
+        cmd = ( "./xmlchange DOUT_S_ROOT='/project/amp/"+user+"/scam/archive/"+case_name+"'" + ";" +
                 "./xmlchange CAM_CONFIG_OPTS='-dyn eul -scam -phys cam_dev -nlev "+levstr+"'"+ ";" +
                 "./xmlchange ATM_NCPL="+NcplStr+";"
         )
@@ -401,9 +417,9 @@ class scam_case:
         print("Machine  = "+self.machine)
         print("Compiler = "+self.compiler)
         print("created and setup case=")
-        print("   ../../cases/"+case_tag )
+        print("   ../../cases/"+case_name )
         print("Should be ready to build and submit")
-        fname = '../../cases/'+case_tag+'/'+'env_build.xml'
+        fname = '../../cases/'+case_name+'/'+'env_build.xml'
 
         # find CIME_OUTPUT_ROOT
         fob=open(fname,"r")
@@ -416,7 +432,7 @@ class scam_case:
         fob.close()
 
         # write 'self' to pickle file in casedir
-        fname = '../../cases/'+case_tag+'/'+'BaseCaseSelf.pkL'
+        fname = '../../cases/'+case_name+'/'+'BaseCaseSelf.pkL'
         with open( fname, 'wb') as fob:
             pickle.dump( self, fob )
         fob.close()
