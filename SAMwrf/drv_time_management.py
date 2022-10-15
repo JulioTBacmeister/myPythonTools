@@ -23,12 +23,12 @@ def get_seconds_str(tim):
 
 def main(year,month):
 
-    input_dir = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/i/"
-    output_dir = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/"
+    input_dir  = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/i/"
+    output_dir = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/o/"
     work_dir = "/glade/work/juliob/SAMwrf_grids/"
 
-    ifile_root = "f.e22r.SAMwrf01.f09.L70.NODEEP_2015_01.cam.h1."
-    ofile_root = "f.e22r.SAMwrf01.f09.L70.NODEEP_2015_01.cam.h1."
+    ifile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
+    ofile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
 
 
 
@@ -64,7 +64,7 @@ def main(year,month):
             g=a.sel( time= time[i] )
             ofile=output_dir+ofile_root + tees[i] + '.nc'
             print(ofile)
-            g.to_netcdf( ofile )
+            g.to_netcdf( ofile , format="NETCDF3_CLASSIC" )
 
 
 if __name__ == "__main__":
