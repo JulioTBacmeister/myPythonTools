@@ -7,6 +7,7 @@ import numpy as np
 import scipy.interpolate as si
 import argparse as arg
 from pathlib import Path
+import subprocess as sp
 
 """
             This module is supposed to interpolate results from regridded
@@ -17,7 +18,7 @@ from pathlib import Path
 """
 
 
-def regrid(year=2010,month=6,day=1,hour=1):
+def regrid(year,month,day,hour,reftopopath,ifname,idir):
 
     y4=str(year).zfill(4)
     m2=str(month).zfill(2)
@@ -26,10 +27,17 @@ def regrid(year=2010,month=6,day=1,hour=1):
     xtnc = y4+'-'+m2+'-'+d2+'-'+s5+'.nc'
 
 
-    fM='c6_3_59.ne30pg3_L32_SAMwrf.ndg01/c6_3_59.ne30pg3_L32_SAMwrf.ndg01.cam.h0.2010-06.nc'
-    #fR='SAMwrf.ne30_L32/f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1.2010-06-01-00000.nc'
-    fR='SAMwrf.ne30_L32/f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1.'+xtnc
-    fMo='SAMwrf.ne30_L32_vrg/f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01_vrg.cam.h1.'+xtnc
+
+
+    ofname = ifname+'_vrg'
+    odir   = idir+'vrg/'
+    sp.run( 'mkdir -p '+odir, shell=True )
+
+    fM= reftopopath  
+
+    fR=idir + ifname + '.cam.h1.'+xtnc    
+
+    fMo=odir + ofname + '.cam.h1.'+xtnc 
 
     print(fR)
 
@@ -88,54 +96,16 @@ def regrid(year=2010,month=6,day=1,hour=1):
     vlat=lat.values
 
     #vdps=dps.values
-
     #ax1.tricontour(vlon,vlat, vdps, levels=14, linewidths=0.5, colors='k')
     #ax2.tricontourf(lon, lat, vdps , levels=30, cmap="RdBu_r")
     #plt.show()
 
     Tes=TeR[31,:]
     psMo=psR * np.exp ( (phR-phM) / (287.*Tes ) )
-
-    R_is_higher=0
-    R_is_lower=0
-    R_is_same=0
-
-    """
-    #move through profiles and make new ps for ne30 default
-    for icol in np.arange(ncols):
-        if( (icol % 1000) == 0 ):
-            print(icol)
-        if ( phR[icol] >  phM[icol] ):  #Rough topo is higher than defualt
-            R_is_higher =  R_is_higher +1
-        if ( phR[icol] <  phM[icol] ):  #Rough topo is lower than defualt
-            R_is_lower =  R_is_lower +1
-        if ( phR[icol] == phM[icol] ):  #Rough topo is lower than defualt
-            R_is_same =  R_is_same +1
-     
-    """
             
     dims=psR.shape
-    print(dimsR)
-    print(" Rough_is_higher -> ", R_is_higher )
-    print(" Rough_is_lower  -> ", R_is_lower )
-    print(" Rough_is_same   -> ", R_is_same )
-    #print(psR.dims.len)
 
-
-    """
-    SAMPLE inteprolations
-    Extrapolate T
-    Fill U and V with zeros below max(psrc)
-    """
-
-    imin=dps.argmin()  # Picks out a point where rough topo is substantially higher than default topo
-    imax=dps.argmax()
-    ptrg=hyam*100000. + hybm*psMo[imin]
-    psrc=hyam*100000. + hybm*psR[imin]
-    f=si.interp1d(psrc,TeR[:,imin], fill_value='extrapolate')
-    Tex=f(ptrg)
-    f=si.interp1d(psrc,uR[:,imin], fill_value=0.,bounds_error=False )
-    ux=f(ptrg)
+     #imin=dps.argmin()  # Picks out a point where rough topo is substantially higher than default topo
 
     TeMo = TeR
     uMo = uR
@@ -143,15 +113,17 @@ def regrid(year=2010,month=6,day=1,hour=1):
     qMo = qR
 
     for icol in np.arange(ncols):
-        if ( (phR[icol]>10.*9.8) or (phM[icol]>10.*9.8) ):
-            ptrg=hyam*100000. + hybm*psMo[icol]
-            psrc=hyam*100000. + hybm*psR[icol]
+        ptrg=hyam*100000. + hybm*psMo[icol]
+        psrc=hyam*100000. + hybm*psR[icol]
+        if ( ( phR[icol]>10.*9.8 or phM[icol]>10.*9.8)  and vlon[icol]>250. and vlon[icol]<350. and vlat[icol]>-60 and vlat[icol]<17.5 ):
             #Temperature
             f=si.interp1d(psrc,TeR[:,icol], fill_value='extrapolate')
             TeMo[:,icol]=f(ptrg)
             #Humidity
             f=si.interp1d(psrc,qR[:,icol], fill_value='extrapolate'  )
             qMo[:,icol]=f(ptrg)
+
+        if ( phR[icol]>phM[icol] and vlon[icol]>250. and vlon[icol]<350. and vlat[icol]>-60 and vlat[icol]<17.5):
             #Zonal wind
             f=si.interp1d(psrc,uR[:,icol], fill_value= 0.,bounds_error=False  )
             uMo[:,icol]=f(ptrg)
@@ -183,7 +155,6 @@ def regrid(year=2010,month=6,day=1,hour=1):
     xvMo= xr.DataArray( data=vMo, dims=aR['V'].dims, coords=aR['V'].coords, attrs=dict( description='Meridional wind',units='m s-1',) ,) 
     aMo['V']=xvMo
 
-
     aMo.to_netcdf(fMo)
 
 def main(year=2010,month=6):
@@ -191,10 +162,14 @@ def main(year=2010,month=6):
     days_in_month =[31 , 28, 31, 30, 31, 30, 31, 31, 30, 31,30, 31 ]
     imm=month
 
+    reftopopath ='/project/amp/juliob/CAM/c6_3_59.ne30pg3_L32_SAMwrf.ndg01/c6_3_59.ne30pg3_L32_SAMwrf.ndg01.cam.h0.2010-06.nc'
+    ifname = 'f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01'
+    idir   = '/project/amp/juliob/CAM/SAMwrf.ne30_L32/'
+
     ndays = days_in_month[imm-1]
     for idd in np.arange(1,ndays+1):
         for ihh in np.arange(24):
-            regrid(year=year,month=month,day=idd,hour=ihh)
+            regrid(year=year,month=month,day=idd,hour=ihh,idir=idir,ifname=ifname,reftopopath=reftopopath )
             #print( year,month,idd,ihh)
 
 
