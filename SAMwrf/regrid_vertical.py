@@ -61,6 +61,18 @@ def regrid(year,month,day,hour,reftopopath,ifname,idir):
     hyam=aR['hyam'].values
     hybi=aR['hybi'].values
     hybm=aR['hybm'].values
+    ilev=aR['ilev'].values
+    lev =aR['lev'].values
+
+    assert( (lev.max() < 1.e8 ) 
+            and (lev.max() < 1.e8 ) 
+            and (hybm.max() < 1.e8 )  
+            and (hyam.max() < 1.e8 )   
+            and (hyai.max() < 1.e8 )   
+            and (hybi.max() < 1.e8 ) ) , "Bad grid "
+                    
+        
+
 
     #get surface geopotential
     phMx=aM['PHIS']
@@ -115,7 +127,7 @@ def regrid(year,month,day,hour,reftopopath,ifname,idir):
     for icol in np.arange(ncols):
         ptrg=hyam*100000. + hybm*psMo[icol]
         psrc=hyam*100000. + hybm*psR[icol]
-        if ( ( phR[icol]>10.*9.8 or phM[icol]>10.*9.8)  and vlon[icol]>250. and vlon[icol]<350. and vlat[icol]>-60 and vlat[icol]<17.5 ):
+        if ( ( phR[icol]>=10.*9.8 or phM[icol]>=10.*9.8)  and vlon[icol]>250. and vlon[icol]<350. and vlat[icol]>-60 and vlat[icol]<17.5 ):
             #Temperature
             f=si.interp1d(psrc,TeR[:,icol], fill_value='extrapolate')
             TeMo[:,icol]=f(ptrg)
@@ -148,23 +160,25 @@ def regrid(year,month,day,hour,reftopopath,ifname,idir):
     aMo['T']=xTeMo
     # add Q
     xqMo= xr.DataArray( data=qMo, dims=aR['Q'].dims, coords=aR['Q'].coords, attrs=dict( description='Specific Humidity',units='kg kg-1',) ,) 
-    aMo['T']=xTeMo
+    aMo['Q']=xqMo
     # add U
     xuMo= xr.DataArray( data=uMo, dims=aR['U'].dims, coords=aR['U'].coords, attrs=dict( description='Zonal wind',units='m s-1',) ,) 
     aMo['U']=xuMo
     xvMo= xr.DataArray( data=vMo, dims=aR['V'].dims, coords=aR['V'].coords, attrs=dict( description='Meridional wind',units='m s-1',) ,) 
     aMo['V']=xvMo
 
-    aMo.to_netcdf(fMo)
+    aMo.to_netcdf(fMo  , format="NETCDF3_CLASSIC" )
 
 def main(year=2010,month=6):
     
     days_in_month =[31 , 28, 31, 30, 31, 30, 31, 31, 30, 31,30, 31 ]
     imm=month
 
-    reftopopath ='/project/amp/juliob/CAM/c6_3_59.ne30pg3_L32_SAMwrf.ndg01/c6_3_59.ne30pg3_L32_SAMwrf.ndg01.cam.h0.2010-06.nc'
+    reftopopath = '/glade/scratch/juliob/archive/c6_3_59.ne30pg3_L32_SAMwrf.ndg01/atm/hist/c6_3_59.ne30pg3_L32_SAMwrf.ndg01.cam.h0.2010-06.nc'
+
     ifname = 'f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01'
-    idir   = '/project/amp/juliob/CAM/SAMwrf.ne30_L32/'
+    idir   = '/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/o/'
+
 
     ndays = days_in_month[imm-1]
     for idd in np.arange(1,ndays+1):

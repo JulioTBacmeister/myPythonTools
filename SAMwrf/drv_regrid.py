@@ -12,12 +12,13 @@ from pathlib import Path
 
 def main(year,month):
 
-    input_dir =  "/glade/campaign/cgd/projects/NCGD0051/ENSO_2015/L70/f.e22r.SAMwrf01.ne30x16.L70.NODEEP_2015_01/atm/hist/"
+    input_dir =  "/glade/campaign/cgd/projects/NCGD0051/ENSO_2010/L32/f.e22r.SAMwrf01.ne30x16.L32.NODEEP_2010_01/atm/hist/"
     output_dir = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/i/"
     work_dir = "/glade/work/juliob/SAMwrf_grids/"
 
-    ifile_root = "f.e22r.SAMwrf01.ne30x16.L70.NODEEP_2015_01.cam.h1."
-    ofile_root = "f.e22r.SAMwrf01.f09.L70.NODEEP_2015_01.cam.h1."
+    ifile_root = "f.e22r.SAMwrf01.ne30x16.L32.NODEEP_2010_01.cam.h1."
+    #ofile_root = "f.e22r.SAMwrf01.f09.L32.NODEEP_2010_01.cam.h1."
+    ofile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
 
 
 
@@ -33,8 +34,8 @@ def main(year,month):
 
 
     ndays = days_in_month[imm-1]
-    #for idd in np.arange(26,ndays+1):
-    for idd in np.arange(1,5):
+    for idd in np.arange(1,ndays+1):
+    #for idd in np.arange(1,5):
         
         yy=str(iy).zfill(4)
         mm=str(imm).zfill(2)
@@ -45,7 +46,8 @@ def main(year,month):
         ifile=input_dir+ifile_root+tstamp
         ofile=output_dir+ofile_root+tstamp
 
-        wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_f09-cnsrv.nc"
+        #wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_f09-cnsrv.nc"
+        wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_ne30pg3-cnsrv.nc"
         
         # create command
         cmd1='module load nco/4.7.9'
