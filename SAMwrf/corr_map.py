@@ -36,37 +36,11 @@ ntime=sh[0]
 nlev=sh[1]
 ncol=sh[2]
 
-# Create grid values first.
-ngridx=80
-ngridy=20
-xi = np.linspace(270. , 340. , ngridx)
-yi = np.linspace(-60., 20., ngridy)
-Xi, Yi = np.meshgrid(xi, yi)
-
-utni = np.zeros( [ntime, nlev, ngridy, ngridx ] )
-utgwi = np.zeros( [ntime, nlev, ngridy, ngridx ] )
-
-
-
-# Perform linear interpolation of the data (x,y)
-# on a grid defined by (xi,yi)
-triang = tri.Triangulation(lon, lat)
-for L in np.arange(nlev):
-    print(" interpolating Level =",L)
-    for n in np.arange(ntime):
-        utn_int = tri.LinearTriInterpolator(triang, utn1[n,L,:]  )
-        utgw_int = tri.LinearTriInterpolator(triang, utgw2[n,L,:]  )
-        utni[n, L,:,:] =utn_int( Xi, Yi )
-        utgwi[n, L,:,:] =utgw_int( Xi, Yi )
-
 
 clevs=(np.arange(30)-14.)
 vlevs=np.arange(nlev)
 
 
-
-utnig=np.average( utni,axis=0)
-utgwig=np.average( utgwi,axis=0)
 
 corro=np.zeros( (sh[1],sh[2]) )
 
