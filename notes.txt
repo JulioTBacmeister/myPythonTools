@@ -14,3 +14,77 @@ Need to use & intead of 'and'
 >>> print(np.size(oo))
 4
 >>> 
+
+#########################################################
+# "PATHS .... "
+#####################################################
+""" example for ../Plotting """
+import sys
+sys.path.append('../Plotting/')
+""" Now you can imprt modules in ../Plotting"""
+
+#########################################################
+# "recompiling" code
+#######################################################
+>>> import plotdata as pd
+>>> import importlib
+
+... do stuff don't like it, modify plotdata.py
+
+>>> importlib.reload(pd)
+
+
+#####################################################################
+#some notes on X-Z plotting
+####################################################
+
+
+>>> xlon=np.arange(280)
+
+>>> zees=np.ones(32)
+>>> xx,zz = np.meshgrid(xlon,zees)
+>>> xx.shape
+(32, 280)
+
+>>> ulv2=np.linspace(-20.,20.,num=41)
+>>> print(ulv2)
+[-20. -19. -18. -17. -16. -15. -14. -13. -12. -11. -10.  -9.  -8.  -7.
+  -6.  -5.  -4.  -3.  -2.  -1.   0.   1.   2.   3.   4.   5.   6.   7.
+   8.   9.  10.  11.  12.  13.  14.  15.  16.  17.  18.  19.  20.]
+>>> plt.figure(1).clear()
+>>> plt.ylim(100000.,10000.)
+(100000.0, 10000.0)
+>>> plt.contourf(xx,pp2[0,:,200,:], uu2[0,:,200,:]  ,levels=ulv2  ,cmap='RdBu_r')
+<matplotlib.contour.QuadContourSet object at 0x2af379503490>
+>>> plt.colorbar()
+<matplotlib.colorbar.Colorbar object at 0x2af3796ae0d0>
+>>> plt.figure(1).clear()
+>>> plt.ylim(100000.,10000.)
+(100000.0, 10000.0)
+>>> plt.contourf(xx,pp2[0,:,200,:], uu2[0,:,200,:]  ,levels=ulv2  ,cmap='RdBu_r')
+<matplotlib.contour.QuadContourSet object at 0x2af3793962d0>
+>>> plt.colorbar()
+<matplotlib.colorbar.Colorbar object at 0x2af3798d4410>
+>>> 
+
+
+###################################################################
+# NumPy array convenstions
+###################################################################
+>>> a1=[[1,2,3],[-3,4,7]]
+>>> a1.shape
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'list' object has no attribute 'shape'
+>>> a1=np.array([[1,2,3],[-3,4,7]])
+>>> a1.shape
+(2, 3)
+>>> ta=np.transpose(a1)
+>>> np.matmul(a1,ta)
+array([[14, 26],
+       [26, 74]])
+>>> np.matmul(ta,a1)
+array([[ 10, -10, -18],
+       [-10,  20,  34],
+       [-18,  34,  58]])
+>>> 

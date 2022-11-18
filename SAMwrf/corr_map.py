@@ -5,9 +5,9 @@ import matplotlib.tri as tri
 
 
 tag='ndg04'
-fil1='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super.nc'
+fil1='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v2.nc'
 tag='ndg05'
-fil2='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super.nc'
+fil2='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v2.nc'
 
 
 d1=xr.open_dataset( fil1 )
@@ -20,6 +20,8 @@ lat=d1['lat'].values
 
 mos= np.array( [  [2010,6,1,0]
              ] )
+
+"""
 tag='ndg05'
 xp='c6_3_59.ne30pg3_L32_SAMwrf.'+tag
 dir='/glade/scratch/juliob/archive/'+xp+'/atm/hist/'
@@ -27,7 +29,7 @@ i=0
 fili=dir+xp+'.cam.h1.'+str(mos[i,0]).zfill(4) + '-' + str(mos[i,1]).zfill(2) + '-' + str(mos[i,2]).zfill(2) + '-' +str(mos[i,3]).zfill(5) + '.nc'
 a=xr.open_mfdataset( fili )
 topo=xr.open_dataset( a.attrs['topography_file'] )
-
+"""
 
 
 
@@ -54,7 +56,7 @@ for L in np.arange( sh[1]-1,0,-1 ):
         corro[L,i]=poo[0,1]
         
 corro=np.nan_to_num(corro,nan=0.0)
-clevs=(np.arange(30)-14.)/15.
+clevs=(np.arange(31)-15.)/15.
 
 #plt.ion()
 

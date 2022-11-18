@@ -5,7 +5,7 @@ import xarray as xr
 
 #/glade/scratch/juliob/archive/c6_3_59.ne30pg3_L32_SAMwrf.ndg04/atm/hist/c6_3_59.ne30pg3_L32_SAMwrf.ndg04.cam.h1.*.nc
 
-tag='ndg06'
+tag='ndg04'
 xp='c6_3_59.ne30pg3_L32_SAMwrf.'+tag
 dir='/glade/scratch/juliob/archive/'+xp+'/atm/hist/'
 
@@ -52,13 +52,28 @@ for i in np.arange( smos[0] ):
         }
     b = xr.Dataset.from_dict(d)
     """
+    Add some attributes
+    """
+    b.attrs={'topography_file':a.attrs['topography_file']}
+    """
     NOw add variables to base dataset one at a time
     """
+    b['hyam']=a['hyam']
+    b['hybm']=a['hybm']
+    b['hyai']=a['hyai']
+    b['hybi']=a['hybi']
+
+
+    b['PHIS']=topo['PHIS'][ooo]
+    b['SGH']=topo['SGH'][ooo]
     b['MXDIS']=topo['MXDIS'][:,ooo]
     b['ANGLL']=topo['ANGLL'][:,ooo]
     b['CLNGT']=topo['CLNGT'][:,ooo]
     b['ANISO']=topo['ANISO'][:,ooo]
     b['ISOVAR']=topo['ISOVAR'][ooo]
+
+    b['PS']=a['PS'][:,ooo]
+
     b['Target_U']=a['Target_U'][:,:,ooo]
     b['U']=a['U'][:,:,ooo]
     b['UTEND_NDG']=a['UTEND_NDG'][:,:,ooo]
@@ -80,6 +95,6 @@ print(lfilo)
 ds=xr.open_mfdataset( lfilo, data_vars='different' )
 
 
-filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super.nc'
+filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v3.nc'
 ds.to_netcdf( filo )
 

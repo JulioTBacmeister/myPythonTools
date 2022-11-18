@@ -42,6 +42,7 @@ def examplot():
     plt.title(" Precomputed Delaunay input " )
     plt.axis("equal")
 
+    #plt.show()
     diff=Z1-Z2
     #print(diff[:,24])
 
