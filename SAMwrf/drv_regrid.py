@@ -20,13 +20,14 @@ def main(year,month):
     #ofile_root = "f.e22r.SAMwrf01.f09.L32.NODEEP_2010_01.cam.h1."
     ofile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
 
+    wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_ne30pg3-cnsrv.nc"
 
 
 
     days_in_month =[31 , 28, 31, 30, 31, 30, 31, 31, 30, 31,30, 31 ]
     
-    iy=year #2016
-    imm=month # 6
+    iy=year
+    imm=month
     idd=1
     iss=3600
 
@@ -45,9 +46,6 @@ def main(year,month):
         
         ifile=input_dir+ifile_root+tstamp
         ofile=output_dir+ofile_root+tstamp
-
-        #wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_f09-cnsrv.nc"
-        wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_ne30pg3-cnsrv.nc"
         
         # create command
         cmd1='module load nco/4.7.9'

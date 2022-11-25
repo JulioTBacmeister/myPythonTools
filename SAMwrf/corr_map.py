@@ -60,7 +60,7 @@ clevs=(np.arange(31)-15.)/15.
 
 #plt.ion()
 
-plt.figure(0)
+#plt.figure(0)
 
 fig,axs=plt.subplots(2,2)
 plt.xlim(270.,340)

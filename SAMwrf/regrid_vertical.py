@@ -187,10 +187,6 @@ def main(year=2010,month=6):
             #print( year,month,idd,ihh)
 
 
-#def main(year,month):
-
-    #month(year,month)
-
 if __name__ == "__main__":
     # argument: indir -> get all nc files in this directory
     # argument: map -> the offlinemap file already prepared
