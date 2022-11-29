@@ -1,3 +1,49 @@
+#########################################
+# building new env on Cheyenne/Casper
+#########################################
+
+
+Thanks for following up.  I cloned the npl-2022b environment following the description in the document:
+
+mamba create --name env4ml --clone npl-2022b
+
+
+Then I installed tensorflow using the simplest command I thought might work:
+
+mamba install --name env4ml tensorflow
+
+
+
+After doing this and activating 'env4ml' I was able to "import tensorflow" in a python session.  Things seem to be working although I do get some warning/info messages the first time I do things:
+
+
+
+>>> import tensorflow as tf
+
+2022-09-21 08:13:15.580119: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
+
+
+>>> a=tf.constant( np.arange(12),shape=[4,3])
+
+2022-09-21 08:16:27.461855: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 AVX512F AVX512_VNNI FMA
+
+
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+
+
+
+Being a novice, I'm not sure whether I should worry about these, but for the moment I won't since they seem related to optimization, not a big concern for me at this stage.
+
+
+
+Thanks again
+
+
+#####################################################
+#   numpy where
+####################################################
+
 numpy where method 
 Need to use & intead of 'and'
 
