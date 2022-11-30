@@ -1,0 +1,35 @@
+Step 1)
+Regrid SAMwrf ne30x16 horizontally to ne30pg3.  Uses drv_regrid.py.
+
+    input_dir =  "/glade/campaign/cgd/projects/NCGD0051/ENSO_2010/L32/f.e22r.SAMwrf01.ne30x16.L32.NODEEP_2010_01/atm/hist/"   *home of SAMwrf ne30x16
+    output_dir = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/i/"       *destination for regirdded ne30pg30
+    work_dir = "/glade/work/juliob/SAMwrf_grids/"
+
+    ifile_root = "f.e22r.SAMwrf01.ne30x16.L32.NODEEP_2010_01.cam.h1."
+    ofile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
+
+    wgtsfile = work_dir+ "SAMwrf_ne30x16_TO_ne30pg3-cnsrv.nc"
+
+At the end of this step files still contain 24-instances of hourly model output. Note that this code calls nco regridding.
+
+
+Step 2)
+Split files into single time-instance files.  Uses drv_time_management.py. Also writes new files in format="NETCDF3_CLASSIC" so CAM can interpret.
+
+    input_dir  = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/i/"
+    output_dir = "/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/o/"
+    work_dir = "/glade/work/juliob/SAMwrf_grids/"
+
+    ifile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
+    ofile_root = "f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01.cam.h1."
+
+Step 3)
+Regrid in the vertical to account for fact that horizontally regrdded-topo (ne30x16==>ne30pg3) is substantially rougher that defula ne30pg3 topo. Uses regrid_vertical.py
+
+    # not smartest way. Should probably use topo-file.
+    reftopopath = '/glade/scratch/juliob/archive/c6_3_59.ne30pg3_L32_SAMwrf.ndg01/atm/hist/c6_3_59.ne30pg3_L32_SAMwrf.ndg01.cam.h0.2010-06.nc'
+
+    ifname = 'f.e22r.SAMwrf01.ne30.L32.NODEEP_2010_01' # input file template. Has date strings etc appended ... 
+    idir   = '/glade/p/cesm/amwg_dev/juliob/SAMwrf/ne30x16/o/' # directory containing input files.
+
+Code regird_vertical.py appends 'vrg' to filenames, as well as creating a subdirectory of idir; odir=idir+'vrg/'
