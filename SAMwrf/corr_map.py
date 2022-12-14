@@ -5,9 +5,9 @@ import matplotlib.tri as tri
 
 
 tag='ndg04'
-fil1='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v2.nc'
+fil1='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v3.nc'
 tag='ndg05'
-fil2='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v2.nc'
+fil2='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v3.nc'
 
 
 d1=xr.open_dataset( fil1 )
@@ -39,7 +39,7 @@ nlev=sh[1]
 ncol=sh[2]
 
 
-clevs=(np.arange(30)-14.)
+clevs=np.linspace(-1.,1.,num=21)
 vlevs=np.arange(nlev)
 
 
@@ -56,7 +56,6 @@ for L in np.arange( sh[1]-1,0,-1 ):
         corro[L,i]=poo[0,1]
         
 corro=np.nan_to_num(corro,nan=0.0)
-clevs=(np.arange(31)-15.)/15.
 
 #plt.ion()
 

@@ -5,7 +5,7 @@ import xarray as xr
 
 #/glade/scratch/juliob/archive/c6_3_59.ne30pg3_L32_SAMwrf.ndg04/atm/hist/c6_3_59.ne30pg3_L32_SAMwrf.ndg04.cam.h1.*.nc
 
-tag='ndg04'
+tag='ndg04_nov'
 xp='c6_3_59.ne30pg3_L32_SAMwrf.'+tag
 dir='/glade/scratch/juliob/archive/'+xp+'/atm/hist/'
 
@@ -83,6 +83,7 @@ for i in np.arange( smos[0] ):
     b['VTEND_NDG']=a['VTEND_NDG'][:,:,ooo]
     b['VTEND_GWDTOT']=a['VTEND_GWDTOT'][:,:,ooo]
     filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_'+str(mos[i,0]).zfill(4) + '-' + str(mos[i,1]).zfill(2) +'.nc'
+    print(" will try to write curtain to ",filo)
     b.to_netcdf( filo )
     print(" wrote curtain to ",filo)
     lfilo.append( filo ) 

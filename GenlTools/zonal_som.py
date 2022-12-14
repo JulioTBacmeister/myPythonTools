@@ -6,7 +6,7 @@ from scipy.interpolate import LinearNDInterpolator as Li
 from scipy.interpolate import NearestNDInterpolator as Ni
 from scipy.spatial import Delaunay as Dl
 
-def gzonal( xc, yc, mask, fc, maskRepVal=0. ):
+def gzonal( xc, yc, mask, fc, X, Y, maskRepVal=0. ):
 
     xc=xc.flatten()
     yc=yc.flatten()
@@ -14,11 +14,6 @@ def gzonal( xc, yc, mask, fc, maskRepVal=0. ):
     ooo=np.c_[xc,yc]
 
     dlo=Dl(ooo)
-    nlat=361
-    nlon=720
-
-    X = np.linspace(0., 360. , num=nlon ) # linspace defaults to 50 samples
-    Y = np.linspace(-90., 90. ,num=nlat )
 
     XX,YY=np.meshgrid(X,Y)
 
@@ -66,7 +61,7 @@ def gzonal( xc, yc, mask, fc, maskRepVal=0. ):
     # np.where sets questionable points to ZERO. OK for hblt and qdp,
     # but not a good general approach
     #                                         
-    #                       ocean True     badval True       over bad    over NOT bad
+    #                       ocean True     badval True          over bad          over NOT bad
     fxc_good = np.where( ( abs(mask)>0.)&(abs(fxc)>1000.)    , fxc*0.+maskRepVal   ,   fxc      )
     fxc = fxc_good
     
@@ -95,7 +90,7 @@ def gzonal( xc, yc, mask, fc, maskRepVal=0. ):
     plt.show()
     """
 
-    return fxc
+    return fxc , zafx
 
 today  = date.today()
 yymmdd = today.strftime("%Y%m%d")
@@ -103,17 +98,20 @@ yymmdd = today.strftime("%Y%m%d")
 #/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.20180523.nc
 #/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99_c20221111.nc
 
-case="cesm2"
+case="cesm1"
 
 if case=="cesm1":
     ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.20190923.nc"
     ofi="pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.ZONAV2."+yymmdd+".nc"
+    ofi2="pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.ZONAV2.latlon."+yymmdd+".nc"
 if case=="cesm2":
     ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.20180523.nc"
     ofi="pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.ZONAV2."+yymmdd+".nc"
+    ofi2="pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.ZONAV2.latlon."+yymmdd+".nc"
 if case=="cesm3":
     ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99_c20221111.nc"
     ofi="/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99.ZONAV2."+yymmdd+".nc"
+    ofi2="/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99.ZONAV2.latlon."+yymmdd+".nc"
 
 sm=xr.open_dataset(ifi)
 zsm=sm
@@ -145,6 +143,24 @@ print("Fields in input SOM ",flds0)
 print("will only zonavg ",flds)
 print("will output to ",ofi)
 
+nlat=361
+nlon=720
+X = np.linspace(0., 360. , num=nlon ) # linspace defaults to 50 samples
+Y = np.linspace(-90., 90. ,num=nlat )
+months=1+np.arange(12)
+
+
+d = { 
+    'lon':{'dims':('lon'), 'data':X },
+    'lat':{'dims':('lat'), 'data':Y },
+    'time':{'dims':('time'), 'data':months },
+     }
+
+bsm = xr.Dataset.from_dict(d)
+
+
+zafxq = np.zeros( (12, nlat , nlon ) )
+
 for ifld in flds:
     print("  .., doing ",ifld)
     if (ifld=='hblt'):
@@ -154,15 +170,21 @@ for ifld in flds:
 
     fcq=sm[ ifld ]
     zfcq=fcq
+    
 
     for imo in np.arange(12):
-        zfcq[ imo ,:,:] = gzonal( xc=xc, yc=yc, mask=sm['mask'].values , fc=fcq[ imo ,:,:] , maskRepVal=RepVal )
+        zfcq[ imo ,:,:] , zafxq[ imo,:,:] = gzonal( xc=xc, yc=yc, mask=sm['mask'].values , fc=fcq[ imo ,:,:]  , X=X, Y=Y , maskRepVal=RepVal )
 
     print(" Out of interpolation for ",ifld )
     print(zfcq.shape)
 
     zsm[ ifld ]=zfcq
 
+    Dar = xr.DataArray( data=zafxq , dims=['time','lat','lon'] , coords=(months,Y,X) , attrs=dict( description=ifld,units='N/A',) ,) 
+    bsm[ ifld ] = Dar
+    
+
 
 
 zsm.to_netcdf( ofi  )
+bsm.to_netcdf( ofi2  )
