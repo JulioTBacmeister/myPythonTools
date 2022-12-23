@@ -14,7 +14,7 @@ def fetch_housing_data(housing_url,housing_path):
 
 
 DOWNLOAD_ROOT="https://raw.githubusercontent.com/ageron/handson-ml2/master/"
-HOUSING_PATH=os.path.join( "../Datasets","housing")
+HOUSING_PATH=os.path.join( "../Datasets_2","housing")
 HOUSING_URL=DOWNLOAD_ROOT+"datasets/housing/housing.tgz"
 
 
