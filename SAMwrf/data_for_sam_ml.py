@@ -5,9 +5,10 @@ import xarray as xr
 
 #/glade/scratch/juliob/archive/c6_3_59.ne30pg3_L32_SAMwrf.ndg04/atm/hist/c6_3_59.ne30pg3_L32_SAMwrf.ndg04.cam.h1.*.nc
 
-tag='ndg04_nov'
+tag='ndg04'
 xp='c6_3_59.ne30pg3_L32_SAMwrf.'+tag
 dir='/glade/scratch/juliob/archive/'+xp+'/atm/hist/'
+odir='/glade/p/cesm/amwg_dev/juliob/SAMwrf/Curtains/'
 
 
 mos= np.array( [  [2010,6]
@@ -78,11 +79,17 @@ for i in np.arange( smos[0] ):
     b['U']=a['U'][:,:,ooo]
     b['UTEND_NDG']=a['UTEND_NDG'][:,:,ooo]
     b['UTEND_GWDTOT']=a['UTEND_GWDTOT'][:,:,ooo]
+    b['UTEND_CORE']=a['UTEND_CORE'][:,:,ooo]
     b['Target_V']=a['Target_V'][:,:,ooo]
     b['V']=a['V'][:,:,ooo]
     b['VTEND_NDG']=a['VTEND_NDG'][:,:,ooo]
     b['VTEND_GWDTOT']=a['VTEND_GWDTOT'][:,:,ooo]
-    filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_'+str(mos[i,0]).zfill(4) + '-' + str(mos[i,1]).zfill(2) +'.nc'
+    b['VTEND_CORE']=a['VTEND_CORE'][:,:,ooo]
+
+    b['T']=a['T'][:,:,ooo]
+
+    
+    filo=odir+'SAMwrf_'+tag+'_ML_'+str(mos[i,0]).zfill(4) + '-' + str(mos[i,1]).zfill(2) +'.nc'
     print(" will try to write curtain to ",filo)
     b.to_netcdf( filo )
     print(" wrote curtain to ",filo)
@@ -95,7 +102,6 @@ print(lfilo)
 """
 ds=xr.open_mfdataset( lfilo, data_vars='different' )
 
-
-filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v3.nc'
+filo=odir+'SAMwrf_'+tag+'_ML_super_v5.nc'
 ds.to_netcdf( filo )
 
