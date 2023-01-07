@@ -10,6 +10,7 @@ xp='c6_3_59.ne30pg3_L32_SAMwrf.'+tag
 dir='/glade/scratch/juliob/archive/'+xp+'/atm/hist/'
 odir='/glade/p/cesm/amwg_dev/juliob/SAMwrf/Curtains/'
 
+topofile='/glade/p/cgd/amp/juliob/bndtopo/latest/ne30pg3_gmted2010_modis_bedmachine_nc3000_Laplace0100_20230105.nc'
 
 mos= np.array( [  [2010,6]
                  ,[2010,7]
@@ -34,7 +35,8 @@ for i in np.arange( smos[0] ):
     ooo=np.asarray(oo)[0,:]
     print(" Opened .. ",fili)
 
-    topo=xr.open_dataset( a.attrs['topography_file'] )
+    #topo=xr.open_dataset( a.attrs['topography_file'] ) #Overridden above by corrected topo file
+    topo=xr.open_dataset( topofile ) #Overridden above by corrected topo file
 
     """
     Set up 'dict' for xarray dataset.  This can then
@@ -69,6 +71,7 @@ for i in np.arange( smos[0] ):
     b['SGH']=topo['SGH'][ooo]
     b['MXDIS']=topo['MXDIS'][:,ooo]
     b['ANGLL']=topo['ANGLL'][:,ooo]
+    b['ANGLX']=topo['ANGLX'][:,ooo]
     b['CLNGT']=topo['CLNGT'][:,ooo]
     b['ANISO']=topo['ANISO'][:,ooo]
     b['ISOVAR']=topo['ISOVAR'][ooo]
@@ -102,6 +105,6 @@ print(lfilo)
 """
 ds=xr.open_mfdataset( lfilo, data_vars='different' )
 
-filo=odir+'SAMwrf_'+tag+'_ML_super_v5.nc'
+filo=odir+'SAMwrf_'+tag+'_ML_super_v7.nc'
 ds.to_netcdf( filo )
 
