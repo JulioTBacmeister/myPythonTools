@@ -32,28 +32,54 @@ def press(**kwargs):
         hyam=kwargs['hyam']
         ps=kwargs['PS']
 
-    dimp=np.shape( ps )
     dimh=np.shape( hyam )
     ndimh=len(dimh)
     """
     If len(dimh) is 2 then dimh[0] is probalbly time
     """
     
-    if (ndimh==1):
-        nlev=dimh[0]
-        ncol=dimp[0]
-        p3=np.zeros( (nlev, ncol) )
-        for L in np.arange( nlev ):
-            p3[L,:] = hyam[L]*100000. + hybm[L]*ps[:]
-    elif (ndimh==2):
-        ntim=dimh[0]
-        nlev=dimh[1]
-        ncol=dimp[1]
-        p3=np.zeros( (ntim, nlev, ncol) )
-        for n in np.arange( ntim ):
-            for L in np.arange( nlev ):
-                p3[n,L,:] = hyam[n,L]*100000. + hybm[n,L]*ps[n,:]
+    dimp=np.shape( ps )
 
+    if 'hgrid' in kwargs:
+        griddesc = kwargs['hgrid']
+    else:
+        griddesc = 'unstructured'
+    
+    if (griddesc == 'unstructured'):
+        if (ndimh==1):
+            nlev=dimh[0]
+            ncol=dimp[0]
+            p3=np.zeros( (nlev, ncol) )
+            for L in np.arange( nlev ):
+                p3[L,:] = hyam[L]*100000. + hybm[L]*ps[:]
+        elif (ndimh==2):
+            ntim=dimh[0]
+            nlev=dimh[1]
+            ncol=dimp[1]
+            p3=np.zeros( (ntim, nlev, ncol) )
+            for n in np.arange( ntim ):
+                for L in np.arange( nlev ):
+                    p3[n,L,:] = hyam[n,L]*100000. + hybm[n,L]*ps[n,:]
+
+    if ( (griddesc == 'latlon') or (griddesc == 'rectangular')):
+        if (ndimh==1):
+            nlev=dimh[0]
+            ny=dimp[0]
+            nx=dimp[1]
+            p3=np.zeros( (nlev, ny, nx ) )
+            for L in np.arange( nlev ):
+                p3[L,:,:] = hyam[L]*100000. + hybm[L]*ps[:,:]
+        elif (ndimh==2):
+            ntim=dimh[0]
+            nlev=dimh[1]
+            ny=dimp[1]
+            nx=dimp[2]
+            p3=np.zeros( (ntim, nlev, ny, nx) )
+            for n in np.arange( ntim ):
+                for L in np.arange( nlev ):
+                    p3[n,L,:,:] = hyam[n,L]*100000. + hybm[n,L]*ps[n,:,:]
+
+                    
     return p3
 
 def corr_utn_utgw( fil1, fil2 ):
