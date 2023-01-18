@@ -2,13 +2,41 @@ import numpy as np
 import xarray as xr
 
 
+"""
+#How to save a RandomForest model
+
+import pickle
+
+# load example data from sklearn
+X, y = load_iris(return_X_y=True)
+
+# create Random Forest Classifier
+rf = RandomForestClassifier()
+
+# fit model with all data - it is just example!
+rf.fit(X, y)
+
+# file name, I'm using *.pickle as a file extension
+filename = "random_forest.pickle"
+
+# save model
+pickle.dump(rf, open(filename, "wb"))
+
+# load model
+loaded_model = pickle.load(open(filename, "rb"))
+
+# you can use loaded model to compute predictions
+y_predicted = loaded_model.predict(X)
+"""
 
 #/glade/scratch/juliob/archive/c6_3_59.ne30pg3_L32_SAMwrf.ndg04/atm/hist/c6_3_59.ne30pg3_L32_SAMwrf.ndg04.cam.h1.*.nc
 
-tag='ndg04_nov'
+tag='ndg04'
 xp='c6_3_59.ne30pg3_L32_SAMwrf.'+tag
 dir='/glade/scratch/juliob/archive/'+xp+'/atm/hist/'
+odir='/glade/p/cesm/amwg_dev/juliob/SAMwrf/Curtains/'
 
+topofile='/glade/p/cgd/amp/juliob/bndtopo/latest/ne30pg3_gmted2010_modis_bedmachine_nc3000_Laplace0100_20230105.nc'
 
 mos= np.array( [  [2010,6]
                  ,[2010,7]
@@ -33,7 +61,8 @@ for i in np.arange( smos[0] ):
     ooo=np.asarray(oo)[0,:]
     print(" Opened .. ",fili)
 
-    topo=xr.open_dataset( a.attrs['topography_file'] )
+    #topo=xr.open_dataset( a.attrs['topography_file'] ) #Overridden above by corrected topo file
+    topo=xr.open_dataset( topofile ) #Overridden above by corrected topo file
 
     """
     Set up 'dict' for xarray dataset.  This can then
@@ -68,6 +97,7 @@ for i in np.arange( smos[0] ):
     b['SGH']=topo['SGH'][ooo]
     b['MXDIS']=topo['MXDIS'][:,ooo]
     b['ANGLL']=topo['ANGLL'][:,ooo]
+    b['ANGLX']=topo['ANGLX'][:,ooo]
     b['CLNGT']=topo['CLNGT'][:,ooo]
     b['ANISO']=topo['ANISO'][:,ooo]
     b['ISOVAR']=topo['ISOVAR'][ooo]
@@ -78,11 +108,17 @@ for i in np.arange( smos[0] ):
     b['U']=a['U'][:,:,ooo]
     b['UTEND_NDG']=a['UTEND_NDG'][:,:,ooo]
     b['UTEND_GWDTOT']=a['UTEND_GWDTOT'][:,:,ooo]
+    b['UTEND_CORE']=a['UTEND_CORE'][:,:,ooo]
     b['Target_V']=a['Target_V'][:,:,ooo]
     b['V']=a['V'][:,:,ooo]
     b['VTEND_NDG']=a['VTEND_NDG'][:,:,ooo]
     b['VTEND_GWDTOT']=a['VTEND_GWDTOT'][:,:,ooo]
-    filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_'+str(mos[i,0]).zfill(4) + '-' + str(mos[i,1]).zfill(2) +'.nc'
+    b['VTEND_CORE']=a['VTEND_CORE'][:,:,ooo]
+
+    b['T']=a['T'][:,:,ooo]
+
+    
+    filo=odir+'SAMwrf_'+tag+'_ML_'+str(mos[i,0]).zfill(4) + '-' + str(mos[i,1]).zfill(2) +'.nc'
     print(" will try to write curtain to ",filo)
     b.to_netcdf( filo )
     print(" wrote curtain to ",filo)
@@ -95,7 +131,6 @@ print(lfilo)
 """
 ds=xr.open_mfdataset( lfilo, data_vars='different' )
 
-
-filo='/glade/scratch/juliob/SAMwrf_'+tag+'_ML_super_v3.nc'
+filo=odir+'SAMwrf_'+tag+'_ML_super_v7.nc'
 ds.to_netcdf( filo )
 
