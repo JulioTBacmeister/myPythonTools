@@ -14,7 +14,10 @@ def gzonal( xc, yc, mask, fc, X, Y, maskRepVal=0. ):
     ooo=np.c_[xc,yc]
 
     dlo=Dl(ooo)
+    nlat = len(Y)
+    nlon = len(X)
 
+    print( "nlon, nlat ", nlon,nlat)
     XX,YY=np.meshgrid(X,Y)
 
     # Interpolote ocean mask to lat lon
@@ -92,99 +95,100 @@ def gzonal( xc, yc, mask, fc, X, Y, maskRepVal=0. ):
 
     return fxc , zafx
 
-today  = date.today()
-yymmdd = today.strftime("%Y%m%d")
+def main():
+    today  = date.today()
+    yymmdd = today.strftime("%Y%m%d")
 
-#/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.20180523.nc
-#/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99_c20221111.nc
+    #/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.20180523.nc
+    #/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99_c20221111.nc
 
-case="cesm1"
+    case="cesm1"
 
-if case=="cesm1":
-    ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.20190923.nc"
-    ofi="pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.ZONAV2."+yymmdd+".nc"
-    ofi2="pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.ZONAV2.latlon."+yymmdd+".nc"
-if case=="cesm2":
-    ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.20180523.nc"
-    ofi="pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.ZONAV2."+yymmdd+".nc"
-    ofi2="pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.ZONAV2.latlon."+yymmdd+".nc"
-if case=="cesm3":
-    ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99_c20221111.nc"
-    ofi="/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99.ZONAV2."+yymmdd+".nc"
-    ofi2="/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99.ZONAV2.latlon."+yymmdd+".nc"
+    if case=="cesm1":
+        ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.20190923.nc"
+        ofi="pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.ZONAV2."+yymmdd+".nc"
+        ofi2="pop_frc.b.e11.B1850LENS.f09_g16.pi_control.002.ZONAV2.latlon."+yymmdd+".nc"
+    if case=="cesm2":
+        ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.20180523.nc"
+        ofi="pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.ZONAV2."+yymmdd+".nc"
+        ofi2="pop_frc.b.e20.B1850.f09_g17.pi_control.all.297.ZONAV2.latlon."+yymmdd+".nc"
+    if case=="cesm3":
+        ifi="/glade/p/cesmdata/cseg/inputdata/ocn/docn7/SOM/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99_c20221111.nc"
+        ofi="/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99.ZONAV2."+yymmdd+".nc"
+        ofi2="/mom_frc_b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026c_50-99.ZONAV2.latlon."+yymmdd+".nc"
 
-sm=xr.open_dataset(ifi)
-zsm=sm
+    sm=xr.open_dataset(ifi)
+    zsm=sm
 
-xc=sm['xc'].values
-yc=sm['yc'].values
+    xc=sm['xc'].values
+    yc=sm['yc'].values
 
-flds0=list( sm.variables )
-flds=[]
+    flds0=list( sm.variables )
+    flds=[]
 
-for ifld in flds0:
-    if sm[ifld].ndim==3:
-        flds.append(ifld)
+    for ifld in flds0:
+        if sm[ifld].ndim==3:
+            flds.append(ifld)
 
-""" 
-Unclear whether we should zonally
-average all fields. Maybe just
-hblt and qdp
-"""
-flds.remove('dhdx')
-flds.remove('dhdy')
-flds.remove('S')
-flds.remove('T')
-flds.remove('U')
-flds.remove('V')
-
-
-print("Fields in input SOM ",flds0)
-print("will only zonavg ",flds)
-print("will output to ",ofi)
-
-nlat=361
-nlon=720
-X = np.linspace(0., 360. , num=nlon ) # linspace defaults to 50 samples
-Y = np.linspace(-90., 90. ,num=nlat )
-months=1+np.arange(12)
+    """ 
+    Unclear whether we should zonally
+    average all fields. Maybe just
+    hblt and qdp
+    """
+    flds.remove('dhdx')
+    flds.remove('dhdy')
+    flds.remove('S')
+    flds.remove('T')
+    flds.remove('U')
+    flds.remove('V')
 
 
-d = { 
-    'lon':{'dims':('lon'), 'data':X },
-    'lat':{'dims':('lat'), 'data':Y },
-    'time':{'dims':('time'), 'data':months },
-     }
+    print("Fields in input SOM ",flds0)
+    print("will only zonavg ",flds)
+    print("will output to ",ofi)
 
-bsm = xr.Dataset.from_dict(d)
+    nlat=361
+    nlon=720
+    X = np.linspace(0., 360. , num=nlon ) # linspace defaults to 50 samples
+    Y = np.linspace(-90., 90. ,num=nlat )
+    months=1+np.arange(12)
 
 
-zafxq = np.zeros( (12, nlat , nlon ) )
+    d = { 
+        'lon':{'dims':('lon'), 'data':X },
+        'lat':{'dims':('lat'), 'data':Y },
+        'time':{'dims':('time'), 'data':months },
+    }
 
-for ifld in flds:
-    print("  .., doing ",ifld)
-    if (ifld=='hblt'):
-        RepVal=20.
+    bsm = xr.Dataset.from_dict(d)
+
+
+    zafxq = np.zeros( (12, nlat , nlon ) )
+
+    for ifld in flds:
+        print("  .., doing ",ifld)
+        if (ifld=='hblt'):
+            RepVal=20.
     else:
         RepVal=0.
 
-    fcq=sm[ ifld ]
-    zfcq=fcq
+        fcq=sm[ ifld ]
+        zfcq=fcq
     
 
-    for imo in np.arange(12):
-        zfcq[ imo ,:,:] , zafxq[ imo,:,:] = gzonal( xc=xc, yc=yc, mask=sm['mask'].values , fc=fcq[ imo ,:,:]  , X=X, Y=Y , maskRepVal=RepVal )
+        for imo in np.arange(12):
+            zfcq[ imo ,:,:] , zafxq[ imo,:,:] = gzonal( xc=xc, yc=yc, mask=sm['mask'].values , fc=fcq[ imo ,:,:]  , X=X, Y=Y , maskRepVal=RepVal )
 
-    print(" Out of interpolation for ",ifld )
-    print(zfcq.shape)
+            print(" Out of interpolation for ",ifld )
+            print(zfcq.shape)
 
-    zsm[ ifld ]=zfcq
+            zsm[ ifld ]=zfcq
 
-    Dar = xr.DataArray( data=zafxq , dims=['time','lat','lon'] , coords=(months,Y,X) , attrs=dict( description=ifld,units='N/A',) ,) 
-    bsm[ ifld ] = Dar
+            Dar = xr.DataArray( data=zafxq , dims=['time','lat','lon'] , coords=(months,Y,X) , attrs=dict( description=ifld,units='N/A',) ,) 
+            bsm[ ifld ] = Dar
     
 
 
 
-zsm.to_netcdf( ofi  )
-bsm.to_netcdf( ofi2  )
+    zsm.to_netcdf( ofi  )
+    bsm.to_netcdf( ofi2  )

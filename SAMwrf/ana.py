@@ -32,28 +32,54 @@ def press(**kwargs):
         hyam=kwargs['hyam']
         ps=kwargs['PS']
 
-    dimp=np.shape( ps )
     dimh=np.shape( hyam )
     ndimh=len(dimh)
     """
     If len(dimh) is 2 then dimh[0] is probalbly time
     """
     
-    if (ndimh==1):
-        nlev=dimh[0]
-        ncol=dimp[0]
-        p3=np.zeros( (nlev, ncol) )
-        for L in np.arange( nlev ):
-            p3[L,:] = hyam[L]*100000. + hybm[L]*ps[:]
-    elif (ndimh==2):
-        ntim=dimh[0]
-        nlev=dimh[1]
-        ncol=dimp[1]
-        p3=np.zeros( (ntim, nlev, ncol) )
-        for n in np.arange( ntim ):
-            for L in np.arange( nlev ):
-                p3[n,L,:] = hyam[n,L]*100000. + hybm[n,L]*ps[n,:]
+    dimp=np.shape( ps )
 
+    if 'hgrid' in kwargs:
+        griddesc = kwargs['hgrid']
+    else:
+        griddesc = 'unstructured'
+    
+    if (griddesc == 'unstructured'):
+        if (ndimh==1):
+            nlev=dimh[0]
+            ncol=dimp[0]
+            p3=np.zeros( (nlev, ncol) )
+            for L in np.arange( nlev ):
+                p3[L,:] = hyam[L]*100000. + hybm[L]*ps[:]
+        elif (ndimh==2):
+            ntim=dimh[0]
+            nlev=dimh[1]
+            ncol=dimp[1]
+            p3=np.zeros( (ntim, nlev, ncol) )
+            for n in np.arange( ntim ):
+                for L in np.arange( nlev ):
+                    p3[n,L,:] = hyam[n,L]*100000. + hybm[n,L]*ps[n,:]
+
+    if ( (griddesc == 'latlon') or (griddesc == 'rectangular')):
+        if (ndimh==1):
+            nlev=dimh[0]
+            ny=dimp[0]
+            nx=dimp[1]
+            p3=np.zeros( (nlev, ny, nx ) )
+            for L in np.arange( nlev ):
+                p3[L,:,:] = hyam[L]*100000. + hybm[L]*ps[:,:]
+        elif (ndimh==2):
+            ntim=dimh[0]
+            nlev=dimh[1]
+            ny=dimp[1]
+            nx=dimp[2]
+            p3=np.zeros( (ntim, nlev, ny, nx) )
+            for n in np.arange( ntim ):
+                for L in np.arange( nlev ):
+                    p3[n,L,:,:] = hyam[n,L]*100000. + hybm[n,L]*ps[n,:,:]
+
+                    
     return p3
 
 def corr_utn_utgw( fil1, fil2 ):
@@ -91,11 +117,20 @@ def corr_utn_utgw( fil1, fil2 ):
 def c_o_xy(idata,lon,lat,dx=1.,dy=1.,lonr=[270.,340.],latr=[-60.,20.],verbose=False ):
 
 
+    if(verbose==True):
+        print( " Interpolating .... " )
+        text1 = f"Interp LONs from {lonr[0]:4.1f} to {lonr[1]:4.1f} at dx= {dx:5.2f} "
+        print(text1)
+        text1 = f"Interp LATs from {latr[0]:4.1f} to {latr[1]:4.1f} at dy= {dy:5.2f} "
+        print(text1)
+    
     # Create grid values first.
     nlon=int( (lonr[1]-lonr[0])/dx )
     nlat=int( (latr[1]-latr[0])/dy )
-    xi = np.linspace(270. , 340. , nlon )
-    yi = np.linspace(-60., 20., nlat )
+    #xi = np.linspace(270. , 340. , nlon )
+    #yi = np.linspace(-60., 20., nlat )
+    xi = np.linspace( lonr[0] , lonr[1] , nlon )
+    yi = np.linspace( latr[0] , latr[1] , nlat )
     Xi, Yi = np.meshgrid(xi, yi)
 
     # Calculate Delaunay traingulation
@@ -103,7 +138,8 @@ def c_o_xy(idata,lon,lat,dx=1.,dy=1.,lonr=[270.,340.],latr=[-60.,20.],verbose=Fa
     # from lons and lats
     llz=np.c_[lon,lat]
     triang = Dl( llz )
-
+    if(verbose==True):
+        print( "created triangulation .... " )
     
     #Determine shape of idata
     dims = np.shape( idata )
@@ -118,6 +154,8 @@ def c_o_xy(idata,lon,lat,dx=1.,dy=1.,lonr=[270.,340.],latr=[-60.,20.],verbose=Fa
             odata[L,:,:] =LiNi(triang, idata[L,:] ,Xi,Yi)
   
     else:
+        if(verbose==True):
+            print(" interpolating 2D data ")
         odata = np.zeros( [nlat, nlon ] )
         odata[:,:] = LiNi(triang, idata[:],Xi,Yi  )
  
