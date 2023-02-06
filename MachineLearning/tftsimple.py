@@ -7,7 +7,7 @@ from keras.utils.vis_utils import plot_model
 
 model = tf.keras.Sequential(  [keras.layers.Dense( units=1, input_shape=[1] ) ]   )
 
-
+keras.utils.plot_model(model, "supersimple_model.png", show_shapes=True)
 
 model.compile(optimizer='sgd', loss='mean_squared_error')
 
