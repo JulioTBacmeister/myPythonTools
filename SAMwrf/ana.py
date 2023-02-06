@@ -117,11 +117,20 @@ def corr_utn_utgw( fil1, fil2 ):
 def c_o_xy(idata,lon,lat,dx=1.,dy=1.,lonr=[270.,340.],latr=[-60.,20.],verbose=False ):
 
 
+    if(verbose==True):
+        print( " Interpolating .... " )
+        text1 = f"Interp LONs from {lonr[0]:4.1f} to {lonr[1]:4.1f} at dx= {dx:5.2f} "
+        print(text1)
+        text1 = f"Interp LATs from {latr[0]:4.1f} to {latr[1]:4.1f} at dy= {dy:5.2f} "
+        print(text1)
+    
     # Create grid values first.
     nlon=int( (lonr[1]-lonr[0])/dx )
     nlat=int( (latr[1]-latr[0])/dy )
-    xi = np.linspace(270. , 340. , nlon )
-    yi = np.linspace(-60., 20., nlat )
+    #xi = np.linspace(270. , 340. , nlon )
+    #yi = np.linspace(-60., 20., nlat )
+    xi = np.linspace( lonr[0] , lonr[1] , nlon )
+    yi = np.linspace( latr[0] , latr[1] , nlat )
     Xi, Yi = np.meshgrid(xi, yi)
 
     # Calculate Delaunay traingulation
@@ -129,7 +138,8 @@ def c_o_xy(idata,lon,lat,dx=1.,dy=1.,lonr=[270.,340.],latr=[-60.,20.],verbose=Fa
     # from lons and lats
     llz=np.c_[lon,lat]
     triang = Dl( llz )
-
+    if(verbose==True):
+        print( "created triangulation .... " )
     
     #Determine shape of idata
     dims = np.shape( idata )
@@ -144,6 +154,8 @@ def c_o_xy(idata,lon,lat,dx=1.,dy=1.,lonr=[270.,340.],latr=[-60.,20.],verbose=Fa
             odata[L,:,:] =LiNi(triang, idata[L,:] ,Xi,Yi)
   
     else:
+        if(verbose==True):
+            print(" interpolating 2D data ")
         odata = np.zeros( [nlat, nlon ] )
         odata[:,:] = LiNi(triang, idata[:],Xi,Yi  )
  
