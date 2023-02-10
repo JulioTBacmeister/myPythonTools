@@ -28,6 +28,15 @@ import glob
 
 def Regrid( srcScrip , dstScrip , srcType , dstType ,  RegridMethod="CONSERVE" , **kwargs ):
 
+    write_wgts = False
+    read_wgts  = False
+    if ("write_weights" in kwargs):
+        write_wgts=kwargs["write_weights"]
+        wgts_file =kwargs["weights_file"]
+    if ("read_weights" in kwargs):
+        read_wgts=kwargs["read_weights"]
+        wgts_file =kwargs["weights_file"]
+
     if(RegridMethod.upper()=='CONSERVE'):
         regrid_method=E.RegridMethod.CONSERVE 
     if(RegridMethod.upper()=='BILINEAR'):
@@ -66,8 +75,16 @@ def Regrid( srcScrip , dstScrip , srcType , dstType ,  RegridMethod="CONSERVE" ,
     dstField.data[:]=1e20
     srcField.data[:]=1e20
 
-
-    Regrd = E.Regrid( srcField , dstField , 
+    if (write_wgts==True):
+        Regrd = E.Regrid( srcField , dstField , 
+                      filename = wgts_file,
+                      regrid_method=regrid_method,
+                      unmapped_action=E.UnmappedAction.IGNORE)
+    elif (read_wgts==True):
+        Regrd = E.RegridFromFile( srcField , dstField , 
+                                 filename=wgts_file )
+    else:
+        Regrd = E.Regrid( srcField , dstField , 
                       regrid_method=regrid_method,
                       unmapped_action=E.UnmappedAction.IGNORE)
 

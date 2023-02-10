@@ -108,23 +108,13 @@ def latlon_to_scrip( grid_imask=None, file_out=None, lon0=-180., **kwargs ):
         x_center = np.broadcast_to(lon[None, :], (ny, nx))
         dy       = np.broadcast_to(dlat[:, None], (ny, nx))
         dx       = np.broadcast_to(dlon[None, :], (ny, nx))
-        """
-        # compute corner points: must be counterclockwise
-        y_corner = np.stack((y_center - dy / 2.,  # SW
-                             y_center - dy / 2.,  # SE
-                             y_center + dy / 2.,  # NE
-                             y_center + dy / 2.), # NW
-                            axis=2)
-        """
+
         # compute corner points: must be counterclockwise
         y_corner = np.stack((y_edge[JSouth,:],  # SW
                              y_edge[JSouth,:],  # SE
                              y_edge[JNorth,:],  # NE
                              y_edge[JNorth,:] ), # NW
                             axis=2)
-
-        print("Size ycorner " )
-        print( np.shape(y_corner ) )
         x_corner = np.stack((x_center - dx / 2.,  # SW
                              x_center + dx / 2.,  # SE
                              x_center + dx / 2.,  # NE
@@ -139,14 +129,6 @@ def latlon_to_scrip( grid_imask=None, file_out=None, lon0=-180., **kwargs ):
             return -99999.
 
             
-    
-    """
-    y_fix=copy.deepcopy(y_corner)
-    y_fix = np.where( y_corner>np.max(y_center) , 90. , y_corner )
-    y_fix = np.where( y_fix<np.min(y_center) , -90. , y_fix )
-    y_corner = copy.deepcopy(y_fix)
-    """
-
     print( "Shape Centers ", np.shape( y_center ))
     print( "Shape Corners ", np.shape( y_corner ))
     
@@ -156,12 +138,10 @@ def latlon_to_scrip( grid_imask=None, file_out=None, lon0=-180., **kwargs ):
     x0 = x_corner[:, :, 0] * np.pi / 180.   # west
     x1 = x_corner[:, :, 1] * np.pi / 180.   # east
     yC = y_center[:,:] * np.pi / 180.       # cell center
-    #yC = 0.5 * (y1 + y0 )                   # cell center
-    #grid_area = np.cos(yC) * (y1 - y0) * (x1 - x0)
     grid_area = ( np.sin(y1) - np.sin(y0) ) * (x1 - x0)
     
     # sum of area should be equal to area of sphere
-    #np.testing.assert_allclose(grid_area.sum(), 4.*np.pi)
+    np.testing.assert_allclose(grid_area.sum(), 4.*np.pi)
     
     print( grid_area.sum(), 4.*np.pi, grid_area.sum() - 4.*np.pi,  )
     
