@@ -90,3 +90,153 @@ def Regrid( srcScrip , dstScrip , srcType , dstType ,  RegridMethod="CONSERVE" ,
 
 
     return Regrd, srcField , dstField 
+
+#########################
+def HorzRG( aSrc, regrd , srcField , dstField , srcShape, dstShape, srcGridkey, dstGridkey ):
+    #def HorzRG( aSrc, regrd , srcField , dstField , **kwargs )
+    import copy
+    # This function takes input ndarray aSrc and remaps in the HORIZONTAL
+    # to the destination grid.  Input aSrc must contain at least one 
+    # horizontal slice (Hslice), but can also be shaped 
+    # Z x Hslice or T x Z x Hslice where Z and T refer to vertical
+    # time dimensions.
+    # regrd, srcField and dstField are precomupted regridding objects
+    # {src,dst}Grid are strings like 'tzyx',where:
+    #          t -> time
+    #          z -> vertical
+
+    
+    
+    #------------------------------------------------------------------------
+    # Following block deals with logically-rectangular 'yx' input Horz grids
+    #------------------------------------------------------------------------
+    if (srcGridkey == 'yx' ):
+        srcField.data[:,:] = aSrc.transpose()
+        if (dstGridkey=='c'):
+            r  = regrd(  srcField,  dstField )
+            aDst = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            r  = regrd(  srcField,  dstField )
+            aDst = copy.deepcopy( dstField.data[:,:].transpose() )
+            
+    if (srcGridkey == 'zyx' ):
+        nlev = srcShape[0]
+        if (dstGridkey=='c'):
+            ncol = dstShape[0]
+            aDst = np.zeros([nlev,ncol])
+            for L in np.arange(nlev):
+                srcField.data[:,:] = aSrc[L,:,:].transpose()
+                r  = regrd(  srcField,  dstField )
+                aDst[L,:] = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            ny,nx = dstShape
+            aDst = np.zeros([nlev,ny,nx])
+            for L in np.arange(nlev):
+                srcField.data[:,:] = aSrc[L,:,:].transpose()
+                r  = regrd(  srcField,  dstField )
+                aDst[L,:,:] = copy.deepcopy( dstField.data[:,:].transpose() )
+                
+    if (srcGridkey == 'tyx' ):
+        ntim = srcShape[0]
+        if (dstGridkey=='c'):
+            ncol = dstShape[0]
+            aDst = np.zeros([ntim,ncol])
+            for i in np.arange(ntim):
+                srcField.data[:,:] = aSrc[i,:,:].transpose()
+                r  = regrd(  srcField,  dstField )
+                aDst[i,:] = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            ny,nx = dstShape
+            aDst = np.zeros([ntim,ny,nx])
+            for i in np.arange(ntim):
+                srcField.data[:,:] = aSrc[i,:,:].transpose()
+                r  = regrd(  srcField,  dstField )
+                aDst[i,:,:] = copy.deepcopy( dstField.data[:,:].transpose() )
+                
+    if (srcGridkey == 'tzyx' ):
+        ntim = srcShape[0]
+        nlev = srcShape[1]
+        if (dstGridkey=='c'):
+            ncol = dstShape[0]
+            aDst = np.zeros([ntim,nlev,ncol])
+            for i in np.arange(ntim):
+                for L in np.arange(nlev):
+                    srcField.data[:,:] = aSrc[i,L,:,:].transpose()
+                    r  = regrd(  srcField,  dstField )
+                    aDst[i,L,:] = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            ny,nx = dstShape
+            aDst = np.zeros([ntim,nlev,ny,nx])
+            for i in np.arange(ntim):
+                for L in np.arange(nlev):
+                    srcField.data[:,:] = aSrc[i,L,:,:].transpose()
+                    r  = regrd(  srcField,  dstField )
+                    aDst[i,L,:,:] = copy.deepcopy( dstField.data[:,:].transpose() )
+                    
+    #-----------------------------------------------------------------
+    # Following block deals with unstructured 'c' input Horz grids
+    #------------------------------------------------------------------
+    if (srcGridkey == 'c' ):
+        srcField.data[:] = aSrc[:]
+        if (dstGridkey=='c'):
+            r  = regrd(  srcField,  dstField )
+            aDst = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            r  = regrd(  srcField,  dstField )
+            aDst = copy.deepcopy( dstField.data[:,:].transpose() )
+            
+    if (srcGridkey == 'zc' ):
+        nlev = srcShape[0]
+        if (dstGridkey=='c'):
+            ncol = dstShape[0]
+            aDst = np.zeros([nlev,ncol])
+            for L in np.arange(nlev):
+                srcField.data[:] = aSrc[L,:]
+                r  = regrd(  srcField,  dstField )
+                aDst[L,:] = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            ny,nx = dstShape
+            aDst = np.zeros([nlev,ny,nx])
+            for L in np.arange(nlev):
+                srcField.data[:] = aSrc[L,:]
+                r  = regrd(  srcField,  dstField )
+                aDst[L,:,:] = copy.deepcopy( dstField.data[:,:].transpose() )
+                
+    if (srcGridkey == 'tc' ):
+        ntim = srcShape[0]
+        if (dstGridkey=='c'):
+            ncol = dstShape[0]
+            aDst = np.zeros([ntim,ncol])
+            for i in np.arange(ntim):
+                srcField.data[:] = aSrc[i,:]
+                r  = regrd(  srcField,  dstField )
+                aDst[i,:] = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            ny,nx = dstShape
+            aDst = np.zeros([ntim,ny,nx])
+            for i in np.arange(ntim):
+                srcField.data[:,:] = aSrc[i,:]
+                r  = regrd(  srcField,  dstField )
+                aDst[i,:,:] = copy.deepcopy( dstField.data[:,:].transpose() )
+                
+    if (srcGridkey == 'tzc' ):
+        ntim = srcShape[0]
+        nlev = srcShape[1]
+        if (dstGridkey=='c'):
+            ncol = dstShape[0]
+            aDst = np.zeros([ntim,nlev,ncol])
+            for i in np.arange(ntim):
+                for L in np.arange(nlev):
+                    srcField.data[:] = aSrc[i,L,:]
+                    r  = regrd(  srcField,  dstField )
+                    aDst[i,L,:] = copy.deepcopy( dstField.data[:] )
+        if (dstGridkey=='yx'):
+            ny,nx = dstShape
+            aDst = np.zeros([ntim,nlev,ny,nx])
+            for i in np.arange(ntim):
+                for L in np.arange(nlev):
+                    srcField.data[:] = aSrc[i,L,:]
+                    r  = regrd(  srcField,  dstField )
+                    aDst[i,L,:,:] = copy.deepcopy( dstField.data[:,:].transpose() )
+                    
+    return aDst
