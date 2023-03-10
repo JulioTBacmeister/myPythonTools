@@ -76,14 +76,17 @@ def Regrid( srcScrip , dstScrip , srcType , dstType ,  RegridMethod="CONSERVE" ,
     srcField.data[:]=1e20
 
     if (write_wgts==True):
+        print(f"Generating weights file and wrt to {wgts_file}")
         Regrd = E.Regrid( srcField , dstField , 
                       filename = wgts_file,
                       regrid_method=regrid_method,
                       unmapped_action=E.UnmappedAction.IGNORE)
     elif (read_wgts==True):
+        print(f"Reading weights file {wgts_file}")
         Regrd = E.RegridFromFile( srcField , dstField , 
                                  filename=wgts_file )
     else:
+        print(f"Generating regridding weights. Method {RegridMethod} : ESMF method= {regrid_method}")
         Regrd = E.Regrid( srcField , dstField , 
                       regrid_method=regrid_method,
                       unmapped_action=E.UnmappedAction.IGNORE)
@@ -143,7 +146,7 @@ def HorzRG( aSrc, regrd , srcField , dstField , srcGridkey, dstGridkey ):
                 r  = regrd(  srcField,  dstField )
                 aDst[L,:] = copy.deepcopy( dstField.data[:] )
         if (dstGridkey=='yx'):
-            ny,nx = dstShape[[1,0]]
+            ny,nx = dstShape[1],dstShape[0]
             aDst = np.zeros([nlev,ny,nx])
             for L in np.arange(nlev):
                 srcField.data[:,:] = aSrc[L,:,:].transpose()
@@ -160,7 +163,7 @@ def HorzRG( aSrc, regrd , srcField , dstField , srcGridkey, dstGridkey ):
                 r  = regrd(  srcField,  dstField )
                 aDst[i,:] = copy.deepcopy( dstField.data[:] )
         if (dstGridkey=='yx'):
-            ny,nx = dstShape[[1,0]]
+            ny,nx = dstShape[1],dstShape[0]
             aDst = np.zeros([ntim,ny,nx])
             for i in np.arange(ntim):
                 srcField.data[:,:] = aSrc[i,:,:].transpose()
@@ -179,7 +182,7 @@ def HorzRG( aSrc, regrd , srcField , dstField , srcGridkey, dstGridkey ):
                     r  = regrd(  srcField,  dstField )
                     aDst[i,L,:] = copy.deepcopy( dstField.data[:] )
         if (dstGridkey=='yx'):
-            ny,nx = dstShape[[1,0]]
+            ny,nx = dstShape[1],dstShape[0]
             aDst = np.zeros([ntim,nlev,ny,nx])
             for i in np.arange(ntim):
                 for L in np.arange(nlev):
@@ -209,7 +212,7 @@ def HorzRG( aSrc, regrd , srcField , dstField , srcGridkey, dstGridkey ):
                 r  = regrd(  srcField,  dstField )
                 aDst[L,:] = copy.deepcopy( dstField.data[:] )
         if (dstGridkey=='yx'):
-            ny,nx = dstShape[[1,0]]
+            ny,nx = dstShape[1],dstShape[0]
             aDst = np.zeros([nlev,ny,nx])
             for L in np.arange(nlev):
                 srcField.data[:] = aSrc[L,:]
@@ -226,7 +229,7 @@ def HorzRG( aSrc, regrd , srcField , dstField , srcGridkey, dstGridkey ):
                 r  = regrd(  srcField,  dstField )
                 aDst[i,:] = copy.deepcopy( dstField.data[:] )
         if (dstGridkey=='yx'):
-            ny,nx = dstShape[[1,0]]
+            ny,nx = dstShape[1],dstShape[0]
             aDst = np.zeros([ntim,ny,nx])
             for i in np.arange(ntim):
                 srcField.data[:,:] = aSrc[i,:]
@@ -245,7 +248,7 @@ def HorzRG( aSrc, regrd , srcField , dstField , srcGridkey, dstGridkey ):
                     r  = regrd(  srcField,  dstField )
                     aDst[i,L,:] = copy.deepcopy( dstField.data[:] )
         if (dstGridkey=='yx'):
-            ny,nx = dstShape[[1,0]]
+            ny,nx = dstShape[1],dstShape[0]
             aDst = np.zeros([ntim,nlev,ny,nx])
             for i in np.arange(ntim):
                 for L in np.arange(nlev):
