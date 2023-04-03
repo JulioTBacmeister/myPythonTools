@@ -29,6 +29,10 @@ importlib.reload(SG)
 import multiprocessing 
 #from multiprocessing import Pool, cpu_count  #()
 
+"""
+class scipy.interpolate.interp1d(x, y, kind='linear', axis=-1, copy=True, bounds_error=None, fill_value=nan, assume_sorted=False)[source]
+"""
+
 Rdry = Con.Rdry()
 grav = Con.grav()
 
@@ -39,6 +43,9 @@ def interpolate_column(zSrcT_col, a_xT_col, zDstT_col, fill_value, kind):
 
 
 def VertRG( a_x , zSrc, zDst, Gridkey , fill_value='extrapolate', kind='linear' ,npools=1):
+
+    # Initialize performance counter
+    tic = time.perf_counter()
 
     # set number of pools to create
     #nworkers = cpu_count()
@@ -52,10 +59,16 @@ def VertRG( a_x , zSrc, zDst, Gridkey , fill_value='extrapolate', kind='linear' 
     # setting npools to nworkers might not be considerate of others...
     npools = nworkers
 
-    # Assumes shapes of a_x, zSrc are the same and conformable with the shape of zDst'
+
+    #--------------------------------------------------------------------------------
+    # Assumes shapes of a_x, zSrc are the same and conformable with the shape of zDst.
+    # That is, the horizontal shape of a_x,zSrc and zDst are the same.
+    #--------------------------------------------------------------------------------
+    # It seems like a better idea to do all the reshping on entry and just maintain 
+    # one regridding loop. So, at some point implement reshaping to 'tzc' at top.
+    #--------------------------------------------------------------------------------
     
     if (Gridkey == 'zc'):
-        tic = time.perf_counter()
         nzS,ncol = np.shape( zSrc )
         nzD,ncol = np.shape( zDst )
         a_xz = np.zeros( (nzD,ncol) )
@@ -75,13 +88,9 @@ def VertRG( a_x , zSrc, zDst, Gridkey , fill_value='extrapolate', kind='linear' 
                                     fill_value=fill_value, kind=kind  )
                 a_xz[:, i] = fint(   zDst[:, i ] )
                                   
-        toc = time.perf_counter()
-        IntrTime = f"Pll'zed Vertical int  {toc - tic:0.4f} seconds"
-        print(IntrTime)
 
     if (Gridkey == 'tzc'):
         # Reshape arrays
-        tic = time.perf_counter()
         nt,nzS,ncol = np.shape( zSrc )
         nt,nzD,ncol = np.shape( zDst )
         a_xT        = np.reshape( np.transpose( a_x , (1,0,2) ) , (nzS,nt*ncol) )
@@ -109,13 +118,9 @@ def VertRG( a_x , zSrc, zDst, Gridkey , fill_value='extrapolate', kind='linear' 
 
 
         a_xz = np.transpose( np.reshape( a_xzT, (nzD,nt,ncol) ), (1,0,2) )
-        toc = time.perf_counter()
-        IntrTime = f"Vertical int {toc - tic:0.4f} seconds with {nworkers:n} nworkers"
-        print(IntrTime)
 
     if (Gridkey == 'tzyx'):
         # Reshape arrays
-        tic = time.perf_counter()
         nt,nzS,ny,nx = np.shape( zSrc )
         nt,nzD,ny,nx = np.shape( zDst )
         a_xT        = np.reshape( np.transpose( a_x , (1,0,2,3) ) , (nzS,nt*nx*ny) )
@@ -142,9 +147,10 @@ def VertRG( a_x , zSrc, zDst, Gridkey , fill_value='extrapolate', kind='linear' 
                 a_xzT[:, i] = fint(   zDstT[:, i ] )
 
         a_xz = np.transpose( np.reshape( a_xzT, (nzD,nt,ny,nx) ), (1,0,2,3) )
-        toc = time.perf_counter()
-        IntrTime = f"Pll'zd Vertical int {toc - tic:0.4f} seconds"
-        print(IntrTime)
+        
+    toc = time.perf_counter()
+    IntrTime = f"Pll'zd Vertical int {toc - tic:0.4f} seconds"
+    print(IntrTime)
         
         
     return a_xz
@@ -185,6 +191,42 @@ def TeWO (te ,pmid, te150, pm150, ts, ps, L150, Gridkey ):
         
 
     return teWO
+
+def BottomFill (a_zCAM , a_zERA, pmid_zCAM, ps_ERA, Gridkey ):
+
+    tic = time.perf_counter()
+
+    a_zCAMf = copy.deepcopy(a_zCAM)
+
+    if ( Gridkey == 'tzc' ):
+        nt,nzE,ncol = np.shape( a_zERA )
+        nt,nz, ncol = np.shape( a_zCAM )
+        for i in np.arange( nt ):
+            for c in np.arange( ncol ):
+                zoo=np.where( pmid_zCAM[i,:,c] > ps_ERA[i,c] )
+                lzoo=len( zoo )
+                for z in np.arange( start=0, stop=lzoo, step=1 ):
+                    a_zCAMf[i,zoo[z],c] = a_zERA[i,nzE-1,c]
+                    
+    if ( Gridkey == 'tzyx' ):
+        nt,nzE,ny,nx = np.shape( a_zERA)
+        nt,nz, ny,nx = np.shape( a_zCAM )
+        for i in np.arange( nt ):
+            for y in np.arange( ny ):
+                for x in np.arange( nx ):
+                    zoo=np.where( pmid_zCAM[i,:,y,x] > ps_ERA[i,y,x] )
+                    lzoo=len( zoo )
+                    for z in np.arange( start=0, stop=lzoo, step=1 ):
+                        a_zCAMf[i,zoo[z],y,x] = a_zERA[i,nzE-1,y,x]
+                        
+    toc = time.perf_counter()
+    ProcTime = f" ... Bottom filling took {toc - tic:0.4f} seconds"
+    print(ProcTime)
+        
+
+    return a_zCAMf
+
+
 
 def PsAdjust( phis, phis_CAM, ps, pm150, te150, Gridkey ):
 

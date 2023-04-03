@@ -67,8 +67,8 @@ def Pressure ( am, bm, ai, bi, ps , p_00=100_000., Gridkey='tzc' ):
 
 
 
-def TandP150 ( te, pmid, delp, search_up_L=10, Gridkey='tzc' ):
-    # Function finds vertical index of first mid level abov 150m
+def TandP150 ( te, pmid, delp, search_up_L=10, Gridkey='tzc', findHt=150. ):
+    # Function finds vertical index of first mid level abov 150m (or findHt)
 
     # delp is +ve
     # search_up_L was introduced for 'efficiency' - as usual efficiency is a 
@@ -109,6 +109,11 @@ def TandP150 ( te, pmid, delp, search_up_L=10, Gridkey='tzc' ):
         k150  = search_up_L - np.sum( k150x , axis=0 ) -1
         L150  = nz - 1 + (k150 - (search_up_L-1) )
 
+        # Enforce a condition on L150 that it 
+        # is at least 2 levels above lowest level
+        #--------------------------------------------
+        for c in np.arange( ncol ):
+            L150[c] = np.minimum( [ L150[c] ] , [nz-3]   )[0]
         for c in np.arange( ncol ):
             te150[c] = te[L150[c], c ]
             pm150[c] = pmid[L150[c], c ]
@@ -138,6 +143,12 @@ def TandP150 ( te, pmid, delp, search_up_L=10, Gridkey='tzc' ):
         k150  = search_up_L - np.sum( k150x , axis=1 ) -1
         L150  = nz - 1 + (k150 - (search_up_L-1) )
 
+        # Enforce a condition on L150 that it 
+        # is at least 2 levels above lowest level
+        #--------------------------------------------
+        for i in np.arange( nt ):
+            for c in np.arange( ncol ):
+                L150[i,c] = np.minimum( [ L150[i,c] ] , [nz-3]   )[0]
         for i in np.arange( nt ):
             for c in np.arange( ncol ):
                 te150[i,c] = te[i, L150[i,c], c ]
@@ -167,6 +178,13 @@ def TandP150 ( te, pmid, delp, search_up_L=10, Gridkey='tzc' ):
         k150  = search_up_L - np.sum( k150x , axis=1 ) -1
         L150  = nz - 1 + (k150 - (search_up_L-1) )
 
+        # Enforce a condition on L150 that it 
+        # is at least 2 levels above lowest level
+        #--------------------------------------------
+        for i in np.arange( nt ):
+            for y in np.arange( ny ):
+                for x in np.arange( nx ):
+                    L150[i,y,x] = np.minimum( [ L150[i,y,x] ] , [nz-3]   )[0]
         for i in np.arange( nt ):
             for y in np.arange( ny ):
                 for x in np.arange( nx ):
@@ -175,7 +193,7 @@ def TandP150 ( te, pmid, delp, search_up_L=10, Gridkey='tzc' ):
 
     
 
-    return te150,pm150
+    return te150,pm150,L150
 
 def Pressure_TandP150  ( am, bm, ai, bi, ps ,te , p_00=100_000., Gridkey='tzc' ):
 
@@ -186,10 +204,10 @@ def Pressure_TandP150  ( am, bm, ai, bi, ps ,te , p_00=100_000., Gridkey='tzc' )
                                       ps=ps ,
                                       p_00=p_00, 
                                       Gridkey=Gridkey )
-    te150 , pm150    = TandP150 ( te=te ,
+    te150 , pm150 , L150  = TandP150 ( te=te ,
                                    pmid = pmid  , 
                                    delp = delp  , 
                                    search_up_L=10 , 
                                    Gridkey=Gridkey )    
 
-    return te150,pm150
+    return te150,pm150,L150
