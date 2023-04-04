@@ -437,8 +437,8 @@ def get_ERAI( year=2022, month=11, day=1, hour0=99, interactive=False ):
     print(monStr)
     print(ymdh) 
 
-    #era5dir = "/glade/collections/rda/data/ds633.6/e5.oper.an.ml/"
-    wrkdir=  '/glade/scratch/juliob/erai_2017/'  #era5dir+monStr+"/"
+    #wrkdir=  '/glade/scratch/juliob/erai_2017/' 
+    wrkdir=  '/glade/scratch/juliob/erai_'+ str( year ).zfill(4) +'/' 
 
     #print(dstTZHkey)
 
@@ -464,6 +464,11 @@ def get_ERAI( year=2022, month=11, day=1, hour0=99, interactive=False ):
     lat_ERA = dsSC_ERA['g4_lat_0'].values
     lon_ERA = dsSC_ERA['g4_lon_1'].values
 
+    print( " Checking ERA-i data ")
+    print( " U-shape: ", np.shape(u_ERA) )
+    print( " V-shape: ", np.shape(v_ERA) )
+    print( " T-shape: ", np.shape(te_ERA) )
+    print( " Q-shape: ", np.shape(q_ERA) )
 
     #---------------------------
     # Get shape of ERA data
@@ -814,9 +819,10 @@ def xRegrid( ExitAfterTemperature=False ,
 
     qx = SaturateQ( q=q_ERA_xzCAM , 
                     te=te_ERA_xzCAM ,
-                    p=pmid_CAM)
+                    p=pmid_CAM, 
+                    Gridkey = dstTZHkey )
     
-    q_ERA_xzCAM =  qx
+    q_ERA_xzCAM =  copy.deepcopy(qx)
 
 
 
@@ -824,6 +830,7 @@ def xRegrid( ExitAfterTemperature=False ,
     #--------------------
     #  Regridding of U
     #---------------------
+    print(" going into horz+vertical regrid of U " )
     u_ERA_xzCAM, u_ERA_xCAM = fullRegrid ( a_ERA = u_ERA ,
                                            zSrc = lnpmid_CAM_zERA ,
                                            zDst = lnpmid_CAM )
@@ -837,6 +844,7 @@ def xRegrid( ExitAfterTemperature=False ,
     #--------------------
     #  Regridding of V
     #---------------------
+    print(" going into horz+vertical regrid of V " )
     v_ERA_xzCAM, v_ERA_xCAM = fullRegrid ( a_ERA = v_ERA ,
                                            zSrc = lnpmid_CAM_zERA ,
                                            zDst = lnpmid_CAM )
@@ -848,8 +856,9 @@ def xRegrid( ExitAfterTemperature=False ,
                                   Gridkey = dstTZHkey )
     
     #--------------------
-    #  Regridding of U
+    #  Regridding of W
     #---------------------
+    print(" going into horz+vertical regrid of W " )
     w_ERA_xzCAM, w_ERA_xCAM = fullRegrid ( a_ERA = w_ERA ,
                                           zSrc = lnpmid_CAM_zERA ,
                                           zDst = lnpmid_CAM )
@@ -907,11 +916,24 @@ def fullRegrid( a_ERA,  zSrc ,  zDst , kind='linear', ReturnVars=2 ):
     if (ReturnVars==2):
         return a_ERA_xzCAM,a_ERA_xCAM
 
-def SaturateQ ( q , te , p):
+def SaturateQ ( q , te , p, Gridkey ):
 
     qsat = hum.qsat( p=p, T=te )
     qx=np.minimum( q , qsat )
 
+    """
+    print( "UGLY temporary Kluge: Don't saturate/ZERO top 3 levels of model " )
+    if (Gridkey == 'tzyx' ):
+        qx[:,0:2,:,:]= 0*q[:,0:2,:,:]
+    if (Gridkey == 'tzc' ):
+        qx[:,0:2,:]= 0*q[:,0:2,:]
+    if (Gridkey == 'zyx' ):
+        qx[0:2,:,:]= 0*q[0:2,:,:]
+    if (Gridkey == 'zc' ):
+        qx[0:2,:]= 0*q[0:2,:]
+    
+    """
+    
     return qx
 
 def write_netcdf( version='' ):
@@ -1100,7 +1122,7 @@ def main(year,month,day,hour):
     Dst='fv1x1'
     Src='ERA5'
 
-    lnPS=True
+    lnPS=False
     if(lnPS==True):
         ver='lnPS'
     else:
@@ -1108,10 +1130,16 @@ def main(year,month,day,hour):
 
 
     ret1 = prep(Dst=Dst, DstVgrid=DstVgrid ,Src=Src, WOsrf=True, RegridMethod=RegridMethod )
-    ret2 = get_ERA5( year=year ,month=month ,day=day , hour0=hour )
-    ret3 = xRegrid(HorzInterpLnPs=lnPS )
-    ret4 = write_netcdf(version=ver+'Topo2')
-
+    if (day==99):
+        for iday in np.arange( days_in_month):
+            ret2 = get_ERA5( year=year ,month=month ,day=iday+1 , hour0=99 )
+            ret3 = xRegrid(HorzInterpLnPs=lnPS )
+            ret4 = write_netcdf(version=ver+'Test00')
+    else:
+        ret2 = get_ERA5( year=year ,month=month ,day=day , hour0=hour )
+        ret3 = xRegrid(HorzInterpLnPs=lnPS )
+        ret4 = write_netcdf(version=ver+'Test00')
+        
     code = 1
     toc_total = time.perf_counter()
 
