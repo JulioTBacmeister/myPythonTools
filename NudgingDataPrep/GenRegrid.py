@@ -20,6 +20,9 @@ import time
 import scripGen as SG
 import esmfRegrid as erg
 
+#import cfgrib
+
+
 import dask
 import dask.array as da
 
@@ -544,14 +547,16 @@ def xRegrid( ExitAfterTemperature=False ,
     pTime = f"Finished phis Horz Rgrd  {toc_here - tic_overall:0.4f} seconds"
     print(pTime)
 
+    """
     #------------------------------------------
     # Step in with Islas's 1440x720 =>xCAM 
-    # f09 regridded ERA5 topo
+    # f09 regridded ERA5 topo.
+    # This is for diagnostics/debugging only
     #-----------------------------------------
     fTopo2='/glade/u/home/islas/for/suqin/regridera5/makephis/output/PHIS_model_and_ERA5_analysis_f09_f09.nc'
     dTopo2=xr.open_dataset( fTopo2 )
     phis_ERA_xCAM =dTopo2['PHIS_analysis'].values[0,:,:]
-    
+    """
  
     
     #-----------------------------------------
@@ -648,6 +653,7 @@ def xRegrid( ExitAfterTemperature=False ,
     # but we'll just call it ps_CAM ...
     #-------------------------------------------------------------------
     
+    """
     ps_CAM = vrg.PsAdjust( phis=phis_ERA_xCAM, 
                            phis_CAM=phis_CAM, 
                            ps=ps_ERA_xCAM , 
@@ -685,7 +691,7 @@ def xRegrid( ExitAfterTemperature=False ,
      
     print( " RDAIR in w and O", rdair , " NZ here ",nz )
     print( " RDry here ", Rdry  )
-    """
+
     
     #-----------------------------------------------------------------------------------------------
     # Now we creat full 4(3)D pressure fields on the ERA and CAM vertical grids. These are used for 
