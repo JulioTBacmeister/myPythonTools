@@ -653,7 +653,7 @@ def xRegrid( ExitAfterTemperature=False ,
     # but we'll just call it ps_CAM ...
     #-------------------------------------------------------------------
     
-    """
+    
     ps_CAM = vrg.PsAdjust( phis=phis_ERA_xCAM, 
                            phis_CAM=phis_CAM, 
                            ps=ps_ERA_xCAM , 
@@ -688,10 +688,11 @@ def xRegrid( ExitAfterTemperature=False ,
         ps_CAM = np.zeros( (nt , ny, nx) )
         for i in np.arange( nt ):
             ps_CAM[i,:,:] = ps_ERA_xCAM[i,:,:] * np.exp( Dphis / (Rdry*te_bot[i,:,:]) )
-     
+    
+    
     print( " RDAIR in w and O", rdair , " NZ here ",nz )
     print( " RDry here ", Rdry  )
-
+    """
     
     #-----------------------------------------------------------------------------------------------
     # Now we creat full 4(3)D pressure fields on the ERA and CAM vertical grids. These are used for 
