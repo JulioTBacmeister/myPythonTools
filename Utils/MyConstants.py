@@ -40,9 +40,15 @@ def cvdair():
     value= (5./2.)* avogadro()*boltzmann()/mwdair() 
     units='J K-1 kg-1 '
     return value
+def Rearth():
+    # Earth Radius in meters
+    value= 6_378_137.0
+    units='m'
+    return value
 
 
 
+"""
     gravit  = 9.80616           # acceleration of gravity ~ m/s^2
     boltz   = 1.38065e-23       # boltzmann's constant ~ J/k/molecule
     avogad  = 6.02214e26        # avogadro's number ~ molecules/kmole
@@ -50,3 +56,4 @@ def cvdair():
 
     rgas    = avogad*boltz      # universal gas constant ~ J/k/kmole
     rdair   = rgas/mwdair       #constant for dry air   ~ J/k/kg
+"""
