@@ -13,6 +13,9 @@ import importlib
 import glob
 import copy
 
+"""
+Some routines for plotting. Mostly topo.
+"""
 
 def sixpanel(aa,clev=21,alpha=1.0, goofy=False, cmap='viridis' ):
     fig=plt.figure( figsize=(21,15))
