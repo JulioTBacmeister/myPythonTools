@@ -9,6 +9,8 @@ import pandas as pd
 
 from scipy.io import FortranFile
 from scipy import interpolate as intr
+from scipy.interpolate import RegularGridInterpolator as RGi
+
 
 import ESMF as E
 
@@ -31,6 +33,8 @@ import dask.array as da
 # "ChatGPI version" --- 
 import VertRegridFlexLL as vrg
 print( "Using Flexible parallel/serial VertRegrid ")
+
+import FVRegrid as FV
 
 # import modules in other directories
 sys.path.append('../Utils/')
@@ -947,6 +951,7 @@ def write_netcdf( version='' ):
     ilev = (aint_CAM+bint_CAM)* 100_000.
     lev  = (amid_CAM+bmid_CAM)* 100_000.
     if (dstTZHkey == 'tzc' ):
+        nt,nz,ncol = np.shape( te_ERA_xzCAM )
         for itim in np.arange( ntime ):
             dims   = ["ncol","time","lev","ilev"]
             coords = dict( 
@@ -954,11 +959,11 @@ def write_netcdf( version='' ):
                 lat  = ( ["ncol"],lat_CAM ),
                 lev  = ( ["lev"],lev),
                 ilev = ( ["ilev"],ilev),
-                #time = ( ["time"],pdTime_ERA[itim]),
+                time = ( ["time"],  np.array(itim ,ndmin=1 ) ), #pd.to_datetime( pdTime_ERA[itim] ) ),
             )
         
             Wds = xr.Dataset( coords=coords  )
-            Wds["time"] = pd.to_datetime( pdTime_ERA[itim] )
+            Wds["TimeStamp"] = pd.to_datetime( pdTime_ERA[itim] )
             Wds["P_00"] = 100_000.
         
             Dar = xr.DataArray( data=aint_CAM, dims=('ilev',),
@@ -989,27 +994,33 @@ def write_netcdf( version='' ):
                                 attrs=dict( description='ERA Surface Geopotential Height',units='m+2 s-2',) ,) 
             Wds['PHIS_ERA'] = Dar
 
-            Dar = xr.DataArray( data=ps_CAM[itim,:], dims=('ncol',),
+            Dar = xr.DataArray( data=ps_CAM[itim,:].reshape(1,ncol), 
+                                dims=('time','ncol',),
                                 attrs=dict( description='Surface Pressure',units='Pa',) ,) 
             Wds['PS'] = Dar
     
-            Dar = xr.DataArray( data=te_ERA_xzCAM[itim,:,:], dims=('lev','ncol',),
+            Dar = xr.DataArray( data=te_ERA_xzCAM[itim,:,:].reshape(1,nz,ncol), 
+                                dims=('time','lev','ncol',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['T'] = Dar
 
-            Dar = xr.DataArray( data=q_ERA_xzCAM[itim,:,:], dims=('lev','ncol',),
+            Dar = xr.DataArray( data=q_ERA_xzCAM[itim,:,:].reshape(1,nz,ncol), 
+                                dims=('time','lev','ncol',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['Q'] = Dar
         
-            Dar = xr.DataArray( data=u_ERA_xzCAM[itim,:,:], dims=('lev','ncol',),
+            Dar = xr.DataArray( data=u_ERA_xzCAM[itim,:,:].reshape(1,nz,ncol), 
+                                dims=('time','lev','ncol',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['U'] = Dar
 
-            Dar = xr.DataArray( data=v_ERA_xzCAM[itim,:,:], dims=('lev','ncol',),
+            Dar = xr.DataArray( data=v_ERA_xzCAM[itim,:,:].reshape(1,nz,ncol), 
+                                dims=('time','lev','ncol',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['V'] = Dar
 
-            Dar = xr.DataArray( data=w_ERA_xzCAM[itim,:,:], dims=('lev','ncol',),
+            Dar = xr.DataArray( data=w_ERA_xzCAM[itim,:,:].reshape(1,nz,ncol), 
+                                dims=('time','lev','ncol',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['W'] = Dar
 
@@ -1019,21 +1030,33 @@ def write_netcdf( version='' ):
             timetag =  yymmdd+'-'+ss
             filo= Bfilo + "." + timetag+ ".nc"
             print( filo )
-            Wds.to_netcdf( filo )
+            Wds.to_netcdf( filo ,format="NETCDF3_CLASSIC" )
 
     if (dstTZHkey == 'tzyx' ):
+        tic_FVstag = time.perf_counter()
+        US,VS,slat,slon = FV.uvStaggers(U=u_ERA_xzCAM, 
+                                        V=v_ERA_xzCAM,
+                                        lon=lon_CAM,
+                                        lat=lat_CAM   )
+        toc_FVstag = time.perf_counter()
+        pTime = f"Creating FV staggered US,VS took {toc_FVstag - tic_FVstag:0.4f} seconds"
+        print(pTime)
+        
+        nt,nz,ny,nx = np.shape( te_ERA_xzCAM )
         for itim in np.arange( ntime ):
             dims   = ["lon","lat","time","lev","ilev"]
             coords = dict( 
                 lon  = ( ["lon"],lon_CAM ),
                 lat  = ( ["lat"],lat_CAM ),
+                slon  = ( ["slon"],slon ),
+                slat  = ( ["slat"],slat ),
                 lev  = ( ["lev"],lev),
                 ilev = ( ["ilev"],ilev),
-                #time = ( ["time"],pdTime_ERA[itim]),
+                time = ( ["time"],  np.array(itim ,ndmin=1 ) ), #pd.to_datetime( pdTime_ERA[itim] ) ),
             )
         
             Wds = xr.Dataset( coords=coords  )
-            Wds["time"] = pd.to_datetime( pdTime_ERA[itim] )
+            Wds["TimeStamp"] = pd.to_datetime( pdTime_ERA[itim] )
             Wds["P_00"] = 100_000.
         
             Dar = xr.DataArray( data=aint_CAM, dims=('ilev',),
@@ -1064,30 +1087,45 @@ def write_netcdf( version='' ):
                                 attrs=dict( description='ERA Surface Geopotential Height',units='m+2 s-2',) ,) 
             Wds['PHIS_ERA'] = Dar
 
-            Dar = xr.DataArray( data=ps_CAM[itim,:,:], dims=('lat','lon',),
+            Dar = xr.DataArray( data=ps_CAM[itim,:,:].reshape(1,ny,nx) , 
+                                dims=('time','lat','lon',),
                                 attrs=dict( description='Surface Pressure',units='Pa',) ,) 
             Wds['PS'] = Dar
     
-            Dar = xr.DataArray( data=te_ERA_xzCAM[itim,:,:,:], dims=('lev','lat','lon',),
+            Dar = xr.DataArray( data=te_ERA_xzCAM[itim,:,:,:].reshape(1,nz,ny,nx), 
+                                dims=('time','lev','lat','lon',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['T'] = Dar
 
-            Dar = xr.DataArray( data=q_ERA_xzCAM[itim,:,:,:], dims=('lev','lat','lon',),
+            Dar = xr.DataArray( data=q_ERA_xzCAM[itim,:,:,:].reshape(1,nz,ny,nx), 
+                                dims=('time','lev','lat','lon',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['Q'] = Dar
         
-            Dar = xr.DataArray( data=u_ERA_xzCAM[itim,:,:,:], dims=('lev','lat','lon',),
+            Dar = xr.DataArray( data=u_ERA_xzCAM[itim,:,:,:].reshape(1,nz,ny,nx), 
+                                dims=('time','lev','lat','lon',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['U'] = Dar
 
-            Dar = xr.DataArray( data=v_ERA_xzCAM[itim,:,:,:], dims=('lev','lat','lon',),
+            Dar = xr.DataArray( data=v_ERA_xzCAM[itim,:,:,:].reshape(1,nz,ny,nx), 
+                                dims=('time','lev','lat','lon',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['V'] = Dar
 
-            Dar = xr.DataArray( data=w_ERA_xzCAM[itim,:,:,:], dims=('lev','lat','lon',),
+            Dar = xr.DataArray( data=US[itim,:,:,:].reshape(1,nz,ny-1,nx), 
+                                dims=('time','lev','slat','lon',),
+                                attrs=dict( description='Air Temperature',units='K',) ,) 
+            Wds['US'] = Dar
+
+            Dar = xr.DataArray( data=VS[itim,:,:,:].reshape(1,nz,ny,nx), 
+                                dims=('time','lev','lat','slon',),
+                                attrs=dict( description='Air Temperature',units='K',) ,) 
+            Wds['VS'] = Dar
+
+            Dar = xr.DataArray( data=w_ERA_xzCAM[itim,:,:,:].reshape(1,nz,ny,nx), 
+                                dims=('time','lev','lat','lon',),
                                 attrs=dict( description='Air Temperature',units='K',) ,) 
             Wds['W'] = Dar
-
         
             yymmdd = str(pdTime_ERA[itim])[0:10]
             hr=str(pdTime_ERA[itim])[11:13]
@@ -1095,7 +1133,7 @@ def write_netcdf( version='' ):
             timetag =  yymmdd+'-'+ss
             filo= Bfilo + "." + timetag+ ".nc"
             print( filo )
-            Wds.to_netcdf( filo )
+            Wds.to_netcdf( filo ,format="NETCDF3_CLASSIC" )
 
     code = 1
     return code
@@ -1134,11 +1172,11 @@ def main(year,month,day,hour):
         for iday in np.arange( days_in_month):
             ret2 = get_ERA5( year=year ,month=month ,day=iday+1 , hour0=99 )
             ret3 = xRegrid(HorzInterpLnPs=lnPS )
-            ret4 = write_netcdf(version=ver+'Test00')
+            ret4 = write_netcdf(version=ver+'Test01')
     else:
         ret2 = get_ERA5( year=year ,month=month ,day=day , hour0=hour )
         ret3 = xRegrid(HorzInterpLnPs=lnPS )
-        ret4 = write_netcdf(version=ver+'Test00')
+        ret4 = write_netcdf(version=ver+'Test01')
         
     code = 1
     toc_total = time.perf_counter()
