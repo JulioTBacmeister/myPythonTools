@@ -23,7 +23,8 @@ def latlon_to_scrip( grid_imask=None, file_out=None, lon0=-180., **kwargs ):
     ny : int
        Number of points in y (latitude).
     lon0 : float, optional [default=-180]
-       Longitude on lefthand grid boundary.
+       Longitude on lefthand grid boundary. No effect if
+       if longitude vector is fed-in via kwargs !!!
     grid_imask : array-like, optional [default=None]       
        If the value is set to 0 for a grid point, then that point is
        considered masked out and won't be used in the weights 
@@ -38,6 +39,10 @@ def latlon_to_scrip( grid_imask=None, file_out=None, lon0=-180., **kwargs ):
        The grid file dataset.       
     """
     
+    if ('SkipAreaCheck' in kwargs):
+        SkipAreaCheck_ = kwargs[ 'SkipAreaCheck' ]
+    else:
+        SkipAreaCheck_ = False
     
     if ('nx' in kwargs) and ('ny' in kwargs):
         # compute coordinates of regular grid
@@ -141,7 +146,10 @@ def latlon_to_scrip( grid_imask=None, file_out=None, lon0=-180., **kwargs ):
     grid_area = ( np.sin(y1) - np.sin(y0) ) * (x1 - x0)
     
     # sum of area should be equal to area of sphere
-    np.testing.assert_allclose(grid_area.sum(), 4.*np.pi)
+    if (SkipAreaCheck_ == True):
+        print( " no test for area " )
+    else:
+        np.testing.assert_allclose(grid_area.sum(), 4.*np.pi)
     
     print( grid_area.sum(), 4.*np.pi, grid_area.sum() - 4.*np.pi,  )
     
