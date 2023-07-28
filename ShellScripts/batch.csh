@@ -1,5 +1,5 @@
 #!/bin/csh
-#PBS -N timesh
+#PBS -N batchpy
 
 ### Charging account
 #PBS -A P93300642 
@@ -27,4 +27,7 @@ module load conda
 
 conda activate npl
 
-python data_for_sam_ml.py
+cd /glade/work/juliob/myPythonTools/TropicalCyclones
+
+python data4MeanOprecip.py
+ 
