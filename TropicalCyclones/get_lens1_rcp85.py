@@ -32,7 +32,8 @@ def FullTS():
     tsens = (ts.mean( axis=0 )).reshape(1,nt,ny,nx)
     #print( np.shape(ts1), np.shape(ts), np.shape(tsens) )
     ts_x = np.concatenate( (ts1, ts, tsens), axis=0 )
-    print( "SHape of returned TS: ",np.shape(ts_x) )
+    print( "SHape of returned future TS: ",np.shape(ts_x) )
+    print( f"Time limits of the CMIP5 TS data are \n {dS1.time_bnds[-31*12,0].values} to {dS1.time_bnds[-1,1].values} ")
 
     return ts_x,landf,lat,lon
 
@@ -61,6 +62,9 @@ def PresentDayTS():
     #ts_x = np.concatenate( (ts0, ts1), axis=1 )
     ts_x = ts0
 
+    print( "SHape of returned present day TS: ",np.shape(ts_x) )
+    print( f"Time limits of the LENS TS data are \n {dse0.time_bnds[0,-30*12,0].values} to {dse0.time_bnds[0,-1,1].values} ")
+
     return ts_x,landf,lat,lon
 
 
@@ -82,13 +86,7 @@ def bespokeTS():
     fils='b.e11.BRCP85C5CNBDRD.f09_g16.0**.cam.h0.TS.200601-208012.nc'
     dse0=xr.open_mfdataset( drc+fils ,concat_dim='ensemble',combine='nested')
 
-    print( "This is an exmaple of how you can begin to"+ 
-        " use the god-awful impenetrable shit-show that "+
-        " are cftime" )
-    poop = dse0.time_bnds[0,0,1].values.item()
-    print(poop.year,poop.month,poop.day,poop.hour)
-
-    # Get LANDFRAC for LENS
+   # Get LANDFRAC for LENS
     drcLF='/glade/campaign/cesm/collections/cesmLE/CESM-CAM5-BGC-LE/atm/proc/tseries/monthly/LANDFRAC/'
     filLF='b.e11.BRCP85C5CNBDRD.f09_g16.001.cam.h0.LANDFRAC.208101-210012.nc'
     dsLF=xr.open_dataset( drcLF+filLF )
@@ -98,7 +96,12 @@ def bespokeTS():
     # and pre-pend to 2081-2100
     ts0 = dse0.TS[:,900-132:,:,:].values
     ts1 = dse1.TS.values
-
+    
     ts_x = np.concatenate( (ts0, ts1), axis=1 )
-
+    
+    
+    print( "SHape of returned bespoke LENS TS: ",np.shape(ts_x) )
+    print( f"Time limits of the bespoke LENS TS data are \n {dse0.time_bnds[0,900-132,0].values} to {dse1.time_bnds[0,-1,1].values} ")
+    
+    
     return ts_x,landf,lat,lon

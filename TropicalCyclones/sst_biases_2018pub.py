@@ -31,7 +31,7 @@ def original():
 
     subsst_Had=hadsst[iiii:iiii+Ny*12,:,:].reshape(Ny,12,192,288) + 273.15
     subsst_b40=dS_b40.ts.values[iiii:iiii+Ny*12,:,:].reshape(Ny,12,192,288)
-    print(np.shape(subsst_b40))
+    print(f"This is the shape of the subset 'b40' CMIP5 RCP8.5 TS data used for bias estimation ->{np.shape(subsst_b40)}")
 
     lat=dS_b40.lat.values
     lon=dS_b40.lon.values

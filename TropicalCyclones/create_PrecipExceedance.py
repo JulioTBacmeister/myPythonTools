@@ -67,7 +67,7 @@ def main(CAM=0,TRMM=0,ens=1,sstA='sst1',year0=-9999,year1=-9999):
         if (year0>2023):
             BaseName = trx.rcp85fname(sst=sstA,justBaseName=True) 
             print( f"BaseName is  {BaseName} " )
-            # input and output Directories
+            # Directories and basenames for source data
             if (etag=='exceedance_xTS'):
                 drc ='/glade/campaign/cgd/amp/juliob/TC-cesm1/precip/'
                 basename = BaseName + 'cam.h4.TCPRECT_xTS.'
@@ -77,7 +77,7 @@ def main(CAM=0,TRMM=0,ens=1,sstA='sst1',year0=-9999,year1=-9999):
         else:
             BaseName = trx.pdfname(ens=ens,justBaseName=True) 
             print( f"BaseName is  {BaseName} " )
-            # input and output Directories
+            # Directories and basenames for source data
             if (etag=='exceedance_xTS'):
                 drc ='/glade/campaign/cgd/amp/juliob/TC-cesm1/precip/'
                 basename = BaseName + 'cam.h4.TCPRECT_xTS.'
