@@ -23,7 +23,7 @@ class AttrDict(dict):
 #===========================================================
 #                 Begin functions 
 #===========================================================
-def readtrx(Fill_NI_before_1990=True,Add_Precip=False):
+def readtrx(Fill_NI_before_1990=True,Add_Precip=False,Always_use_USA_winds=True):
     
     f="/glade/work/juliob/IBTrACS/IBTrACS.since1980.v04r00.nc"
     #f="/glade/work/juliob/IBTrACS/IBTrACS.ALL.v04r00.nc"
@@ -56,17 +56,23 @@ def readtrx(Fill_NI_before_1990=True,Add_Precip=False):
     wind_kts_wmo = dS.wmo_wind.values # IBTrACS wind in kts
     wind_kts_USA = dS.usa_wind.values # IBTrACS wind in kts
     
-    if ( Fill_NI_before_1990 == True):
-        usa_lon=dS.usa_lon.values
-        usa_lat=dS.usa_lat.values
-        NIbasin=np.where( (usa_lat >0.) & (usa_lat<30.) & (usa_lon<105.) & (usa_lon > 40.) , True, False )
-        print( "USING USA winds in NI before 1990" )
-        wind_kts = np.where( ( year<1990 )& (NIbasin==True)  
-        ####                      , wind_kts_USA, wind_kts_wmo  )
-                              , wind_kts_USA, wind_kts_USA  )
+    if ( Always_use_USA_winds == True):
+        print( "USING USA winds EVERYWHERE ALL THE TIME - Go USA!" )
+        wind_kts = wind_kts_USA
+        
     else:
-        print( "No winds in NI before 1990")
-        wind_kts = wind_kts_wmo
+        print( "USING black helicopter winds!" )
+        if ( Fill_NI_before_1990 == True):
+            usa_lon=dS.usa_lon.values
+            usa_lat=dS.usa_lat.values
+            NIbasin=np.where( (usa_lat >0.) & (usa_lat<30.) & (usa_lon<105.) & (usa_lon > 40.) , True, False )
+            print( "USING USA winds in NI before 1990" )
+            wind_kts = np.where( ( year<1990 )& (NIbasin==True)  
+            ####                      , wind_kts_USA, wind_kts_wmo  )
+                                  , wind_kts_USA, wind_kts_USA  )
+        else:
+            print( "No winds in NI before 1990")
+            wind_kts = wind_kts_wmo
     
     wind=wind_kts/1.944  # IBTrACS wind is in kts. This makes it m/s.
 
