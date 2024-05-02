@@ -24,6 +24,8 @@ def MonthsSeason( season ):
         monthsx=[1,2,3,4,5,6,7,8,9,10,11,12]
     if (season.lower()=='djf'):
         monthsx=[12,1,2]
+    if (season.lower()=='jfm'):
+        monthsx=[1,2,3]
     if (season.lower()=='jja'):
         monthsx=[6,7,8]
     if (season.lower()=='mam'):
@@ -102,11 +104,45 @@ def MonthsInDataset( ds ):
                 years.append( ixtime.values[0].year )
                 months.append( ixtime.values[0].month )
             
+    elif ('time_bounds' in ds):        
+        
+        if (ds['time_bounds'].dtype == 'datetime64[ns]' ):
+            # normally the first element of time_bnds
+            # gives the month you want.
+            time_array = ds['time_bounds'].values[:,0]
+            months=[]
+            years=[]
+            for ixtime in time_array:
+                years.append( ixtime.astype('datetime64[Y]' ).astype(int) + 1970 )                
+                months.append( ixtime.astype('datetime64[M]' ).astype(int) %12 +1 )                
+        else:
+            print(f" time_bounds (post cam6_3_153 ... ) present in DataSet " )
+            time_bnds = ds['time_bounds']
+    
+            #print(np.shape(time))
+            #print(time_bnds[0].values[0])
+            time0=[]
+            months=[]
+            years=[]
+    
+            for ixtime in time_bnds:
+                time0.append( ixtime.values[0] )
+                years.append( ixtime.values[0].year )
+                months.append( ixtime.values[0].month )
+            
     elif ('time' in ds) :
         if (ds['time'].dtype == 'datetime64[ns]' ):
             print(f" time of type datetime64[ns] present in DataSet " )
             years = ds['time'].values.astype('datetime64[Y]' ).astype(int)
             months = ds['time'].values.astype('datetime64[M]' ).astype(int) %12 +1
+        if (ds['time'].dtype == 'int' ):
+            print(f" time of type 'int' present in DataSet " )
+            #if (np.shape( ds['time'].shape )==(1,)): 
+            if ('title' in ds.attrs):
+                if (('CERES EBAF' in ds.title) and ('Climatology' in ds.title)):
+                    print( f'{ds.title}' )
+                    months = ds['time']
+                    years  = np.zeros( 12 )+9999
 
     return months,years
 

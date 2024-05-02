@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from CASutils import colormap_utils as mycolors
+from dycoreutils import colormap_utils as mycolors
 import sys
 
 def plot_pre_mon(fig, data, pre, ci, cmin, cmax, expname, x1=None, x2=None, y1=None, y2=None, oplot=False, ax=None, cmap='precip', taxis='time', paxis='lev'):

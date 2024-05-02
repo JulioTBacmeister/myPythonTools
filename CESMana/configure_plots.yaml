@@ -1,0 +1,21 @@
+A:
+  name: "cDEV_ne30pg3_FLTHIST_L32_C5_x01"
+  user: "juliob"
+  grid: "regridded"
+  hsPat: "cam.h0a"
+  ymdPat: "*"
+  parameters:
+    param1: 1
+    param2: 2
+B:
+  name: "cDEV_ne30pg3_FMTHIST_C5_x01"
+  user: "juliob"
+  grid: "regridded"
+  hsPat: "cam.h0a"
+  ymdPat: "*"
+  parameters:
+    param1: 1
+    param2: 2
+plot:
+    field: 'SWCF'
+    season: 'ann'

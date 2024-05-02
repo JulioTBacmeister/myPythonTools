@@ -3,7 +3,7 @@ from matplotlib.colors import ListedColormap ## used to create custom colormaps
 import matplotlib.colors as mcolors
 import numpy as np
 
-def blue2red_cmap(n, nowhite = False):
+def blue2red_cmap(n, nowhite = False, posonly=False):
     """ combine two existing color maps to create a diverging color map with white in the middle
     n = the number of contour intervals
     """
@@ -21,11 +21,16 @@ def blue2red_cmap(n, nowhite = False):
     if (nowhite):
         nwhite=0
 
-    colors1 = plt.cm.Blues_r(np.linspace(0,1, int(nneg)))
-    colors2 = plt.cm.YlOrRd(np.linspace(0,1, int(npos)))
-    colorsw = np.ones((nwhite,4))
+    if (posonly):
+        colorsw = np.ones((nwhite,4))
+        colors2 = plt.cm.YlOrRd(np.linspace(0,1,int(n)))
+        colors = np.vstack((colorsw,colors2))
+    else:
+        colors1 = plt.cm.Blues_r(np.linspace(0,1, int(nneg)))
+        colors2 = plt.cm.YlOrRd(np.linspace(0,1, int(npos)))
+        colorsw = np.ones((nwhite,4))
+        colors = np.vstack((colors1, colorsw, colors2))
 
-    colors = np.vstack((colors1, colorsw, colors2))
     mymap = mcolors.LinearSegmentedColormap.from_list('my_colormap', colors)
 
     return mymap 
@@ -109,4 +114,29 @@ def precip_cmap_nowhite(n):
     mymap = mcolors.LinearSegmentedColormap.from_list('my_colormap', colors)
 
     return mymap
+
+def wkcmap(n, nwhite=2):
+    """ Color map for the Wheeler and Kiladis plot
+        n = the number of contour intervals
+    """
+    ncolors = n - nwhite
+    nc1 = np.int(ncolors/5)
+    nc2 = np.int(ncolors/5)
+    nc3 = np.int(ncolors/5)
+    nc4 = np.int(ncolors/5)
+    nc5 = np.int(ncolors - (nc1+nc2+nc3+4))
+
+    colorsw = np.ones((nwhite,4))
+    colors1 = plt.cm.YlOrBr(np.linspace(0,0.4,nc1))
+    colors2 = plt.cm.YlOrBr(np.linspace(0.44,0.7,nc2))
+    colors3 = plt.cm.afmhot_r(np.linspace(0.6,0.8,nc3))
+    colors4 = plt.cm.gist_heat_r(np.linspace(0.75,1,nc4))
+
+    #colors = np.vstack((colorsw, colors1 + colors3 + colors4))
+    colors = np.vstack((colorsw, colors1, colors2, colors3, colors4))
+    mymap = mcolors.LinearSegmentedColormap.from_list('my_colormap', colors)
+
+    return mymap
+
+
 

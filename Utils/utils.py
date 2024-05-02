@@ -93,19 +93,29 @@ def MakePath( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='
 
     return path
 
-def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,verbose=False, open_dataset=False ):
+def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,verbose=False, open_dataset=False, help=False ):
     import xarray as xr
 
+    if (help == True):
+        print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' ")
+        return
+    
     if (user in ['juliob','pel','tilmes'] ):
         path = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
-        path = f'/glade/derecho/scratch/juliob/{exp}/run/{exp}.cam.h0.*.nc' 
+        path = f'/glade/derecho/scratch/juliob/{exp}/run/{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_camp' ):
         path = f'/glade/campaign/cgd/amp/juliob/archive/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
+    elif (user == 'amwg_runs' ):
+        path = f'/glade/campaign/cgd/amp/amwg/runs/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
+    elif (user == 'omwg_mom6' ):
+        path = f'/glade/campaign/cesm/development/omwg/projects/MOM6/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'CMIP6' ):
         dir='/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001/atm/proc/tseries/month_1/'
         path=dir+ 'f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.U.195001-201412.nc'
 
+    ###/glade/u/home/gmarques/campaign_MOM6/b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026g
+    ### /glade/campaign/cesm/development/omwg/projects/MOM6/
 
     if (verbose==True):
         print( path )
@@ -142,5 +152,13 @@ def extValues( DX , flds ):
         dex[ fld ] = DX.X[fld].values
 
     return dex
+
+def trim_to_year( D , nyr_max=1000 ):
+    import numpy as np
+    
+    nyr=np.minimum( nyr_max*12 , 12*(len(D.X.time)//12) )
+    print(f"Discarding last {len(D.X.time)-nyr} months of {D.exp}" )
+    D.X=D.X.isel(time=np.arange(nyr))
+
 
 

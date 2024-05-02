@@ -8,7 +8,6 @@ This_module_path = os.path.dirname(os.path.abspath(__file__))
 workdir_ = os.path.join(This_module_path, '../../' )
 # sys.path.append(utils_path)
 # print( f" a path added in {__name__} {utils_path} ")
-
 print( f" In {__name__} we have This_module_path={This_module_path} " )
 print( f" In {__name__} we have workdir_={workdir_} " )
 ########################################
@@ -54,6 +53,10 @@ importlib.reload(Val)
 importlib.reload(vAB)
 importlib.reload(MkP)
 
+def titleGen( exp,fld,season,years ):
+    title=rf"{fld} <{exp}> {season.upper()} Years:{str(years[0]).zfill(4)}-{str(years[-1]).zfill(4)}" 
+    return title
+
 
 def Maps( fields , lons, lats, **kwargs ):
     ##################################################
@@ -67,31 +70,158 @@ def Maps( fields , lons, lats, **kwargs ):
     
     MapProj = ccrs.PlateCarree(central_longitude=180.)
     DataProj = ccrs.PlateCarree()
+    # Get the name of the projection
+    proj_name = MapProj.__class__.__name__
 
     nplots = len( fields )
     
-    fig = plt.figure(figsize=(20, 12))
+    # Set up defaults for kwargs that are needed:
+    if ( 'verbose' in kwargs ):
+        verbose_ = kwargs[ 'verbose' ]
+    else:
+        verbose_ = False
     
     if ( 'CoastColors' in kwargs ):
         CoastColors = kwargs[ 'CoastColors' ]
     else:
         value = 'black'
         CoastColors = [value for _ in range(nplots)]
+
     if ( 'clevs' in kwargs ):
         clevs = kwargs[ 'clevs' ]
     else:
         value = 21
         clevs = [value for _ in range(nplots)]
+
     if ( 'cmaps' in kwargs ):
         cmaps = kwargs[ 'cmaps' ]
     else:
         value = 'gist_ncar'
         cmaps = [value for _ in range(nplots)]
+
     if ( 'scale' in kwargs ):
         scale = kwargs[ 'scale' ]
     else:
         value = 1.0
         scale = [value for _ in range(nplots)]
+
+    if ( 'titles' in kwargs ):
+        titles = kwargs[ 'titles' ]
+    else:
+        value = 'Title Placeholder'
+        titles = [value for _ in range(nplots)]
+    
+
+    if ( 'Arrangement' in kwargs ):
+        nx,ny = kwargs['Arrangement']
+    else:
+        if (nplots==1):
+            nx,ny=1,1
+        elif (nplots==2):
+            nx,ny=2,1
+        elif (nplots==3):
+            nx,ny=3,1
+        elif (nplots==4):
+            nx,ny=2,2
+        elif ((nplots>4)and(nplots<=9)):
+            nx,ny=3,3
+        else:
+            ny = 3
+            nx = math.ceil( nplots / ny)
+
+    xsize=10.
+    print(f'proj_name = {proj_name}')
+    if (proj_name=='PlateCarree'):
+        ysize=xsize*0.5
+    else:
+        ysize=xsize
+    fig = plt.figure(figsize=( nx*xsize, ny*ysize ))
+    
+    
+    npo=0
+    for field in fields:
+        ipo=npo
+        npo=npo+1
+        Axes = Pu.axes_def(n=npo,nxplo=nx,nyplo=ny ) 
+    
+        ax1 = fig.add_axes( Axes , projection=MapProj)
+        ax1.set_global()
+        ax1.coastlines(resolution='110m',color='black',linewidth=2)
+    
+        AAxy = scale[ipo]*field 
+        if ( len(lons) >= len(fields) ):
+            lon_ = lons[ipo]
+            lat_ = lats[ipo]
+        else:
+            lon_ = lons[0]
+            lat_ = lats[0]
+        if ( len(clevs) >= len(fields) ):
+            clev_ = clevs[ipo]
+        else:
+            clev_ = clevs[0]
+        if ( len(cmaps) >= len(fields) ):
+            cmap_ = cmaps[ipo]
+        else:
+            cmap_ = cmaps[0]
+        if ( len(titles) >= len(fields) ):
+            title_ = titles[ipo]
+        else:
+            title_ = titles[0]
+
+        if( verbose_==True ):
+            print( f' color map={cmap_} clevels={clev_} ' )
+
+        co1=ax1.contourf(lon_ ,lat_ , AAxy ,transform=DataProj,cmap=cmap_ ,levels=clev_, extend='both' )
+    
+        cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
+        ax1.set_title( title_ , fontsize=16)
+        #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
+
+def Maps_NoProj( fields , lons, lats, **kwargs ):
+    ##################################################
+    #           "Simple" latlon plots for sanity
+    #---------------------------------------------
+    # Only mandatory input should be a fields list
+    # containing 2D (lat,lon) variables to be plotted, 
+    # along with lons and lats.  Currently, lons and lats
+    # must also be list with same length as fields
+    ##################################################
+    
+
+    nplots = len( fields )
+    
+    fig = plt.figure(figsize=(20, 12))
+    #fig = plt.figure(figsize=(30, 18))
+    
+    if ( 'CoastColors' in kwargs ):
+        CoastColors = kwargs[ 'CoastColors' ]
+    else:
+        value = 'black'
+        CoastColors = [value for _ in range(nplots)]
+
+    if ( 'clevs' in kwargs ):
+        clevs = kwargs[ 'clevs' ]
+    else:
+        value = 21
+        clevs = [value for _ in range(nplots)]
+
+    if ( 'cmaps' in kwargs ):
+        cmaps = kwargs[ 'cmaps' ]
+    else:
+        value = 'gist_ncar'
+        cmaps = [value for _ in range(nplots)]
+
+    if ( 'scale' in kwargs ):
+        scale = kwargs[ 'scale' ]
+    else:
+        value = 1.0
+        scale = [value for _ in range(nplots)]
+
+    if ( 'titles' in kwargs ):
+        titles = kwargs[ 'titles' ]
+    else:
+        value = 'Title Placeholder'
+        titles = [value for _ in range(nplots)]
     
 
     if (nplots==1):
@@ -115,19 +245,153 @@ def Maps( fields , lons, lats, **kwargs ):
         npo=npo+1
         Axes = Pu.axes_def(n=npo,nxplo=nx,nyplo=ny ) 
     
+        ax1 = fig.add_axes( Axes ) #, projection=MapProj)
+    
+        AAxy = scale[ipo]*field 
+        if ( len(lons) >= len(fields) ):
+            lon_ = lons[ipo]
+            lat_ = lats[ipo]
+        else:
+            lon_ = lons[0]
+            lat_ = lats[0]
+        if ( len(clevs) >= len(fields) ):
+            clev_ = clevs[ipo]
+        else:
+            clev_ = clevs[0]
+        if ( len(cmaps) >= len(fields) ):
+            cmap_ = cmaps[ipo]
+        else:
+            cmap_ = cmaps[0]
+        if ( len(titles) >= len(fields) ):
+            title_ = titles[ipo]
+        else:
+            title_ = titles[0]
+
+        co1=ax1.contourf(lon_ ,lat_ , AAxy , cmap=cmap_ ,levels=clev_ )
+    
+        cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
+        ax1.set_title( title_ , fontsize=16)
+        #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
+
+def ZonalMeans( fields , lats, **kwargs ):
+    ##################################################
+    #           "Pretty" latlon plots
+    #---------------------------------------------
+    # Only mandatory input should be a fields list
+    # containing 2D (lat,lon) variables to be plotted, 
+    # along with lons and lats.  Currently, lons and lats
+    # must also be list with same length as fields
+    ##################################################
+    
+    MapProj = ccrs.PlateCarree(central_longitude=180.)
+    DataProj = ccrs.PlateCarree()
+    # Get the name of the projection
+    proj_name = MapProj.__class__.__name__
+
+    nplots = len( fields )
+    
+    # Set up defaults for kwargs that are needed:
+    if ( 'verbose' in kwargs ):
+        verbose_ = kwargs[ 'verbose' ]
+    else:
+        verbose_ = False
+    
+    if ( 'CoastColors' in kwargs ):
+        CoastColors = kwargs[ 'CoastColors' ]
+    else:
+        value = 'black'
+        CoastColors = [value for _ in range(nplots)]
+
+    if ( 'clevs' in kwargs ):
+        clevs = kwargs[ 'clevs' ]
+    else:
+        value = 21
+        clevs = [value for _ in range(nplots)]
+
+    if ( 'cmaps' in kwargs ):
+        cmaps = kwargs[ 'cmaps' ]
+    else:
+        value = 'gist_ncar'
+        cmaps = [value for _ in range(nplots)]
+
+    if ( 'scale' in kwargs ):
+        scale = kwargs[ 'scale' ]
+    else:
+        value = 1.0
+        scale = [value for _ in range(nplots)]
+
+    if ( 'titles' in kwargs ):
+        titles = kwargs[ 'titles' ]
+    else:
+        value = 'Title Placeholder'
+        titles = [value for _ in range(nplots)]
+    
+
+    if ( 'Arrangement' in kwargs ):
+        nx,ny = kwargs['Arrangement']
+    else:
+        if (nplots==1):
+            nx,ny=1,1
+        elif (nplots==2):
+            nx,ny=2,1
+        elif (nplots==3):
+            nx,ny=3,1
+        elif (nplots==4):
+            nx,ny=2,2
+        elif ((nplots>4)and(nplots<=9)):
+            nx,ny=3,3
+        else:
+            ny = 3
+            nx = math.ceil( nplots / ny)
+
+    xsize=10.
+    print(f'proj_name = {proj_name}')
+    if (proj_name=='PlateCarree'):
+        ysize=xsize*0.5
+    else:
+        ysize=xsize
+    fig = plt.figure(figsize=( nx*xsize, ny*ysize ))
+    
+    
+    npo=0
+    for field in fields:
+        ipo=npo
+        npo=npo+1
+        Axes = Pu.axes_def(n=npo,nxplo=nx,nyplo=ny ) 
+    
         ax1 = fig.add_axes( Axes , projection=MapProj)
         ax1.set_global()
         ax1.coastlines(resolution='110m',color='black',linewidth=2)
     
         AAxy = scale[ipo]*field 
-        lon_ = lons[ipo]
-        lat_ = lats[ipo]
-        
-        co1=ax1.contourf(lon_ ,lat_ , AAxy ,transform=DataProj,cmap=cmaps[ipo] ,levels=clevs[ipo])
+        if ( len(lons) >= len(fields) ):
+            lon_ = lons[ipo]
+            lat_ = lats[ipo]
+        else:
+            lon_ = lons[0]
+            lat_ = lats[0]
+        if ( len(clevs) >= len(fields) ):
+            clev_ = clevs[ipo]
+        else:
+            clev_ = clevs[0]
+        if ( len(cmaps) >= len(fields) ):
+            cmap_ = cmaps[ipo]
+        else:
+            cmap_ = cmaps[0]
+        if ( len(titles) >= len(fields) ):
+            title_ = titles[ipo]
+        else:
+            title_ = titles[0]
+
+        if( verbose_==True ):
+            print( f' color map={cmap_} clevels={clev_} ' )
+
+        co1=ax1.contourf(lon_ ,lat_ , AAxy ,transform=DataProj,cmap=cmap_ ,levels=clev_, extend='both' )
     
-        cbar = plt.colorbar(co1, ax=ax1, shrink=.6)
-        #ax1.set_title( CLUBBparm + zA, fontsize=16)
+        cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
+        ax1.set_title( title_ , fontsize=16)
         #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
+
 
 
 def Regrid( fields , lon, lat, **kwargs ):

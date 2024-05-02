@@ -36,14 +36,15 @@ def data(fld,season,months=-999,**kwargs):
     else:
         regrid_x_mgrid = False
 
-    if 'Years' in kwargs:
-        yearsA = kwargs['Years']
-        ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
-    else:
-        yearsA = '1979_2022'
-        ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+    ADFobsdir = '/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
     
     if (fld in ('U','V','T','Q','PS','OMEGA') ):
+        if 'Years' in kwargs:
+            yearsA = kwargs['Years']
+            ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
+        else:
+            yearsA = '1979_2022'
+            ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
         # get ERA5 pl 
         path_C = ERA5dir + 'ERA5.native.time.' + yearsA +'-*.nc'
         Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
@@ -71,10 +72,19 @@ def data(fld,season,months=-999,**kwargs):
         lat =Dc.latitude.values
         aa = Av.Seasonal( ds=Dc, season=season , fld=fld)
 
+        """
+        if 'zlev' in kwargs:
+            lev = -7. * np.log( lev /1_000. )
+        #----- Pack output into a 'dict'
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
+             'years':yearsA, 'data_path':path_C,'rcode':0}
         
+       
         if (regrid_x_mgrid ==True ):
-            # Put on model grid for comparisons
-            #-----------------------------------
+            # Put ERA5 data on model grid for comparisons
+            # This needs rethinking
+            #--------------------------------------------
             # mgrid needs the following components
             #   mgrid={ps:ps_m, hyam:hyam_m, hybm:hybm_m, hyai:hyai_m, hybi:hybi_m, hgrid:hgrid_m }
             ps = Av.Seasonal( ds=Dc, season=season , fld='PS')
@@ -84,13 +94,29 @@ def data(fld,season,months=-999,**kwargs):
             if 'zlev' in kwargs:
                 dic['lev'] = -7. * np.log( dic['lev'] /1_000. )
         else:
-            if 'zlev' in kwargs:
-                lev = -7. * np.log( lev /1_000. )
-            #----- Pack output into a 'dict'
-            dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
-                 'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
-                 'years':yearsA, 'data_path':path_C,'rcode':0}
+        """
+        if 'zlev' in kwargs:
+            lev = -7. * np.log( lev /1_000. )
+
+        #----- Pack output into a 'dict'
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
+             'years':yearsA, 'data_path':path_C,'data_source':'ERA5','rcode':0}
         
+    # /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc
+    # need to map names from cesm to obs
+       
+    elif (fld in ('SWCF',) ):
+        path_C = f'{ADFobsdir}/CERES_EBAF_Ed4.1_2001-2020.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
+        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
+        lon =Dc.lon.values
+        lat =Dc.lat.values
+        lev =np.asarray( [1000.] )
+        aa = Av.Seasonal( ds=Dc, season=season , fld='toa_cre_sw_mon' )
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':'2001-2020', 'data_path':path_C,'data_source':'CERES-EBAF','rcode':0}
+
+
     else:
         dic = {'aa':-999e10,'rcode':-99}
         

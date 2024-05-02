@@ -5,7 +5,8 @@ sys.path.append('../Utils/')
 import numpy as np
 import xarray as xr
 
-import MyConstants as Con
+#import MyConstants as Con
+import constants as Con
 
 
 
