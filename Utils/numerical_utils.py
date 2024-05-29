@@ -100,11 +100,14 @@ def Sphere_Div2( f_x, f_y, lat, lon, wrap=True ):
     return divf
 
 
-def Sphere_Curl2( f_x, f_y, lat, lon, wrap=True ):
+def Sphere_Curl2_slow( f_x, f_y, lat, lon, wrap=True ):
     ##################################################
     # Curl of a vector field f=[f_x,f_y] in latlon
     # coords:
     #        Zeta ~ d(f_y)/dx - d(f_x)/dy 
+    #
+    #-------------------------------------------------
+    # Inputs need to be 2D (ny,nx) !!
     ##################################################
     import numpy as np
 
@@ -128,6 +131,62 @@ def Sphere_Curl2( f_x, f_y, lat, lon, wrap=True ):
                      1.0* ( f_y[j,ie]-f_y[j,iw] ) / dlon
                     -   ( coslat[jn]*f_x[jn,i] - coslat[js]*f_x[js,i] )/dlat )
 
+    return curlf_z
+
+
+def Sphere_Curl2( f_x, f_y, lat, lon, wrap=True ):
+    ##################################################
+    # Curl of a vector field f=[f_x,f_y] in latlon
+    # coords:
+    #        Zeta ~ d(f_y)/dx - d(f_x)/dy 
+    #
+    #-------------------------------------------------
+    # Inputs need to be 2D (ny,nx) !!
+    ##################################################
+    import numpy as np
+
+    Pi  = co.pi()
+    R_e = co.Rearth()
+
+    nx,ny = len( lon ), len( lat )
+    
+    rlat = (Pi/180.)*lat
+    rlon = (Pi/180.)*lon
+    dlat=rlat[2]-rlat[0]
+    dlon=rlon[2]-rlon[0]
+    coslat = np.cos( rlat )
+
+    curlf_z = np.zeros( (ny, nx ))
+
+    coslat_jn = np.roll(coslat, -1)
+    coslat_js = np.roll(coslat, 1)
+    
+    # Compute the curl component using vectorized operations
+    curlf_z = (1.0 / (R_e * coslat[:, np.newaxis])) * (
+        (np.roll(f_y, -1, axis=1) - np.roll(f_y, 1, axis=1)) / dlon
+        - (coslat_jn[:, np.newaxis] * np.roll(f_x, -1, axis=0) - coslat_js[:, np.newaxis] * np.roll(f_x, 1, axis=0)) / dlat
+        )
+
+    #---------------------------------------------
+    # The code above replaces the loop below and
+    # is at least 100x faster ???!!!! WTF??
+    # Thanks again ChatGPT ...
+    """
+    for j in np.arange( ny ):
+        for i in np.arange( nx ):
+            iw,ie = IwIe(i,nx,wrap=wrap)
+            js,jn = JsJn(j,ny)
+            curlf_z[j,i] = (1./(R_e * coslat[j]))*( 
+                     1.0* ( f_y[j,ie]-f_y[j,iw] ) / dlon
+                    -   ( coslat[jn]*f_x[jn,i] - coslat[js]*f_x[js,i] )/dlat )
+    """
+
+    # Handle boundaries if needed (depending on how your boundary conditions are set)
+    # For example, if you have periodic boundary conditions, np.roll takes care of it.
+    # If you have different boundary conditions, you may need to handle them separately.
+    curlf_z[0,:]=0.
+    curlf_z[ny-1,:]=0.
+    
     return curlf_z
 
 

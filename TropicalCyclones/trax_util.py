@@ -291,31 +291,15 @@ def basinACEyearHemi(wind,basin,year,month,power_wind=1.0):
     return BaceYr,Years
 
 
-def basinNUMyearHemi(wind,basin,year,month,power_wind=1.0,category='TS+'):
+def basinNUMyearHemi(wind,basin,year,month,power_wind=1.0,category='TS+',PressureCats=False,pres=None):
 
+    print( f'Using new Cat threshhold function ' )
 
-    if (category=='TD+'):
-        thresh0=0.
-        thresh1=10000.
-    if (category=='TS+'):
-        thresh0=18.
-        thresh1=10000.
-    if (category=='Cat1+'):
-        thresh0=33.
-        thresh1=10000.
-    if (category=='Cat2+'):
-        thresh0=43.
-        thresh1=10000.
-    if (category=='Cat3+'):
-        thresh0=50.
-        thresh1=10000.
-    if (category=='Cat4+'):
-        thresh0=58.
-        thresh1=10000.
-    if (category=='Cat5+'):
-        thresh0=70.
-        thresh1=10000.
+    thresh0,thresh1,pthresh0,pthresh1 = CategoryDefs( category=category )
+
     CatThreshhold  = thresh0*1.944
+    PCatThreshhold = pthresh1
+    #(pres0 <= pthresh1)):
 
     #         -1.       0.        1.         2            3             4              5            6 
     bnames=['None','N \nAtl','S \n Atl' , 'NW \n Pac', 'NE \n Pac', 'SW \n Pac','N \n Indian','S \nIndian']
@@ -329,6 +313,9 @@ def basinNUMyearHemi(wind,basin,year,month,power_wind=1.0,category='TS+'):
     
     w10m_kts = power_wind*1.944*awind
     aace = 1e-4 * w10m_kts**2 
+
+    if (PressureCats==True):
+        Cen_Press = np.nan_to_num( pres, nan=100_000., posinf=100_000., neginf=100_000.)
     
     oo=np.where( year.flatten() > 0)
     yrmin=np.nanmin( year.flatten()[oo[0]] )
@@ -344,13 +331,22 @@ def basinNUMyearHemi(wind,basin,year,month,power_wind=1.0,category='TS+'):
     Years = np.linspace(yrmin,yrmax, num=Nyr )
 
     # This is a clearer way to do it
-    for s in np.arange(nstorm):
-        if max( w10m_kts[s,:] >= CatThreshhold ):
-            b  = basin[s,0].astype(int)
-            y  = year[s,0].astype(int)
-            ib = b - bmin
-            iy = y - yrmin
-            NumYr[ib,iy]=NumYr[ib,iy]+1
+    if (PressureCats==False):
+        for s in np.arange(nstorm):
+            if ( np.max( w10m_kts[s,:] )>= CatThreshhold ):
+                b  = basin[s,0].astype(int)
+                y  = year[s,0].astype(int)
+                ib = b - bmin
+                iy = y - yrmin
+                NumYr[ib,iy]=NumYr[ib,iy]+1
+    else:
+        for s in np.arange(nstorm):
+            if ( np.min( Cen_Press[s,:] ) <= PCatThreshhold ):
+                b  = basin[s,0].astype(int)
+                y  = year[s,0].astype(int)
+                ib = b - bmin
+                iy = y - yrmin
+                NumYr[ib,iy]=NumYr[ib,iy]+1
 
     return NumYr,Years
 
@@ -451,43 +447,73 @@ def intensification(wind,pres,dTime=3.):
     return intfW,intfP
 
 def density(trx,x,y,category='TD+',**kwargs):
+    """
+    [1015.28385521  998.72226355  980.69700497  966.90303597  956.40134383
+     943.54638758  922.55790847]
+     [1.,18.,33.,43.,50.,58.,70.] 
+    """
     
     if (category=='TD-only'):
         thresh0=0.
         thresh1=18.
+        pthresh0=998.7
+        pthresh1=1015.3
     if (category=='TS-only'):
         thresh0=18.
         thresh1=33.
+        pthresh0=980.7
+        pthresh1=998.7
 
     if (category=='TD+'):
         thresh0=1.
         thresh1=10000.
+        pthresh0=1.
+        pthresh1=1015.3
     if (category=='TS+'):
         thresh0=18.
         thresh1=10000.
+        pthresh0=1.
+        pthresh1=998.7
     if (category=='Cat1+'):
         thresh0=33.
         thresh1=10000.
+        pthresh0=1.
+        pthresh1=980.7
     if (category=='Cat2+'):
         thresh0=43.
         thresh1=10000.
+        pthresh0=1.
+        pthresh1=966.9
     if (category=='Cat3+'):
         thresh0=50.
         thresh1=10000.
+        pthresh0=1.
+        pthresh1=956.4
     if (category=='Cat4+'):
         thresh0=58.
         thresh1=10000.
+        pthresh0=1.
+        pthresh1=943.5
     if (category=='Cat5+'):
         thresh0=70.
         thresh1=10000.
-    
+        pthresh0=1.
+        pthresh1=922.6
+
+
+        return thresh0,thresh1,pthresh0,pthresh1
+
     if 'limits' in kwargs:
         limits = kwargs['limits']
     if 'genesis' in kwargs:
         genesis = kwargs['genesis']
     else:
         genesis = False
-    
+    if 'PressureCats' in kwargs:
+        PCat = kwargs['PressureCats']
+    else:
+        PCat = False
+
     oo=np.where( trx.year.flatten() > 0)
     yrmin=np.nanmin( trx.year.flatten()[oo[0]] )
     yrmax=np.nanmax( trx.year.flatten()[oo[0]] )
@@ -503,25 +529,44 @@ def density(trx,x,y,category='TD+',**kwargs):
     if (genesis==True):
         nt=1
         thresh0=-100
-    
-    for s in np.arange( nstorm ):
-        for t in np.arange( nt ):
-            wind0=trx.wind[s,t]
-            if ((wind0 >= thresh0) and (wind0 < thresh1)):
-                lon0=trx.lon[s,t]
-                lat0=trx.lat[s,t]
-                if (lon0 < 0):
-                    lon0=lon0+360.
-                # west edge index
-                iw=np.count_nonzero( x<=lon0) - 1
-                iw=np.max((0,iw))
-                iw=np.min((nx-2,iw))
-                # south edge index
-                js=np.count_nonzero( y<=lat0) - 1
-                js=np.max((0,js))
-                js=np.min((ny-2,js))
-                dens[ js, iw ] = dens[ js, iw ] + 1.
-    
+
+    if (PCat == False ):
+        for s in np.arange( nstorm ):
+            for t in np.arange( nt ):
+                wind0=trx.wind[s,t]
+                if ((wind0 >= thresh0) and (wind0 < thresh1)):
+                    lon0=trx.lon[s,t]
+                    lat0=trx.lat[s,t]
+                    if (lon0 < 0):
+                        lon0=lon0+360.
+                    # west edge index
+                    iw=np.count_nonzero( x<=lon0) - 1
+                    iw=np.max((0,iw))
+                    iw=np.min((nx-2,iw))
+                    # south edge index
+                    js=np.count_nonzero( y<=lat0) - 1
+                    js=np.max((0,js))
+                    js=np.min((ny-2,js))
+                    dens[ js, iw ] = dens[ js, iw ] + 1.
+    else:
+        for s in np.arange( nstorm ):
+            for t in np.arange( nt ):
+                pres0=trx.pres[s,t]
+                if ((pres0 > pthresh0) and (pres0 <= pthresh1)):
+                    lon0=trx.lon[s,t]
+                    lat0=trx.lat[s,t]
+                    if (lon0 < 0):
+                        lon0=lon0+360.
+                    # west edge index
+                    iw=np.count_nonzero( x<=lon0) - 1
+                    iw=np.max((0,iw))
+                    iw=np.min((nx-2,iw))
+                    # south edge index
+                    js=np.count_nonzero( y<=lat0) - 1
+                    js=np.max((0,js))
+                    js=np.min((ny-2,js))
+                    dens[ js, iw ] = dens[ js, iw ] + 1.
+   
     dens = dens/Nyrs
     
     return dens
@@ -796,6 +841,58 @@ def winding_number(x, y, X, Y):
 
     # Point is inside the polygon if the winding number is nonzero
     return wn != 0
+
+def CategoryDefs( category='Cat1+' ):
+    
+    if (category=='TD-only'):
+        thresh0=0.
+        thresh1=18.
+        pthresh0=998.7
+        pthresh1=1015.3
+    if (category=='TS-only'):
+        thresh0=18.
+        thresh1=33.
+        pthresh0=980.7
+        pthresh1=998.7
+
+    if (category=='TD+'):
+        thresh0=1.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=1015.3
+    if (category=='TS+'):
+        thresh0=18.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=998.7
+    if (category=='Cat1+'):
+        thresh0=33.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=980.7
+    if (category=='Cat2+'):
+        thresh0=43.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=966.9
+    if (category=='Cat3+'):
+        thresh0=50.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=956.4
+    if (category=='Cat4+'):
+        thresh0=58.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=943.5
+    if (category=='Cat5+'):
+        thresh0=70.
+        thresh1=10000.
+        pthresh0=1.
+        pthresh1=922.6
+
+    return thresh0,thresh1,pthresh0,pthresh1
+
 """
 # Example usage
 X = [0, 2, 2, 0]

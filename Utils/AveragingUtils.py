@@ -28,6 +28,8 @@ def MonthsSeason( season ):
         monthsx=[1,2,3]
     if (season.lower()=='jja'):
         monthsx=[6,7,8]
+    if (season.lower()=='jas'):
+        monthsx=[7,8,9]
     if (season.lower()=='mam'):
         monthsx=[3,4,5]
     if (season.lower()=='son'):

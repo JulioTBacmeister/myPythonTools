@@ -100,7 +100,7 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
         print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' ")
         return
     
-    if (user in ['juliob','pel','tilmes'] ):
+    if (user in ['juliob','pel','tilmes','hannay'] ):
         path = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
         path = f'/glade/derecho/scratch/juliob/{exp}/run/{exp}.{hsPat}.{ymdPat}.nc' 
