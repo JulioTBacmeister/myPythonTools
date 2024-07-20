@@ -95,22 +95,7 @@ def gw_movmtn_src(ncol , band , u, v, netdt, netdt_shcu, xpwp_shcu, zm, src_leve
     # Calculate heating depth
     boti.fill(pver)
     topi.fill(Steer_k - 10) #- 10)
-    
-    """
-    hdepth = zm[:, topi] - zm[:, boti]
-    hd_idx = np.searchsorted(desc.hd, hdepth, side='left')
-
-    # Ensure heating depth is large enough
-    hd_idx[hdepth < np.maximum(desc.min_hdepth, desc.hd[0])] = 0
-
-    # Find the maximum heating rate
-    for k in range(topi.min(), boti.max() + 1):
-        q0 = np.maximum(q0, netdt[:, k])
-
-    q0 *= CF
-    qj = 9.81 / 285 * q0
-    """
-    
+        
     CS1 = np.sqrt(usteer**2 + vsteer**2)
     CS = CS1 * xv_steer + CS1 * yv_steer
 
@@ -128,17 +113,6 @@ def gw_movmtn_src(ncol , band , u, v, netdt, netdt_shcu, xpwp_shcu, zm, src_leve
 
     # Unit vector components in the direction of the wavevector
     xv, yv, ubisrc = get_unit_vector(udiff, vdiff)
-
-    """
-    # --- CAM ouptut routines not available in Python ---
-    # Output fields for diagnostics
-    outfld('UCELL_MOVMTN', usteer, ncol, lchnk)
-    outfld('VCELL_MOVMTN', vsteer, ncol, lchnk)
-    outfld('CS_MOVMTN', CS, ncol, lchnk)
-    outfld('CS1_MOVMTN', CS1, ncol, lchnk)
-    outfld('STEER_LEVEL_MOVMTN', steer_level, ncol, lchnk)
-    outfld('XPWP_SRC_MOVMTN', xpwp_src, ncol, lchnk)
-    """
 
     # Project the local wave relative wind at midpoints onto the direction of the wavevector
     for k in range(pver):
@@ -174,6 +148,137 @@ def gw_movmtn_src(ncol , band , u, v, netdt, netdt_shcu, xpwp_shcu, zm, src_leve
     # Output the source level
     src_level[:] = topi
     tend_level[:] = topi
+
+#--------------------------------------------------------------
+#  Original source scheme
+#--------------------------------------------------------------
+def gw_movmtn_src_v0(ncol , band , u, v, netdt, netdt_shcu, xpwp_shcu, zm, src_level, tend_level, tau, ubm, ubi, xv, yv, c, hdepth):
+    #-----------------------------------------------------------------------
+    # Driver for multiple gravity wave drag parameterization.
+    #-----------------------------------------------------------------------
+
+    # Import necessary utility functions
+    from gw_common import get_unit_vector, dot_2d, midpoint_interp
+
+    #---------------------------Local Storage-------------------------------
+    # Initialize arrays and local variables
+    pver = u.shape[1]
+    usteer = np.zeros(ncol)
+    vsteer = np.zeros(ncol)
+    uwavef = np.zeros((ncol, pver))
+    vwavef = np.zeros((ncol, pver))
+    steer_level = np.zeros(ncol)
+    Cell_Retro_Speed = np.zeros(ncol)
+    q0 = np.zeros(ncol)
+    qj = np.zeros(ncol)
+    xv_steer = np.zeros(ncol)
+    yv_steer = np.zeros(ncol)
+    umag_steer = np.zeros(ncol)
+    boti = np.zeros(ncol, dtype=int)
+    topi = np.zeros(ncol, dtype=int)
+    hd_idx = np.zeros(ncol, dtype=int)
+    uh = np.zeros(ncol)
+    Umini = np.zeros(ncol, dtype=int)
+    Umaxi = np.zeros(ncol, dtype=int)
+    tau0 = np.zeros(2*band.ngwv+1)
+    CS = np.zeros(ncol)
+    CS1 = np.zeros(ncol)
+    udiff = np.zeros(ncol)
+    vdiff = np.zeros(ncol)
+    ubmsrc = np.zeros(ncol)
+    shift = 0
+    ut = np.zeros(ncol)
+    uc = np.zeros(ncol)
+    umm = np.zeros(ncol)
+    taumm = np.zeros(ncol)
+    CF = 20.0  # Conversion factor
+    AL = 1.0e5  # Averaging length
+    hdmm_idx = np.zeros(ncol)
+    uhmm_idx = np.zeros(ncol)
+    c_idx = np.zeros((ncol, 2*band.ngwv+1))
+    xpwp_src = np.zeros(ncol)
+    Steer_k = pver - 2  #- 1
+
+    # Initialize tau array and other arrays
+    tau.fill(0.0)
+    hdepth.fill(0.0)
+    q0.fill(0.0)
+    tau0.fill(0.0)
+
+    # Calculate flux source from ShCu/PBL
+    xpwp_src = xpwp_shcu # shcu_flux_src(xpwp_shcu, ncol, pver + 1)
+
+    # Determine wind and unit vectors at the source (steering level)
+    usteer = u[:, Steer_k]
+    vsteer = v[:, Steer_k]
+    steer_level.fill(Steer_k)
+    xv_steer, yv_steer, umag_steer = get_unit_vector(usteer, vsteer)
+
+    # Account for retrograde cell motion
+    for i in range(ncol):
+        Cell_Retro_Speed[i] = min(np.sqrt(usteer[i]**2 + vsteer[i]**2), 0.0)
+
+    for i in range(ncol):
+        usteer[i] -= xv_steer[i] * Cell_Retro_Speed[i]
+        vsteer[i] -= yv_steer[i] * Cell_Retro_Speed[i]
+
+    # Calculate heating depth
+    boti.fill(pver)
+    topi.fill(Steer_k - 10) #- 10)
+        
+    CS1 = np.sqrt(usteer**2 + vsteer**2)
+    CS = CS1 * xv_steer + CS1 * yv_steer
+
+    # Calculate winds in the reference frame of the wave
+    for i in range(ncol):
+        udiff[i] = u[i, topi[i]] - usteer[i]
+        vdiff[i] = v[i, topi[i]] - vsteer[i]
+        uwavef[i, :] = u[i, :] - usteer[i]
+        vwavef[i, :] = v[i, :] - vsteer[i]
+
+    # Wave relative wind at source level
+    for i in range(ncol):
+        udiff[i] = uwavef[i, topi[i]]
+        vdiff[i] = vwavef[i, topi[i]]
+
+    # Unit vector components in the direction of the wavevector
+    xv, yv, ubisrc = get_unit_vector(udiff, vdiff)
+
+    # Project the local wave relative wind at midpoints onto the direction of the wavevector
+    for k in range(pver):
+        ubm[:, k] = dot_2d(uwavef[:, k], vwavef[:, k], xv, yv)
+
+    # Source level on-crest wind
+    for i in range(ncol):
+        ubmsrc[i] = ubm[i, topi[i]]
+
+    # Adjust the wave relative wind and unit vector components to be positive
+    for k in range(pver):
+        ubm[:, k] *= np.sign(ubmsrc)
+
+    xv *= np.sign(ubmsrc)
+    yv *= np.sign(ubmsrc)
+
+    # Compute the interface wind projection by averaging the midpoint winds
+    ubi[:, 1] = ubm[:, 0]
+    ubi[:, 1:pver] = midpoint_interp(ubm)
+
+    # Determine wind for the lookup table
+    for i in range(ncol):
+        ut[i] = ubm[i, topi[i]]
+        uh[i] = ut[i] - CS[i]
+
+    # Set phase speeds
+    c[:, 0] = 0.0
+
+    # Gravity wave sources
+    for i in range(ncol):
+        tau[i, 0, topi[i]:pver + 1] = xpwp_src[i]
+
+    # Output the source level
+    src_level[:] = topi
+    tend_level[:] = topi
+
 
 
 def index_of_nearest(x, grid):
@@ -220,4 +325,64 @@ def shcu_flux_src(xpwp_shcu, ncol, pverx):
 
     return xpwp_src
 
+def gw_pbl_top( ncol , pver, wpthlp, uvpwp, wp2, thlp2, zi ):
+    #-----------------------------------------------------------------------
+    # Driver for multiple gravity wave drag parameterization.
+    #-----------------------------------------------------------------------
+
+    # Import necessary utility functions
+    from gw_common import get_unit_vector, dot_2d, midpoint_interp
+
+    #---------------------------Local Storage-------------------------------
+    # Initialize arrays and local variables
+    pbl_top_u = np.zeros( (ncol) )-1.
+    top_u_found= np.zeros( (ncol) ,dtype=int )
+    pbl_top_s = np.zeros( (ncol) )-1.
+    top_s_found= np.zeros( (ncol) ,dtype=int )
+
+    pbl_top_xp2 = np.zeros( (ncol) )-1.
+    top_xp2_found= np.zeros( (ncol) ,dtype=int )
+
+    #--------------------------------------------------------------------
+    # Find top of unstably convecting PBL (SHFLX>0) if it exists. Search
+    # from surface to where wpthlp goes below 0
+    #---------------------------------------------------------------------
+    for i in np.arange( ncol ):
+        for k in np.arange( start=pver , stop=1, step=-1 ):
+            if ((wpthlp[i,k] >0.) and (top_u_found[i]==0)):
+                pbl_top_u[i] = zi[ i, k ]
+            if ((wpthlp[i,k] <=0.) and (top_u_found[i]==0)):
+                top_u_found[i] = 1
+                
+    #--------------------------------------------------------------------
+    # Find top of stable PBL (SHFLX<0) if it exists. Search
+    #---------------------------------------------------------------------
+    kbot = pver          
+    for i in np.arange( ncol ):
+        for k in np.arange( start=pver , stop=1, step=-1 ):
+            if ( (wpthlp[i,kbot] <0.) and (uvpwp[i,k] >0.005) and (top_s_found[i]==0)):
+                pbl_top_s[i] = zi[ i, k ]
+            if ((wpthlp[i,kbot] <0.) and (uvpwp[i,k] <=0.005) and (top_s_found[i]==0)):
+                top_s_found[i] = 1
+                
+                
+
+    #--------------------------------------------------------------------
+    # Find top of  PBL (SHFLX<0) based on WP2 and THLP2
+    #---------------------------------------------------------------------
+    thlp2_thresh = 0.001 # 1.e-3
+    wp2_thresh = 0.001 # 5.e-4
+    kbot = pver          
+    for i in np.arange( ncol ):
+        for k in np.arange( start=pver , stop=1, step=-1 ):
+            if ( ( (wp2[i,k] >wp2_thresh) or (thlp2[i,k] > thlp2_thresh ) ) and (top_xp2_found[i]==0)):
+                pbl_top_xp2[i] = zi[ i, k ]
+            if ( ( (wp2[i,k] <= wp2_thresh) and (thlp2[i,k] <= thlp2_thresh ) )  and (top_xp2_found[i]==0)):
+                top_xp2_found[i] = 1
+                
+                
+
+    
+    return pbl_top_u,pbl_top_s,pbl_top_xp2
+        
 

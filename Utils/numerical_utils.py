@@ -199,6 +199,31 @@ def Sphere_Lap2( f , lat, lon, wrap=True ):
     return lapf
 
 
+#---------------------------------------------------------------
+# Function to perform quick coarse graining in lieu of more 
+# more accurate conservative remapping
+#---------------------------------------------------------------
+def coarse_grain(array, block_size, lsum=False):
+    # Get the shape of the input array
+    m, n = array.shape
+
+    lmean=(not lsum)
+    
+    # Ensure the input array can be evenly divided into blocks
+    assert m % block_size == 0 and n % block_size == 0, "Array dimensions must be divisible by the block size"
+    
+    # Reshape the array to a 4D array (blocks)
+    reshaped_array = array.reshape(m // block_size, block_size, n // block_size, block_size)
+    
+    if (lmean==True):
+        # Compute the mean of each block
+        coarse_grained_array = reshaped_array.mean(axis=(1, 3))
+    if (lsum==True):
+        # Compute the mean of each block
+        coarse_grained_array = reshaped_array.sum(axis=(1, 3))
+    
+    return coarse_grained_array
+
 
 
     

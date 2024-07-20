@@ -243,19 +243,6 @@ def gw_prof(ncol, p, cpair, t):
         rhoi[i, k] = p.ifc[i, k] / (rair * ti[i, k])
         ni[i, k] = np.sqrt(gravit * gravit / (cpair * ti[i, k]))
 
-    """
-    
-  ! Interior points use centered differences.
-  ti(:,2:pver) = midpoint_interp(t)
-  do k = 2, pver
-     do i = 1, ncol
-        rhoi(i,k) = p%ifc(i,k) / (rair*ti(i,k))
-        dtdp = (t(i,k)-t(i,k-1)) * p%rdst(i,k-1)
-        n2 = gravit*gravit/ti(i,k) * (1._r8/cpair - rhoi(i,k)*dtdp)
-        ni(i,k) = sqrt(max(n2min, n2))
-     end do
-  end do
-    """
     # Interior points use centered differences
     ti[:, 1:pver] = midpoint_interp(t)
     for k in range(1,pver):
@@ -293,20 +280,6 @@ def gw_drag_prof(ncol, band, p, src_level, tend_level, dt,
     #alpha=np.zeros( pver )
     pref_edge=1_000.*p.ifc[0,:]/p.ifc[0,93]
     alpha = rad_alphas(pref_edge)
-    """
-    # Assuming all input variables are defined and have the correct dimensions
-    # Initialize output and local arrays
-    tau = np.zeros((ncol, 2 * ngwv + 1, pver + 1))
-    utgw = np.zeros((ncol, pver))
-    vtgw = np.zeros((ncol, pver))
-    ttgw = np.zeros((ncol, pver))
-    qtgw = np.zeros_like(q)  # Assuming q is already defined
-    egwdffi = np.zeros((ncol, pver + 1))
-    gwut = np.zeros((ncol, pver, 2 * ngwv + 1))
-    dttdf = np.zeros((ncol, pver))
-    dttke = np.zeros((ncol, pver))
-    tau_diag = np.zeros((ncol, pver + 1))  # Optional
-    """
 
     kbot_src = np.max( src_level )
     kbot_tend = np.max( tend_level )
@@ -337,10 +310,8 @@ def gw_drag_prof(ncol, band, p, src_level, tend_level, dt,
         # Determine the diffusivity for each column
         d = dback + kvtt[:, k]
 
-        print( "K ",k)
+        print( "K ",k, end=', ')
         for l_ in range(-band.ngwv, band.ngwv + 1):
-            print( "L" ,l_ )
-            #return
             l= l_ + band.ngwv
             # Determine the absolute value of the saturation stress
             # Define critical levels where the sign of (u-c) changes between interfaces

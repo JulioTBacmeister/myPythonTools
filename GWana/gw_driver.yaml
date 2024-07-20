@@ -1,0 +1,11 @@
+A1:
+  casename: "c160mm_ne30pg3_FMTndg_cciasi_x05"
+  user: "juliob"
+  grid: "hist"
+  hsPat: "cam.h1i"
+  ymdPat: "*"
+  parameters:
+    param1: 1
+    param2: 2
+A3:
+  hsPat: "cam.h3i"

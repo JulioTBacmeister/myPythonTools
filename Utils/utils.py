@@ -95,30 +95,49 @@ def MakePath( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='
 
 def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,verbose=False, open_dataset=False, help=False ):
     import xarray as xr
+    import glob
 
     if (help == True):
         print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' ")
         return
     
     if (user in ['juliob','pel','tilmes','hannay'] ):
-        path = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc' 
+        bpath = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/'  #{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
-        path = f'/glade/derecho/scratch/juliob/{exp}/run/{exp}.{hsPat}.{ymdPat}.nc' 
+        bpath = f'/glade/derecho/scratch/juliob/{exp}/run/'  #{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_camp' ):
-        path = f'/glade/campaign/cgd/amp/juliob/archive/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
+        bpath = f'/glade/campaign/cgd/amp/juliob/archive/{exp}/atm/{subd}/' # {exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'amwg_runs' ):
-        path = f'/glade/campaign/cgd/amp/amwg/runs/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
+        bpath = f'/glade/campaign/cgd/amp/amwg/runs/{exp}/atm/{subd}/' #{exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'omwg_mom6' ):
-        path = f'/glade/campaign/cesm/development/omwg/projects/MOM6/{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
+        bpath = f'/glade/campaign/cesm/development/omwg/projects/MOM6/' #{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'CMIP6' ):
         dir='/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001/atm/proc/tseries/month_1/'
-        path=dir+ 'f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.U.195001-201412.nc'
+        bpath=dir+ 'f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.U.195001-201412.nc'
 
+
+    if ( isinstance(ymdPat, list ) == False ):
+        print( f'Is ymdPat a list {isinstance(ymdPat, list )}' )
+        if (user == 'CMIP6'):
+            path=bpath
+        else:
+            path=f'{bpath}{exp}.{hsPat}.{ymdPat}.nc'
+    else:
+        path=[]
+        for ymdPat_ in ymdPat :
+            newpath=sorted( glob.glob( f'{bpath}{exp}.{hsPat}.{ymdPat_}.nc' ) )
+            #print(ymdPat_, newpath)
+            path = path + newpath
+
+    
     ###/glade/u/home/gmarques/campaign_MOM6/b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026g
     ### /glade/campaign/cesm/development/omwg/projects/MOM6/
 
     if (verbose==True):
-        print( path )
+        if ( isinstance(ymdPat, list ) == False ):
+            print( path )
+        else:
+            print( path[0], '\n', path[-1] )
 
     dex = { 'exp':exp ,
            'user':user, 

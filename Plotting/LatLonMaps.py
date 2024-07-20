@@ -68,14 +68,20 @@ def Maps( fields , lons, lats, **kwargs ):
     # must also be list with same length as fields
     ##################################################
     
-    MapProj = ccrs.PlateCarree(central_longitude=180.)
-    DataProj = ccrs.PlateCarree()
-    # Get the name of the projection
-    proj_name = MapProj.__class__.__name__
 
     nplots = len( fields )
     
     # Set up defaults for kwargs that are needed:
+    if ( 'Projection' in kwargs ):
+        MapProj = kwargs[ 'Projection' ]
+    else:
+        MapProj = MapProj = ccrs.PlateCarree(central_longitude=180.)
+
+    DataProj = ccrs.PlateCarree()
+    # Get the name of the projection
+    proj_name = MapProj.__class__.__name__
+
+    
     if ( 'verbose' in kwargs ):
         verbose_ = kwargs[ 'verbose' ]
     else:
@@ -172,6 +178,7 @@ def Maps( fields , lons, lats, **kwargs ):
             print( f' color map={cmap_} clevels={clev_} ' )
 
         co1=ax1.contourf(lon_ ,lat_ , AAxy ,transform=DataProj,cmap=cmap_ ,levels=clev_, extend='both' )
+        gls=ax1.gridlines(draw_labels=True)
     
         cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
         ax1.set_title( title_ , fontsize=16)
@@ -267,7 +274,112 @@ def Maps_NoProj( fields , lons, lats, **kwargs ):
         else:
             title_ = titles[0]
 
-        co1=ax1.contourf(lon_ ,lat_ , AAxy , cmap=cmap_ ,levels=clev_ )
+        co1=ax1.contourf(lon_ ,lat_ , AAxy , cmap=cmap_ ,levels=clev_ , extend='both' )
+    
+        cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
+        ax1.set_title( title_ , fontsize=16)
+        #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
+
+def Maps_Unstruc( fields , lons, lats, **kwargs ):
+    ##################################################
+    #           "Simple" latlon plots for sanity
+    #---------------------------------------------
+    # Only mandatory input should be a fields list
+    # containing 2D (lat,lon) variables to be plotted, 
+    # along with lons and lats.  Currently, lons and lats
+    # must also be list with same length as fields
+    ##################################################
+    
+
+    nplots = len( fields )
+    
+    #fig = plt.figure(figsize=(30, 18))
+    
+    if ( 'figsize' in kwargs ):
+        figsize = kwargs[ 'figsize' ]
+    else:
+        figsize=(20,12)
+    
+    if ( 'CoastColors' in kwargs ):
+        CoastColors = kwargs[ 'CoastColors' ]
+    else:
+        value = 'black'
+        CoastColors = [value for _ in range(nplots)]
+
+    if ( 'clevs' in kwargs ):
+        clevs = kwargs[ 'clevs' ]
+    else:
+        value = 21
+        clevs = [value for _ in range(nplots)]
+
+    if ( 'cmaps' in kwargs ):
+        cmaps = kwargs[ 'cmaps' ]
+    else:
+        value = 'gist_ncar'
+        cmaps = [value for _ in range(nplots)]
+
+    if ( 'scale' in kwargs ):
+        scale = kwargs[ 'scale' ]
+    else:
+        value = 1.0
+        scale = [value for _ in range(nplots)]
+
+    if ( 'titles' in kwargs ):
+        titles = kwargs[ 'titles' ]
+    else:
+        value = 'Title Placeholder'
+        titles = [value for _ in range(nplots)]
+    
+
+    if (nplots==1):
+        nx,ny=1,1
+    elif (nplots==2):
+        nx,ny=2,1
+    elif (nplots==3):
+        nx,ny=3,1
+    elif (nplots==4):
+        nx,ny=2,2
+    elif ((nplots>4)and(nplots<=9)):
+        nx,ny=3,3
+    else:
+        ny = 3
+        nx = math.ceil( nplots / ny)
+
+    fig = plt.figure(figsize=figsize )
+    
+    npo=0
+    for field in fields:
+        ipo=npo
+        npo=npo+1
+        Axes = Pu.axes_def(n=npo,nxplo=nx,nyplo=ny ) 
+    
+        ax1 = fig.add_axes( Axes ) #, projection=MapProj)
+    
+        AAxy = scale[ipo]*field 
+        if ( len(lons) >= len(fields) ):
+            lon_ = lons[ipo]
+            lat_ = lats[ipo]
+        else:
+            lon_ = lons[0]
+            lat_ = lats[0]
+        if ( len(clevs) >= len(fields) ):
+            clev_ = clevs[ipo]
+        else:
+            clev_ = clevs[0]
+        if ( len(cmaps) >= len(fields) ):
+            cmap_ = cmaps[ipo]
+        else:
+            cmap_ = cmaps[0]
+        if ( len(titles) >= len(fields) ):
+            title_ = titles[ipo]
+        else:
+            title_ = titles[0]
+
+        co1=ax1.tricontourf(lon_ ,lat_ , AAxy , cmap=cmap_ ,levels=clev_  , extend='both' )
+        if ( 'topo' in kwargs ):
+            topo=kwargs['topo']
+            ltop=ax1.tricontour(lon_ ,lat_ , topo , colors='white' ,levels= [5,1000,2000,5000] ) #[1,10,100,1000] )
+            
     
         cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
         ax1.set_title( title_ , fontsize=16)
