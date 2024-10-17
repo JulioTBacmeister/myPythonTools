@@ -23,7 +23,7 @@ import importlib
 
 importlib.reload(vAB)
 
-def data(fld,season,months=-999,**kwargs):
+def data(fld,season=None ,months=-999,**kwargs):
 
     ##################################
     # Parse out logic etc of kwargs
@@ -41,6 +41,15 @@ def data(fld,season,months=-999,**kwargs):
     if (fld in ('U','V','T','Q','PS','OMEGA') ):
         if 'Years' in kwargs:
             yearsA = kwargs['Years']
+            if ( yearsA == '*' ):
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+                yearsA = '1979_2022'
+            elif ( yearsA == '1979_2022' ):
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+            else: 
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
+        elif 'Timecube' in kwargs:
+            yearsA = '*'
             ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
         else:
             yearsA = '1979_2022'
@@ -49,6 +58,7 @@ def data(fld,season,months=-999,**kwargs):
         path_C = ERA5dir + 'ERA5.native.time.' + yearsA +'-*.nc'
         Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
         print( f" Validation data {fld} has dims {Dc[fld].dims}")
+        print( f" Validation data read from {path_C}")
         
         if (Dc.hybm.dims[0] == 'time'):
             hybm = Dc.hybm.values[0,:]
@@ -70,6 +80,18 @@ def data(fld,season,months=-999,**kwargs):
         lev = 1_000.*hyam[:] +1_000.*hybm[:] 
         lon =Dc.longitude.values
         lat =Dc.latitude.values
+
+        if 'Timecube' in kwargs:
+            aa=Dc[fld].values
+            if 'zlev' in kwargs:
+                lev = -7. * np.log( lev /1_000. )
+            #----- Pack output into a 'dict'
+            dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+                 'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
+                 'years':yearsA, 'data_path':path_C,'data_source':'ERA5','rcode':0}
+            return dic
+
+        
         aa = Av.Seasonal( ds=Dc, season=season , fld=fld)
 
         """

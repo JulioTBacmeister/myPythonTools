@@ -93,7 +93,8 @@ def MakePath( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='
 
     return path
 
-def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,verbose=False, open_dataset=False, help=False ):
+def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,
+                 verbose=False, open_dataset=False, help=False, add_coords=False, shift_lons=False ):
     import xarray as xr
     import glob
 
@@ -148,7 +149,22 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
     
     if (open_dataset==True):
         X = xr.open_mfdataset( path ,data_vars='different', coords='different' )
+
+        if (shift_lons==True):
+            X['lon'] = xr.where(X['lon'] > 180, X['lon'] - 360, X['lon'])
+            # Roll the dataset along the longitude axis
+            X = X.roll(lon=len(X['lon']) // 2, roll_coords=True)
+
         dex['X']=X
+        if (add_coords==True):
+            lon=X.lon.values
+            lat=X.lat.values
+            lev=X.lev.values
+            zlev=-7.0*np.log( lev/1_000. )
+            dex['lon']  =lon
+            dex['lat']  =lat
+            dex['lev']  =lev
+            dex['zlev'] =zlev
 
     # Use class defined above to enable 'dict.key' syntax.
     #--------------------------------

@@ -75,7 +75,7 @@ def Maps( fields , lons, lats, **kwargs ):
     if ( 'Projection' in kwargs ):
         MapProj = kwargs[ 'Projection' ]
     else:
-        MapProj = MapProj = ccrs.PlateCarree(central_longitude=180.)
+        MapProj = ccrs.PlateCarree(central_longitude=180.)
 
     DataProj = ccrs.PlateCarree()
     # Get the name of the projection

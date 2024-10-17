@@ -278,16 +278,37 @@ def Seasonal( ds, season, **kwargs ):
     else:
         VarDims = parse_dims(ds[fld].dims) #'tzyx'
         print(f" dims key parsed to {VarDims} ")
-    
+
+    if 'contiguous' in kwargs:
+        contiguous = kwargs['contiguous']
+    else:
+        contiguous=False
+
     months,years = MonthsInDataset( ds )
+    if ( (season=='djf')and(contiguous==True) ):
+        print( f'do stuff here' )
     
     imos = MonthsSeason( season=season )
     imonths=np.asarray(months)
     #Iseason = np.where( ( imonths== imos[0] ) | ( imonths==imos[1] ) | ( imonths==imos[2] ) )
     Iseason = ListMatch( list1=imonths, list2=imos )
+
+    
     print( "Indices of months", Iseason[0] )
     nmos=len(Iseason[0]) 
     print( f" length of Iseason {nmos} ")
+
+    months_in_av = np.zeros( nmos, dtype=int )
+    years_in_av  = np.zeros( nmos, dtype=int )
+    for n in np.arange( nmos ):
+        t = Iseason[0][n]
+        months_in_av[n] = months[t]
+        years_in_av[n]  = years[t]
+
+    #print( "mon,year actaully in average " )
+    #print( months_in_av )
+    #print( years_in_av )
+    
     
     if (VarDims=='tzyx'):
         nt,nz,ny,nx = np.shape( A )
@@ -325,7 +346,7 @@ def Seasonal( ds, season, **kwargs ):
     
     if ('return_time' in kwargs):
         if kwargs['return_time']==True:
-            return A_mmm,years,months
+            return A_mmm,years_in_av,months_in_av
     else:
         return A_mmm
         
