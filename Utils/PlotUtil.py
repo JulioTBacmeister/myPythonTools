@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def axes_def(n,nxplo=1,nyplo=1,xpan=0.9,ypan=0.9,xcor=1.,ycor=1.,top_panel=0,left_panel=0):
+def axes_def(n,nxplo=1,nyplo=1,xpan=0.9,ypan=0.9,xcor=1.,ycor=1.,top_panel=0,left_panel=0,top_whitespace=0.):
     dxplo=xpan/nxplo 
     dyplo=ypan/nyplo
     dxcor=xcor/nxplo
@@ -9,19 +9,21 @@ def axes_def(n,nxplo=1,nyplo=1,xpan=0.9,ypan=0.9,xcor=1.,ycor=1.,top_panel=0,lef
 
     jplo = (n-1)//nxplo #+ 1
     iplo = n-1 - jplo*nxplo
-    Axes = [ iplo*dxcor , 1.-(jplo+1)*dycor , dxplo , dyplo ] 
+
+    top_edge = 1.0 - top_whitespace
+    Axes = [ iplo*dxcor , top_edge-(jplo+1)*dycor , dxplo , dyplo ] 
     
     if ((top_panel>0)and(left_panel==0)):
         dyplo1=dyplo-top_panel
-        Axes0 = [ iplo*dxcor , 1.-(jplo+1)*dycor , dxplo , dyplo1 ] 
-        Axes1 = [ iplo*dxcor , 1.-(jplo+1)*dycor + dyplo1, dxplo , top_panel ] 
+        Axes0 = [ iplo*dxcor , top_edge-(jplo+1)*dycor , dxplo , dyplo1 ] 
+        Axes1 = [ iplo*dxcor , top_edge-(jplo+1)*dycor + dyplo1, dxplo , top_panel ] 
         Axes  = (Axes0,Axes1)
     if ((top_panel>0)and(left_panel>0)):
         dyplo1=dyplo-top_panel
         dxplo1=dxplo-left_panel
-        Axes0 = [ iplo*dxcor        , 1.-(jplo+1)*dycor          , dxplo1     , dyplo1 ] 
-        Axes1 = [ iplo*dxcor        , 1.-(jplo+1)*dycor + dyplo1 , dxplo1     , top_panel ] 
-        Axes2 = [ iplo*dxcor+dxplo1 , 1.-(jplo+1)*dycor          , left_panel , dyplo1 ] 
+        Axes0 = [ iplo*dxcor        , top_edge-(jplo+1)*dycor          , dxplo1     , dyplo1 ] 
+        Axes1 = [ iplo*dxcor        , top_edge-(jplo+1)*dycor + dyplo1 , dxplo1     , top_panel ] 
+        Axes2 = [ iplo*dxcor+dxplo1 , top_edge-(jplo+1)*dycor          , left_panel , dyplo1 ] 
         Axes  = (Axes0,Axes1,Axes2)
     
     return Axes

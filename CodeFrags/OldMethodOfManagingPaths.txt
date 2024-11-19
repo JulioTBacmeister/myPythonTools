@@ -1,0 +1,33 @@
+
+"""
+workdir_ = '/glade/work/juliob/'
+import sys
+#######################################
+# Leave this for now. But it should change to better
+# method as here:
+# import os
+# module_a_dir = os.path.dirname(os.path.abspath(__file__))
+# utils_path = os.path.join(module_a_dir, '..', 'Utils')
+# sys.path.append(utils_path)
+# print( f" a path added in {__name__} {utils_path} ")
+########################################
+sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
+sys.path.append(workdir_ + 'myPythonTools/Utils/')
+#sys.path.append(workdir_ + 'PyRegridding/Regridder/')
+
+# Own local packages
+import AveragingUtils as Av
+#import VertRegridFlexLL as Vrg  # This is toxic for some reason
+import PlotUtil as Pu
+import validation_data as Val
+import var_A_x_B as vAB
+import utils as uti
+
+sys.path.append(workdir_ + 'PyRegridding/Utils/')
+import MakePressures as MkP
+import GridUtils as GrU
+
+
+sys.path.append(workdir_ + 'PyRegridding/Drivers/')
+import RegridField as RgF
+"""

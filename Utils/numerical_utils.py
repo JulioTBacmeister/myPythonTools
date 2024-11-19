@@ -17,10 +17,7 @@ class AttrDict(dict):
 
 import sys
 import os
-This_module_path = os.getcwd()  #os.path.dirname(os.path.abspath(__file__))
-sys.path.append(This_module_path )
-
-import constants as co
+from myPythonTools.Utils import constants as co
 
 def IwIe( i , nx, wrap=True ):
     iw = i - 1

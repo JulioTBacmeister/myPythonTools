@@ -102,7 +102,7 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
         print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' ")
         return
     
-    if (user in ['juliob','pel','tilmes','hannay'] ):
+    if (user in ['juliob','pel','tilmes','hannay','bramberg'] ):
         bpath = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/'  #{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
         bpath = f'/glade/derecho/scratch/juliob/{exp}/run/'  #{exp}.{hsPat}.{ymdPat}.nc' 
@@ -194,6 +194,44 @@ def trim_to_year( D , nyr_max=1000 ):
     nyr=np.minimum( nyr_max*12 , 12*(len(D.X.time)//12) )
     print(f"Discarding last {len(D.X.time)-nyr} months of {D.exp}" )
     D.X=D.X.isel(time=np.arange(nyr))
+
+
+def days_in_month(year, month, check_for_leap_year=True):
+    # February logic with optional leap year check
+    if month == 2:
+        if check_for_leap_year:
+            if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
+                return 29
+            else:
+                return 28
+        else:
+            return 28
+    # Months with 30 days
+    elif month in [4, 6, 9, 11]:
+        return 30
+    # Months with 31 days
+    elif month in [1, 3, 5, 7, 8, 10, 12]:
+        return 31
+    else:
+        raise ValueError("Invalid month. Month should be an integer between 1 and 12.")
+
+# Function to find the nearest index, handling out-of-range cases
+def find_nearest_plev_indices(plev=None, target_levels=None):
+    import numpy as np
+    indices = []
+    for level in target_levels:
+        if level > np.max(plev):  # if above the highest level
+            indices.append(-1)
+        elif level < np.min(plev):  # if below the lowest level
+            indices.append(-1)
+        else:
+            # Find the nearest index
+            nearest_index = (np.abs(plev - level)).argmin()
+            indices.append(nearest_index)
+
+    indices = np.array( indices )
+        
+    return indices
 
 
 

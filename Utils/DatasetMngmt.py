@@ -1,12 +1,12 @@
 ##########################################
 #
 ##########################################
-workdir_ = '/glade/work/juliob/'
 import sys
-sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
-sys.path.append(workdir_ + 'myPythonTools/Utils/')
-sys.path.append(workdir_ + 'PyRegridding/Regridder/')
-sys.path.append(workdir_ + 'PyRegridding/Utils/')
+
+workdir_ = '/glade/work/juliob/'
+if ( workdir_ not in sys.path ):
+    sys.path.append(workdir_)
+    print( f" a path to {workdir_} added in {__name__} ")
 
 
 # The usual

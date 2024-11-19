@@ -1,17 +1,5 @@
-workdir_ = '/glade/work/juliob/'
-import sys
-sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
-sys.path.append(workdir_ + 'myPythonTools/Plotting/')
-sys.path.append(workdir_ + 'PyRegridding/Regridder/')
-
-
-#import xyp_plot as xyp
-#import ana as a
-
 from datetime import date
 import numpy as np
-import xarray as xr
-import matplotlib.pyplot as plt
 
 # Some useful packages 
 import importlib
@@ -199,100 +187,32 @@ def parse_dims( dims ):
     
     return gridKey
 
-def SeasonalZonal( ds, season, **kwargs ):
-    
-    if 'fld' in kwargs:
-        fld = kwargs['fld']
-        print( 'Field name ', fld, ' was supplied as argument')
-        A = ds[fld]
-        #print( ' values method complete')
-    elif 'data' in kwargs:
-        A = kwargs['data']
-    else:
-        assert A is not None, "A needs to gien "
-    
-    if 'dims' in kwargs:
-        VarDims = kwargs['dims']
-    else:
-        VarDims = parse_dims(ds[fld].dims) #'tzyx'
-    
-    
-    
-    #A=ds[fld].values
-    #time_bnds = ds['time_bnds']
-    #date=ds['date']
-    if ('time' in ds):
-        time=ds['time']
-    lats=ds['lat']
-
-    months,years = MonthsInDataset( ds )
-    
-        
-    imos = MonthsSeason( season=season )
-    imonths=np.asarray(months)
-    #Iseason = np.where( ( imonths== imos[0] ) | ( imonths==imos[1] ) | ( imonths==imos[2] ) )
-    Iseason = ListMatch( list1=imonths, list2=imos )
-    print( "Indices of months", Iseason[0] )
-    nmos=len(Iseason[0]) 
-    
-    
-    tic_mmm_zon = ttime.perf_counter()
-    """
-    if (VarDims=='levlatlon'):
-        A_mmm = np.average( A[ season[0] ,:,:,:].values, axis=0 )
-        A_mmm_zon = np.average( A_mmm , axis=2 )
-        print(" 3D lev-lat-lon variable " )
-    """
-    print("New algo")
-    if (VarDims=='tzyx'):
-        nt,nz,ny,nx=np.shape( A )
-        A_zon = np.zeros( (nmos,nz,ny) )
-        for n in np.arange( nmos ):
-            t = Iseason[0][n]
-            print( t ,end=',')
-            A_zon[n,:,:] = np.average( A[ t,:,:,:].values, axis=2 )
-        A_mmm_zon = np.average( A_zon , axis=0 )
-        print(" 3D lev-lat-lon variable " )
-    toc_mmm_zon = ttime.perf_counter()
-    pTime = f"aVERAGING took  {toc_mmm_zon - tic_mmm_zon:0.4f} seconds"
-    print(pTime)
-
-    if ('return_time' in kwargs):
-        if kwargs['return_time']==True:
-            return A_mmm_zon,years,months
-    else:
-        return A_mmm_zon
-
 def Seasonal( ds, season, **kwargs ):
     
-    if 'fld' in kwargs:
-        fld = kwargs['fld']
-        A = ds[fld]
-    elif 'data' in kwargs:
-        A = kwargs['data']
-    else:
-        assert A is not None, "A needs to gien "
-    
-    if 'dims' in kwargs:
-        VarDims = kwargs['dims']
-    else:
-        VarDims = parse_dims(ds[fld].dims) #'tzyx'
-        print(f" dims key parsed to {VarDims} ")
-
+    #----------------------------------------------------
+    # Fist thing to do is trim the Dataset to ensure/test
+    # 'seasonal contiguity' if desired. Note, that
+    # unless something is done in except block below,
+    # code will just print an error message and go on 
+    # to clauclate seasonal mean anyway
+    #----------------------------------------------------
     if 'contiguous' in kwargs:
         contiguous = kwargs['contiguous']
     else:
-        contiguous=False
+        contiguous=True
+
+    if ( (season=='djf')and(contiguous==True) ):
+        try:
+            ds=contiguous_DJF( ds )
+            print("Ensured contiguous DJF")
+        except ValueError as e:
+            print(e)
 
     months,years = MonthsInDataset( ds )
-    if ( (season=='djf')and(contiguous==True) ):
-        print( f'do stuff here' )
     
     imos = MonthsSeason( season=season )
     imonths=np.asarray(months)
-    #Iseason = np.where( ( imonths== imos[0] ) | ( imonths==imos[1] ) | ( imonths==imos[2] ) )
     Iseason = ListMatch( list1=imonths, list2=imos )
-
     
     print( "Indices of months", Iseason[0] )
     nmos=len(Iseason[0]) 
@@ -305,11 +225,24 @@ def Seasonal( ds, season, **kwargs ):
         months_in_av[n] = months[t]
         years_in_av[n]  = years[t]
 
-    #print( "mon,year actaully in average " )
-    #print( months_in_av )
-    #print( years_in_av )
+    #--------------------------------------------
+    # Now get varibale from Dataset and try to 
+    # figure out its shape
+    #-------------------------------------------
+    if 'fld' in kwargs:
+        fld = kwargs['fld']
+        A = ds[fld]
+    elif 'data' in kwargs:
+        A = kwargs['data']
+    else:
+        assert A is not None, "A needs to given "
     
-    
+    if 'dims' in kwargs:
+        VarDims = kwargs['dims']
+    else:
+        VarDims = parse_dims(ds[fld].dims) #'tzyx'
+        print(f" dims key parsed to {VarDims} ")
+
     if (VarDims=='tzyx'):
         nt,nz,ny,nx = np.shape( A )
         A_mmm = np.zeros( (nz,ny,nx) )
@@ -318,7 +251,6 @@ def Seasonal( ds, season, **kwargs ):
             print( t ,end=',')
             A_mmm = A_mmm + A[ t,:,:,:].values/nmos
             
-        #A_mmm = np.average( A[ season[0] ,:,:,:], axis=0 )
         print(" time _X_ 3D lev-lat-lon variable " )
         
     if (VarDims=='tyx'):
@@ -333,20 +265,64 @@ def Seasonal( ds, season, **kwargs ):
             print( t ,end=',')
             A_mmm = A_mmm + A[ t,:,:].values/nmos
             
-        #A_mmm = np.average( A[ season[0] ,:,:,:], axis=0 )
         print(" time _X_ 3D lev-ncol variable " )
         
     if (VarDims=='tc'):
         A_mmm = np.average( A[ Iseason[0] ,: ], axis=0 )
         print(" time _X_ 2D ncol variable " )
-
-
-
-
     
     if ('return_time' in kwargs):
         if kwargs['return_time']==True:
             return A_mmm,years_in_av,months_in_av
     else:
         return A_mmm
-        
+
+def contiguous_DJF(ds):
+    """
+    Finds a contiguous sequence of months from December to February (DJF) in the input xarray dataset.
+    
+    Parameters:
+        months (list or array): A list or array of month numbers (1-12).
+    
+    Returns:
+        array: The contiguous DJF months if found.
+    
+    Raises:
+        ValueError: If December or February is not found, or if a contiguous DJF period is not possible.
+    """
+
+    months,years = MonthsInDataset( ds )
+    monthsN = np.array(months)
+    
+    # Find the first occurrence of December (12)
+    indices = np.where(monthsN == 12)[0]
+    if indices.size > 0:
+        firstDec = indices[0]
+    else:
+        raise ValueError("December not found in the dataset.")
+    
+    # Find the last occurrence of February (2)
+    indices = np.where(monthsN == 2)[0]
+    if indices.size > 0:
+        lastFeb = indices[-1]
+    else:
+        raise ValueError("February not found in the dataset.")
+    
+    # Ensure that December occurs before February for a valid DJF period
+    if firstDec < lastFeb:
+        print( f"Succesfully trimming dataset from {firstDec} to {lastFeb}" )
+        print( f"{ds.time[firstDec].values}" )
+        print( f"{ds.time[lastFeb].values}" )
+        ds_djf = ds.isel(time=slice(firstDec, lastFeb+1))  #[firstDec:lastFeb+1]
+        return ds_djf
+    else:
+        raise ValueError("Contiguous DJF not possible")
+
+
+
+
+
+
+
+
+

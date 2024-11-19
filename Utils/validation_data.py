@@ -1,20 +1,19 @@
 ##########
 # get validation data
 ##########
-workdir_ = '/glade/work/juliob/'
 import sys
 import os
-sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
-sys.path.append(workdir_ + 'myPythonTools/Utils/')
-sys.path.append(workdir_ + 'PyRegridding/Regridder/')
-sys.path.append(workdir_ + 'PyRegridding/Utils/')
+
+workdir_ = '/glade/work/juliob'
+if ( workdir_ not in sys.path ):
+    sys.path.append(workdir_)
+    print( f" a path to {workdir_} added in {__name__} ")
 
 # Own local packages
-import AveragingUtils as Av
-import MakePressures as MkP
-import var_A_x_B as vAB
-import GridUtils as GrU
-
+from myPythonTools.Utils import AveragingUtils as Av
+from PyRegridding.Utils import MakePressures as MkP
+from PyRegridding.Utils import GridUtils as GrU
+from PyRegridding.Regridder import var_A_x_B as vAB
 
 import numpy as np
 import xarray as xr
@@ -35,6 +34,63 @@ def data(fld,season=None ,months=-999,**kwargs):
             regrid_x_mgrid = True
     else:
         regrid_x_mgrid = False
+
+    if 'ERA5hourly' in kwargs: 
+        era5dir = "/glade/campaign/collections/rda/data/ds633.6/e5.oper.an.ml/"
+        year,month,day,hour = kwargs['year'],kwargs['month'],kwargs['day'],kwargs['hour']
+        hour0=(hour//6)*6
+        hour1=hour0+5
+        ymdh0=str( year ).zfill(4)+str(month).zfill(2)+str(day).zfill(2)+str(hour0).zfill(2)
+        ymdh1=str( year ).zfill(4)+str(month).zfill(2)+str(day).zfill(2)+str(hour1).zfill(2)
+        ymdh=ymdh0+'_'+ymdh1
+        monStr=str( year ).zfill(4)+str(month).zfill(2)
+        wrkdir=era5dir+monStr+"/"
+
+        spfile= wrkdir + 'e5.oper.an.ml.128_134_sp.regn320sc.'+ymdh+'.nc'
+        tfile = wrkdir + 'e5.oper.an.ml.0_5_0_0_0_t.regn320sc.'+ymdh+'.nc'
+        qfile = wrkdir + 'e5.oper.an.ml.0_5_0_1_0_q.regn320sc.'+ymdh+'.nc'
+        ufile = wrkdir + 'e5.oper.an.ml.0_5_0_2_2_u.regn320uv.'+ymdh+'.nc'
+        vfile = wrkdir + 'e5.oper.an.ml.0_5_0_2_3_v.regn320uv.'+ymdh+'.nc'
+        wfile = wrkdir + 'e5.oper.an.ml.0_5_0_2_8_w.regn320sc.'+ymdh+'.nc'
+
+        ihour = hour-hour0
+        if (fld == 'U'):
+            fileN = wrkdir + 'e5.oper.an.ml.0_5_0_2_2_u.regn320uv.'+ymdh+'.nc'
+            print(f'Reading {fld} in {fileN} at time index={ihour}')
+            Dc = xr.open_dataset( fileN )
+            aa = Dc.U[ihour,:,:,:].values
+        if (fld == 'V'):
+            fileN = wrkdir + 'e5.oper.an.ml.0_5_0_2_3_v.regn320uv.'+ymdh+'.nc'
+            print(f'Reading {fld} in {fileN} at time index={ihour}')
+            Dc = xr.open_dataset( fileN )
+            aa = Dc.V[ihour,:,:,:].values
+        if (fld == 'T'):
+            fileN = wrkdir + 'e5.oper.an.ml.0_5_0_0_0_t.regn320sc.'+ymdh+'.nc'
+            print(f'Reading {fld} in {fileN} at time index={ihour}')
+            Dc = xr.open_dataset( fileN )
+            aa = Dc.T[ihour,:,:,:].values
+        if (fld == 'Q'):
+            fileN = wrkdir + 'e5.oper.an.ml.0_5_0_1_0_q.regn320sc.'+ymdh+'.nc'
+            print(f'Reading {fld} in {fileN} at time index={ihour}')
+            Dc = xr.open_dataset( fileN )
+            aa = Dc.Q[ihour,:,:,:].values
+
+        plev = 100_000. * Dc.b_model.values +  Dc.a_model.values
+        zlev = -7.0*np.log( plev /100_000. )
+        #----- Pack output into a 'dict'
+        dic={'aa':aa,
+             'lev':zlev,
+             'lat':Dc.latitude.values,
+             'lon':Dc.longitude.values,
+             'hyam':Dc.a_model.values,
+             'hyai':Dc.a_half.values,
+             'hybm':Dc.b_model.values,
+             'hybi':Dc.b_half.values,
+             'date':[year,month,day,hour],
+             'years':ymdh, 'data_path':fileN,'data_source':'ERA5','rcode':0}
+        
+        return dic
+
 
     ADFobsdir = '/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
     
@@ -94,29 +150,6 @@ def data(fld,season=None ,months=-999,**kwargs):
         
         aa = Av.Seasonal( ds=Dc, season=season , fld=fld)
 
-        """
-        if 'zlev' in kwargs:
-            lev = -7. * np.log( lev /1_000. )
-        #----- Pack output into a 'dict'
-        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
-             'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
-             'years':yearsA, 'data_path':path_C,'rcode':0}
-        
-       
-        if (regrid_x_mgrid ==True ):
-            # Put ERA5 data on model grid for comparisons
-            # This needs rethinking
-            #--------------------------------------------
-            # mgrid needs the following components
-            #   mgrid={ps:ps_m, hyam:hyam_m, hybm:hybm_m, hyai:hyai_m, hybi:hybi_m, hgrid:hgrid_m }
-            ps = Av.Seasonal( ds=Dc, season=season , fld='PS')
-            mgrid  = kwargs['mgrid']
-            obsgrid={'ps':ps, 'hyam':hyam, 'hybm':hybm, 'hyai':hyai, 'hybi':hybi, 'hgrid':'ERA5' }
-            dic = to_mgrid( aa, mgrid=mgrid, obsgrid=obsgrid ) 
-            if 'zlev' in kwargs:
-                dic['lev'] = -7. * np.log( dic['lev'] /1_000. )
-        else:
-        """
         if 'zlev' in kwargs:
             lev = -7. * np.log( lev /1_000. )
 
