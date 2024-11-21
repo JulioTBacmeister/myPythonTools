@@ -1,40 +1,28 @@
 #!/usr/bin/env python
-
+################################################
+# New style 
+################################################
 import sys
-#######################################
-# Leave this for now. But it should change to better
-# method as here:
 import os
-This_module_path = os.getcwd()  #os.path.dirname(os.path.abspath(__file__))
-workdir_ = os.path.join(This_module_path, '../../' )
-# sys.path.append(utils_path)
-# print( f" a path added in {__name__} {utils_path} ")
 
-print( f" In {__name__} we have This_module_path={This_module_path} " )
-print( f" In {__name__} we have workdir_={workdir_} " )
-""
-sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
-sys.path.append(workdir_ + 'myPythonTools/Utils/')
-sys.path.append(workdir_ + 'myPythonTools/Plotting/')
-sys.path.append(workdir_ + 'myPythonTools/CASutils/')
-#sys.path.append(workdir_ + 'PyRegridding/Regridder/')
-sys.path.append(workdir_ + 'PyRegridding/Utils/')
+workdir_ = '/glade/work/juliob'
+if ( workdir_ not in sys.path ):
+    sys.path.append(workdir_)
+    print( f" a path to {workdir_} added in {__name__} {utils_path} ")
 
-# Own local packages
-import AveragingUtils as Av
-#import VertRegridFlexLL as Vrg  # This is toxic for some reason
-import PlotUtil as Pu
-import utils as uti
-import numerical_utils as nuti
-import validation_data as Val
-import var_A_x_B as vAB
-import MakePressures as MkP
-import GridUtils as GrU
-import LatLonMaps as LL
-import filter_utils as fu
+from myPythonTools.Utils import utils as uti
+from myPythonTools.Utils import numerical_utils as nuti
+from myPythonTools.Utils import AveragingUtils as Av
+from myPythonTools.Utils import validation_data as Val
+from myPythonTools.Utils import PlotUtil as Pu
+from myPythonTools.Plotting import LatLonMaps as LL 
+from myPythonTools.CASutils import filter_utils as fu 
 
-sys.path.append(workdir_ + 'PyRegridding/Drivers/')
-import RegridField as RgF
+from PyRegridding.Utils import GridUtils as GrU
+from PyRegridding.Utils import MakePressures as MkP
+from PyRegridding.Drivers import RegridField as RgF
+
+
 
 # The usual
 from datetime import date
