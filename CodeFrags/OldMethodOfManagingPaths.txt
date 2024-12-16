@@ -31,3 +31,41 @@ import GridUtils as GrU
 sys.path.append(workdir_ + 'PyRegridding/Drivers/')
 import RegridField as RgF
 """
+
+
+
+Other code
+import sys
+#######################################
+# Leave this for now. But it should change to better
+# method as here:
+import os
+This_module_path = os.getcwd()  #os.path.dirname(os.path.abspath(__file__))
+workdir_ = os.path.join(This_module_path, '../../' )
+# sys.path.append(utils_path)
+# print( f" a path added in {__name__} {utils_path} ")
+
+print( f" In {__name__} we have This_module_path={This_module_path} " )
+print( f" In {__name__} we have workdir_={workdir_} " )
+""
+sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
+sys.path.append(workdir_ + 'myPythonTools/Utils/')
+sys.path.append(workdir_ + 'myPythonTools/Plotting/')
+sys.path.append(workdir_ + 'myPythonTools/CASutils/')
+#sys.path.append(workdir_ + 'PyRegridding/Regridder/')
+sys.path.append(workdir_ + 'PyRegridding/Utils/')
+
+# Own local packages
+import AveragingUtils as Av
+#import VertRegridFlexLL as Vrg  # This is toxic for some reason
+import PlotUtil as Pu
+import utils as uti
+import numerical_utils as nuti
+import validation_data as Val
+import MakePressures as MkP
+import GridUtils as GrU
+import LatLonMaps as LL
+import filter_utils as fu
+
+sys.path.append(workdir_ + 'PyRegridding/Drivers/')
+import RegridField as RgF

@@ -1,0 +1,63 @@
+# name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+# name: "c153_topfix_ne240pg3_FMTHIST_L56_86km_xic_x02"
+# name: "c153_topfix_ne240pg3_FMTHIST_xic_x02"
+A_xy_phs1:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: [ "2004-06-*","2004-07-*", ] #"2004-08-*","2004-09-*",] # "2004-08-*",]
+  parameters:
+    param1: 1
+    param2: 2
+A_xz_phs1:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: [ "2004-06-*","2004-07-*", ] #"2004-08-*","2004-09-*",] # "2004-08-*",]
+  parameters:
+    param1: 1
+    param2: 2
+A_xy_phs2:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: [ "2004-06-*","2004-07-*", ] #"2004-08-*","2004-09-*",] # "2004-08-*",]
+  parameters:
+    param1: 1
+    param2: 2
+A_xy_vort:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: [ "2004-06-*", "2004-07-*", ]#"2004-08-*","2004-09-*",] # "2004-08-*",]
+  parameters:
+    param1: 1
+    param2: 2
+A_xy_PBLq:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h3i"
+  ymdPat: [ "2004-06-*", "2004-07-*",] # "2004-08-*","2004-09-*",] # "2004-08-*",]
+  parameters:
+    param1: 1
+    param2: 2

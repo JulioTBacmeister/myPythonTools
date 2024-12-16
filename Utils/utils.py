@@ -94,6 +94,7 @@ def MakePath( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='
     return path
 
 def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,
+                 Src=None, Hkey=None, 
                  verbose=False, open_dataset=False, help=False, add_coords=False, shift_lons=False ):
     import xarray as xr
     import glob
@@ -118,7 +119,7 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
 
 
     if ( isinstance(ymdPat, list ) == False ):
-        print( f'Is ymdPat a list {isinstance(ymdPat, list )}' )
+        #print( f'Is ymdPat a list {isinstance(ymdPat, list )}' )
         if (user == 'CMIP6'):
             path=bpath
         else:
@@ -146,6 +147,12 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
            'hsPat':hsPat,
            'ymdPat':ymdPat,
            'path':path }
+    
+    if (Src is not None):
+        dex['Src']=Src
+    if (Hkey is not None):
+        dex['Hkey']=Hkey
+        
     
     if (open_dataset==True):
         X = xr.open_mfdataset( path ,data_vars='different', coords='different' )
@@ -196,15 +203,17 @@ def trim_to_year( D , nyr_max=1000 ):
     D.X=D.X.isel(time=np.arange(nyr))
 
 
-def days_in_month(year, month, check_for_leap_year=True):
+def days_in_month(year, month, check_for_leap_year=False):
     # February logic with optional leap year check
     if month == 2:
         if check_for_leap_year:
+            print( "Adjusting days in February to 29 for leap years" )
             if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
                 return 29
             else:
                 return 28
         else:
+            print( "28 days in February. Not worried about leap years" )
             return 28
     # Months with 30 days
     elif month in [4, 6, 9, 11]:

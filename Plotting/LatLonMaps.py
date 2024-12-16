@@ -12,8 +12,7 @@ if ( workdir_ not in sys.path ):
 from myPythonTools.Utils import AveragingUtils as Av
 from myPythonTools.Utils import PlotUtil as Pu
 from myPythonTools.Utils import utils as uti
-from myPythonTools.Utils import validation_data as Val
-from PyRegridding.Regridder import var_A_x_B as vAB
+#from myPythonTools.Utils import validation_data as Val
 from PyRegridding.Utils import MakePressures as MkP
 from PyRegridding.Utils import GridUtils as GU
 from PyRegridding.Regridder import esmfRegrid as erg
@@ -40,13 +39,13 @@ import cftime
 importlib.reload( uti )
 importlib.reload( Pu )
 importlib.reload(Av)
-importlib.reload(Val)
-importlib.reload(vAB)
+#importlib.reload(Val)
 importlib.reload(MkP)
 
 def titleGen( exp,fld,season,years ):
     title=rf"{fld} <{exp}> {season.upper()} Years:{str(years[0]).zfill(4)}-{str(years[-1]).zfill(4)}" 
     return title
+
 
 
 def Maps( fields , lons, lats, **kwargs ):
@@ -60,6 +59,8 @@ def Maps( fields , lons, lats, **kwargs ):
     ##################################################
     
 
+    
+    print(" LL top 0.0.0 " )
     nplots = len( fields )
     
     # Set up defaults for kwargs that are needed:
@@ -71,6 +72,7 @@ def Maps( fields , lons, lats, **kwargs ):
     DataProj = ccrs.PlateCarree()
     # Get the name of the projection
     proj_name = MapProj.__class__.__name__
+    print(" LL 1.0.0 " )
 
     
     if ( 'verbose' in kwargs ):
@@ -83,6 +85,12 @@ def Maps( fields , lons, lats, **kwargs ):
     else:
         value = 'black'
         CoastColors = [value for _ in range(nplots)]
+
+    if ( 'CoastWidth' in kwargs ):
+        CoastWidth = kwargs[ 'CoastWidth' ]
+    else:
+        value = 2
+        CoastWidth = [value for _ in range(nplots)]
 
     if ( 'clevs' in kwargs ):
         clevs = kwargs[ 'clevs' ]
@@ -126,6 +134,8 @@ def Maps( fields , lons, lats, **kwargs ):
             ny = 3
             nx = math.ceil( nplots / ny)
 
+    print(" LL 2.0.0 " )
+
     xsize=10.
     print(f'proj_name = {proj_name}')
     if (proj_name=='PlateCarree'):
@@ -143,7 +153,8 @@ def Maps( fields , lons, lats, **kwargs ):
     
         ax1 = fig.add_axes( Axes , projection=MapProj)
         ax1.set_global()
-        ax1.coastlines(resolution='110m',color='black',linewidth=2)
+        ax1.coastlines(resolution='110m',color='black',linewidth=CoastWidth )
+        print(f" LL 1.0.{ipo} " )
     
         AAxy = scale[ipo]*field 
         if ( len(lons) >= len(fields) ):
@@ -174,6 +185,9 @@ def Maps( fields , lons, lats, **kwargs ):
         cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
         ax1.set_title( title_ , fontsize=16)
         #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
+        ax1.text(-0.08, 1.05, f"{chr(97 +npo-1)})", transform=ax1.transAxes,
+            fontsize=16, fontweight='bold', va='top')
+
 
 def Maps_NoProj( fields , lons, lats, **kwargs ):
     ##################################################

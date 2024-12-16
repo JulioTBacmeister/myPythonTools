@@ -892,6 +892,53 @@ def CategoryDefs( category='Cat1+' ):
         pthresh1=922.6
 
     return thresh0,thresh1,pthresh0,pthresh1
+import numpy as np
+
+def categorize_storms(data, wind=True):
+    """
+    Categorizes an ndarray of wind speeds or pressures into integer-coded storm categories.
+
+    Parameters:
+        data (ndarray): The input array of wind speeds (in m/s) or pressures (in hPa).
+        wind (bool): If True, the input is wind speeds; if False, the input is pressure.
+
+    Returns:
+        ndarray: An integer-coded array of categories:
+                 -2, -1, 0 for sub-category 1 storms
+                 1 for TD+, 2 for TS+, 3 for Cat1+, ..., 7 for Cat5+
+    """
+    # Define thresholds for wind speeds (m/s) and pressures (hPa)
+    categories = [
+        {"name": "TD+", "thresh0": 1.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 1015.3},
+        {"name": "TS+", "thresh0": 18.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 998.7},
+        {"name": "Cat1+", "thresh0": 33.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 980.7},
+        {"name": "Cat2+", "thresh0": 43.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 966.9},
+        {"name": "Cat3+", "thresh0": 50.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 956.4},
+        {"name": "Cat4+", "thresh0": 58.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 943.5},
+        {"name": "Cat5+", "thresh0": 70.0, "thresh1": 10000.0, "pthresh0": 1.0, "pthresh1": 922.6},
+    ]
+
+    # Initialize the output array with zeros (default category)
+    output = np.zeros_like(data, dtype=int)
+
+    for i, cat in enumerate(categories, start=1):
+        if wind:
+            # Categorize based on wind speed
+            mask = (data >= cat["thresh0"]) & (data < cat["thresh1"])
+        else:
+            # Categorize based on pressure (lower pressure indicates stronger storms)
+            mask = (data <= cat["pthresh1"]) & (data > cat["pthresh0"])
+        
+        output[mask] = i
+
+    # Assign sub-category codes for very weak storms (-2, -1, 0)
+    if wind:
+        output[data < 1.0] = 0  # Below TD+ wind threshold
+    else:
+        output[data > 1015.3] = 0  # Above TD+ pressure threshold
+
+    output = output-2
+    return output
 
 """
 # Example usage

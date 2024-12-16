@@ -136,23 +136,26 @@ def procField(A, RgOb_ne240_x_ne16, RgOb_ne16_x_ne240, FLD=None):
 #    global A, RgOb_ne240_x_ne16, RgOb_ne16_x_ne240  # Declare as global to make accessible in procField()
 def driver():
 
-    with open('configure_gwana.yaml', 'r') as file:
+    with open('configure_gwana_genl.yaml', 'r') as file:
         cfg = yaml.safe_load(file)
     
     print( f"In regrid_gwana_wrt", flush=True )
     ######################################################
     
-    x='A'
+    x='A_xy_phs1'
     exp, subd, Src, Hkey, Dst, useri = cfg[x]['name'] , cfg[x]['subdir'] , cfg[x]['SrcGrid'] , cfg[x]['Hkey'] , cfg[x]['DstGrid'] , cfg[x]['user'] 
     ymdPatLs = cfg[x]['ymdPat']
     hsPat = cfg[x]['hsPat']
     print( exp, subd, Src, Hkey, Dst, useri , flush=True )
     print( ymdPatLs , flush=True )
 
-    created_RegridObjs = False
+    #created_RegridObjs = False
+    #####################################
+    # Initialize regrid-object library
+    RgObLib={}
     
     for ymdPat in ymdPatLs:
-        print( f"\n \n \n ################## \n Gonna do - {ymdPat}" , flush=True )
+        print( f"\n ################## \n Gonna do - {ymdPat}" , flush=True )
     
         A = uti.MakeDict4Exp( exp=exp , user=useri, subd=subd , 
                              hsPat=hsPat , ymdPat=ymdPat,verbose=True, open_dataset=True )
@@ -164,6 +167,7 @@ def driver():
         print( f'Selected out levels {A.X.lev.values}' , flush=True )
     
 
+        """
         if (created_RegridObjs == False ):
             ##########################
             # Create regridding objects
@@ -176,6 +180,12 @@ def driver():
             created_RegridObjs = True 
         else:
             print( f"Using existing Regrid Objects ", flush=True )
+        """
+
+        RgOb_ne240_x_ne16  = GrU.regrid_object_lib(RgOb=RgObLib, src='ne240pg3', dst='ne16pg3' )
+        RgOb_ne16_x_ne240  = GrU.regrid_object_lib(RgOb=RgObLib, src='ne16pg3' , dst='ne240pg3' , RegridMethod='BILINEAR' ) 
+        #RgOb_ne240_x_llOxO = GrU.regrid_object_lib(RgOb=RgObLib, src='ne240pg3', dst='latlonOxO' ) 
+
     
         # Call procField with required arguments
         if ('TS' in A.X ):

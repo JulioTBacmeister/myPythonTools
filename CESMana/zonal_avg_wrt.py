@@ -1,29 +1,25 @@
 #!/usr/bin/env python
-workdir_ = '/glade/work/juliob/'
+################################################
+# New style 
+################################################
 import sys
-#######################################
-# Leave this for now. But it should change to better
-# method as here:
-# import os
-# module_a_dir = os.path.dirname(os.path.abspath(__file__))
-# utils_path = os.path.join(module_a_dir, '..', 'Utils')
-# sys.path.append(utils_path)
-# print( f" a path added in {__name__} {utils_path} ")
-########################################
-sys.path.append(workdir_ + 'myPythonTools/GenlTools/')
-sys.path.append(workdir_ + 'myPythonTools/Utils/')
-#sys.path.append(workdir_ + 'PyRegridding/Regridder/')
-sys.path.append(workdir_ + 'PyRegridding/Utils/')
+import os
+
+workdir_ = '/glade/work/juliob'
+if ( workdir_ not in sys.path ):
+    sys.path.append(workdir_)
+    print( f" a path to {workdir_} added in {__name__} {utils_path} ")
 
 # Own local packages
-import AveragingUtils as Av
-#import VertRegridFlexLL as Vrg  # This is toxic for some reason
-import PlotUtil as Pu
-import validation_data as Val
-import var_A_x_B as vAB
-import MakePressures as MkP
-import GridUtils as GrU
-import utils as uti
+from myPythonTools.Utils import AveragingUtils as Av
+from myPythonTools.Utils import validation_data as Val
+from myPythonTools.Utils import PlotUtil as Pu
+from myPythonTools.Utils import utils as uti
+
+from PyRegridding.Utils import GridUtils as GrU
+from PyRegridding.Utils import MakePressures as MkP
+
+
 
 # The usual
 from datetime import date
