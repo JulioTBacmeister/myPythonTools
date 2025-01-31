@@ -11,6 +11,7 @@ if ( workdir_ not in sys.path ):
 
 # Own local packages
 from myPythonTools.Utils import AveragingUtils as Av
+from myPythonTools.Utils import numerical_utils as nuti
 from PyRegridding.Utils import MakePressures as MkP
 from PyRegridding.Utils import GridUtils as GrU
 from PyRegridding.Regridder import var_A_x_B as vAB
@@ -92,7 +93,8 @@ def data(fld,season=None ,months=-999,**kwargs):
         return dic
 
 
-    ADFobsdir = '/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
+    ADFobsdir = '/glade/campaign/cgd/amp/juliob/ADF_obs' #'/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
+    AMWGobsdir = '/glade/campaign/cgd/amp/juliob/amwg_dev/obs_data/'
     
     if (fld in ('U','V','T','Q','PS','OMEGA') ):
         if 'Years' in kwargs:
@@ -170,6 +172,39 @@ def data(fld,season=None ,months=-999,**kwargs):
         aa = Av.Seasonal( ds=Dc, season=season , fld='toa_cre_sw_mon' )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
              'years':'2001-2020', 'data_path':path_C,'data_source':'CERES-EBAF','rcode':0}
+
+
+    elif (fld in ('SURFACE_STRESS',) ):
+        path_C = f'{ADFobsdir}/LARYEA_climo.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
+        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
+        lon =Dc.lon.values
+        lat =Dc.lat.values
+        lev =np.asarray( [1000.] )
+        aa = Av.Seasonal( ds=Dc, season=season , fld='STRESS_MAG' )
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':'1979-2000', 'data_path':path_C,'data_source':'Large-Yeager','rcode':0}
+
+    elif (fld in ('WIND_STRESS_CURL',) ):
+        path_C = f'{ADFobsdir}/LARYEA_climo.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
+        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
+        lon =Dc.lon.values
+        lat =Dc.lat.values
+        lev =np.asarray( [1000.] )
+        taux = Av.Seasonal( ds=Dc, season=season , fld='TAUX' )
+        tauy = Av.Seasonal( ds=Dc, season=season , fld='TAUY' )
+        aa=nuti.Sphere_Curl2( f_x=taux, f_y=tauy , lat=lat , lon=lon , wrap=True )
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':'1979-2000', 'data_path':path_C,'data_source':'Large-Yeager','rcode':0}
+
+    elif (fld in ('STRESS_MAG','TAUX','TAUY',) ):
+        path_C = f'{ADFobsdir}/LARYEA_climo.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
+        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
+        lon =Dc.lon.values
+        lat =Dc.lat.values
+        lev =np.asarray( [1000.] )
+        aa = Av.Seasonal( ds=Dc, season=season , fld=fld )
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':'1979-2000', 'data_path':path_C,'data_source':'Large-Yeager','rcode':0}
 
 
     else:

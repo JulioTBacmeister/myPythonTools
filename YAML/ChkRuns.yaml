@@ -1,0 +1,112 @@
+A_0:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x01
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+A_1:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw_2/cases/
+  hsPat: cam.h0a
+  name: c64_55_gw2_ne30pg3_FMTHIST_calib01
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+A_2:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw_2/cases/
+  hsPat: cam.h0a
+  name: YaJj
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+A_3:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw_3/cases/
+  hsPat: cam.h0a
+  name: ZaFf
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+B:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 5.0e-06
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x02
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+

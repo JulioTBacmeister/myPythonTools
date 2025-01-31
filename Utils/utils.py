@@ -242,5 +242,24 @@ def find_nearest_plev_indices(plev=None, target_levels=None):
         
     return indices
 
+################
+def ymds(year,month=None,day=None,hour=None,append=None):
+
+    if month is None:
+        ymdPat = str(year).zfill(4)
+    elif day is None:
+        ymdPat = f'{str(year).zfill(4)}-{str(month).zfill(2)}'
+    elif hour is None:
+        ymdPat = f'{str(year).zfill(4)}-{str(month).zfill(2)}-{str(day).zfill(2)}'
+    else:
+        sec=3600*hour
+        ymdPat = f'{str(year).zfill(4)}-{str(month).zfill(2)}-{str(day).zfill(2)}-{str(sec).zfill(5)}'
+
+    if append is not None:
+        ymdPat=f'{ymdPat}{append}'
+       
+
+    return ymdPat
+
 
 

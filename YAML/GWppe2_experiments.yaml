@@ -1,0 +1,49 @@
+A:
+  name: "c64_55_gw_ne30pg3_FMTHIST_x01" #   c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*","1987-*"]
+  caseroot: "/glade/work/juliob/cam6_4_055/cases/"
+  parameters:
+    param1: 1
+    param2: 2
+B:
+  name: "c64_55_gw_ne30pg3_FMTHIST_x02" #   c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*","1987-*"]
+  parameters:
+    param1: 1
+    param2: 2
+C:
+  name: "c64_55_gw_ne30pg3_FMTHIST_x03" #   c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*","1987-*"]
+  parameters:
+    param1: 1
+    param2: 2
+D:
+  name: "c64_55_gw_ne30pg3_FMTHIST_x04" #   c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*","1987-*"]
+  parameters:
+    param1: 1
+    param2: 2

@@ -1,0 +1,16 @@
+zonal_mean:
+    field: 'N/A'
+    season: 'jja'
+    DstGrid: 'fv1x1'
+    ForceRegrid: False
+    validation:
+        data: 'ERA5'
+        years: '*'
+latlon:
+    field: 'N/A'
+    season: 'djf'
+    DstGrid: 'fv1x1'
+    ForceRegrid: False
+    validation:
+        data: 'ERA5'
+        years: '*'

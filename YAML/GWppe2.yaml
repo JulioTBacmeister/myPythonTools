@@ -1,0 +1,238 @@
+A:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x01
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+A_1:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw_3/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 32500.0d0
+    movmtn_psteer: 65000.0d0
+    movmtn_source: 1
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: tun00_c6455g3
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+B:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 5.0e-06
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x02
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+C:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 5.0
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x03
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+D:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 5.0e-06
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .false.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x04
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+E:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 0.002d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 5.0
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_x05_1
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+control:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files:
+    - gw_drag.F90
+    - gravity_waves_sources.F90
+    - dp_coupling.F90
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw/cases/
+  gw_parameters:
+    alpha_gw_movmtn: 8.0e-09
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 5.0e-06
+    movmtn_source: '?'
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .false.
+  hsPat: cam.h0a
+  name: c64_55_gw_ne30pg3_FMTHIST_CTL
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'

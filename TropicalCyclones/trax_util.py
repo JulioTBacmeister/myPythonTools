@@ -369,6 +369,28 @@ def add_sub_basin(trx,X,Y,sub_basin_number):
     
     return trx_o
 
+def find_basin(trx,basins):
+        
+
+    nstorm,nt=np.shape( trx.wind )
+    basin_number = np.zeros( (nstorm,nt) )-9999
+    
+    for s in np.arange( nstorm ):
+        for t in np.arange( nt ):
+            lon0=trx.lon[s,t]
+            lat0=trx.lat[s,t]
+            for basin in basins:
+                XY= np.array(basin.xy,ndmin=2)
+                X = XY[:,0]
+                Y = XY[:,1]
+                this_basin_number = basin.number
+                In_basin = winding_number(lon0, lat0, X, Y)
+                if (In_basin==True):
+                    basin_number[s,t]=this_basin_number
+                     
+    
+    return basin_number
+
 def translation_speed(lon,lat):
     
     Rer  = Con.Rearth()
@@ -814,6 +836,10 @@ def winding_number(x, y, X, Y):
     :param X, Y: Lists of x and y coordinates of polygon's vertices
     :return: Boolean. True if point is inside polygon, else False
     """
+    # Not a polygon
+    if len(X) < 3:
+        return False
+        
     wn = 0  # Initialize the winding number to be 0
 
     # Loop through all edges of the polygon

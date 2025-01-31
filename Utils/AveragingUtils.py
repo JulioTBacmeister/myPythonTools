@@ -125,14 +125,19 @@ def MonthsInDataset( ds ):
             print(f" time of type datetime64[ns] present in DataSet " )
             years = ds['time'].values.astype('datetime64[Y]' ).astype(int)
             months = ds['time'].values.astype('datetime64[M]' ).astype(int) %12 +1
-        if (ds['time'].dtype == 'int' ):
+        elif (ds['time'].dtype == 'int' ):
             print(f" time of type 'int' present in DataSet " )
             #if (np.shape( ds['time'].shape )==(1,)): 
             if ('title' in ds.attrs):
-                if (('CERES EBAF' in ds.title) and ('Climatology' in ds.title)):
+                # if (('CERES EBAF' in ds.title) and ('Climatology' in ds.title)):
+                if (('Climatology' in ds.title)):
                     print( f'{ds.title}' )
                     months = ds['time']
                     years  = np.zeros( 12 )+9999
+        else:
+            # Raise an error if no valid dtype is found
+            raise ValueError(f"Unsupported time array dtype: {ds['time'].dtype}")
+
 
     return months,years
 

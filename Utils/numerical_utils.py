@@ -1,3 +1,13 @@
+import sys
+import os
+workdir_ = '/glade/work/juliob'
+if ( workdir_ not in sys.path ):
+    sys.path.append(workdir_)
+    print( f" a path to {workdir_} added in {__name__} ")
+
+from myPythonTools.Utils import constants as co
+
+
 # This allow both dict.key and dict['key'] syntax
 class AttrDict(dict):
     def __getattr__(self, key):
@@ -15,9 +25,6 @@ class AttrDict(dict):
         except KeyError:
             raise AttributeError(f"'AttrDict' object has no attribute '{key}'")
 
-import sys
-import os
-from myPythonTools.Utils import constants as co
 
 def IwIe( i , nx, wrap=True ):
     iw = i - 1
@@ -181,8 +188,10 @@ def Sphere_Curl2( f_x, f_y, lat, lon, wrap=True ):
     # Handle boundaries if needed (depending on how your boundary conditions are set)
     # For example, if you have periodic boundary conditions, np.roll takes care of it.
     # If you have different boundary conditions, you may need to handle them separately.
-    curlf_z[0,:]=0.
-    curlf_z[ny-1,:]=0.
+    #curlf_z[0,:]=0.
+    #curlf_z[ny-1,:]=0.
+    curlf_z[0:1 ,:]=0.
+    curlf_z[ny-2:ny-1,:]=0.
     
     return curlf_z
 

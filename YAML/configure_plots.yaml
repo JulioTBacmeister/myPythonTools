@@ -1,0 +1,292 @@
+plot:
+    field: 'N/A'
+    season: 'ann'
+    DstGrid: 'fv1x1'
+    ForceRegrid: True
+validation:
+    data: 'ERA5'
+    years: '*'
+A:
+  name: "c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne120x2_2:
+  name: "c153_topfix_ne120pg3_FMTHIST_xic_x02_2"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne120pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne120x2_5:
+  name: "c153_topfix_ne120pg3_FMTHIST_xic_x02_5"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne120pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne240x2:
+  name: "c153_topfix_ne240pg3_FMTHIST_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne30x2_QxQsst:
+  name: "c153_ne30pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne30x5:
+  name: "c153_ne30pg3_FMTHIST_x05"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne240x2_L56:
+  name: "c153_topfix_ne240pg3_FMTHIST_L56_86km_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne240x2_QxQsst:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne240x2_QxQsst_smth:
+  name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_smth_xic_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h1i"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+oldCTL:
+  name: "c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+newCTL:
+  name: "c64_gwR2_ne30pg3_FMTHIST_topfix_x02"
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+
+#####################
+# Martina WACCM runs 
+#####################
+waccmL135:
+  name: "FWscHIST_ne30pg3_cam7phys_t01_L135start1985"
+  user: "bramberg"
+  subdir: "hist"
+  SrcGrid: "ne30pg3"
+  Hkey: "c"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+
+##############################
+# Some runs Cecile has done
+##############################
+
+# ne120 FMT run with CAM7 - Fall 2024
+f.e30_cam6_4_036.FMTHIST.ne120_L93.001: &CAM7_ne120_FMT_run
+  name: "f.e30_cam6_4_036.FMTHIST.ne120_L93.001"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fvQxQ"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+#    various nicknames 
+CAM7_ne120_FMT:
+  <<: *CAM7_ne120_FMT_run
+
+# ne30 FMT run with CAM7 (correct frontal GWs) - Fall 2024
+f.e30_alpha04a.FMTHIST.ne30_L93_frontal.006: &CAM7_ne30_FMT_run
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93_frontal.006"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+#    various nicknames 
+CAM7_ne30_FMT:
+  <<: *CAM7_ne30_FMT_run
+
+cam6_3_160_L93_x01:
+  name: "f.cam6_3_160.FMTHIST_ne30.001"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+cam6_4_036_L93_x02:
+  name: "f.e30_cam6_4_036.FMTHIST.ne30_L93.002"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+alpha04aL93ctl:
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93.004"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+SpongeFix:
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93.sponge_fix.005"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+alpha04ax010:
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93_tuning.010"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+alpha04ax009:
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93_tuning.009"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+alpha04ax008:
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93_tuning.008"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+alpha04ax007:
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93_tuning.007"
+  user: "hannay"
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+

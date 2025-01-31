@@ -28,6 +28,25 @@ def axes_def(n,nxplo=1,nyplo=1,xpan=0.9,ypan=0.9,xcor=1.,ycor=1.,top_panel=0,lef
     
     return Axes
 
+def param_text_box( ax, parameters=None, xpo=0.65, ypo=0.98, select=None ):
+
+    if (select is not None) and (parameters is not None):
+        # Parameters to display in the inset box
+        selected_keys = select #['alpha_gw_movmtn', 'effgw_rdg_resid','use_gw_rdg_resid']
+        selected_params = {key: parameters[key] for key in selected_keys if key in parameters}
+        # Format selected parameters into a string
+        param_text = "\n".join([f"{key}: {value}" for key, value in selected_params.items()])
+        # Add inset box
+        ax.text(
+            xpo, ypo,  # X, Y position in axes coordinates
+            param_text,  # Text content
+            transform=ax.transAxes,  # Use axes coordinates
+            fontsize=10,
+            verticalalignment='top',
+            bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='lightgrey')
+            )
+    
+
 def right_cbar_axes(Axes,xshift=0,yshift=0, xsize=0.01,ysize=0.3 ):
     CrAxes = [ Axes[0]+Axes[2]+xshift ,Axes[1]+yshift , xsize , ysize  ] 
     return CrAxes

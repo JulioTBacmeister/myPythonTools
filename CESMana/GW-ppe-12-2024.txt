@@ -1,0 +1,109 @@
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_x01
+
+effgw_rdg_resid = 5.
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.01d0  
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_x02
+
+effgw_rdg_resid = 0.000001
+use_gw_rdg_resid = .false.
+alpha_gw_movmtn	=  0.01d0  
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_x04
+
+effgw_rdg_resid = 1.
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.01d0  
+
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_x05
+
+effgw_rdg_resid = 1.
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.02d0  
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_x06
+
+=effgw_rdg_resid = 0.5
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.015d0
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_x07
+
+effgw_rdg_resid = 0.5
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.015d0  
+
+but ... 
+
+(npl) cases/c64_48_gwR2_ne30pg3_FMTHIST_x07> grep -i tuning SourceMods/src.cam/gw_movmtn.F90 
+  ! Heating rate conversion factor.  -> tuning factors
+  Steer_k = pver-5 !++ tuning test 12/30/24
+     topi=Steer_k-6 !++ tuning test 12/30/24
+
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_devel_04
+
+!!! Vorticity Source !!!!!!!
+!!! Vorticity Source !!!!!!!
+
+Code in SourceMods/src.cam
+
+-rw-r--r-- 1 juliob ncar  31531 Dec 31 14:33 dp_coupling.F90
+-rw-r--r-- 1 juliob ncar  92783 Dec 31 14:33 dyn_comp.F90
+-rw-r--r-- 1 juliob ncar  12651 Dec 31 15:04 gravity_waves_sources.F90
+-rw-r--r-- 1 juliob ncar 119811 Jan  3 11:54 gw_drag.F90
+-rw-r--r-- 1 juliob ncar  18175 Jan  5 12:35 gw_movmtn.F90
+
+
+effgw_rdg_resid = 0.5
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.0125d0  
+
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_zeta_02
+
+same as ...devel_04, except 
+
+effgw_rdg_resid = 0.5
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.008d0  
+
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_zeta_03
+
+same as ...zeta_02:
+
+effgw_rdg_resid = 0.5
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.008d0  
+
+except now hard wired effgw for moving_mtn in gw_drag.F90 has been changed 
+
+effgw (movmtn) = 0.5 <= 1.0
+
+############################################################################
+/glade/work/juliob/cam6_4_048_gwR2/cases/c64_48_gwR2_ne30pg3_FMTHIST_zeta_04
+
+same as ...zeta_02:
+
+effgw_rdg_resid = 0.5
+use_gw_rdg_resid = .true.
+alpha_gw_movmtn	=  0.008d0  
+
+except hard steering level in gw_movmtn.F90
+
+steering_level = pverx-20  <= pverx_10
+
+
+

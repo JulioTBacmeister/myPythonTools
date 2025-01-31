@@ -115,6 +115,16 @@ def Maps( fields , lons, lats, **kwargs ):
     else:
         value = 'Title Placeholder'
         titles = [value for _ in range(nplots)]
+
+    if ( 'insets' in kwargs ):
+        insets = kwargs[ 'insets' ]
+    else:
+        insets = None 
+
+    if ( 'Landmask' in kwargs ):
+        add_landmask = kwargs[ 'Landmask' ]
+    else:
+        add_landmask = False 
     
 
     if ( 'Arrangement' in kwargs ):
@@ -175,6 +185,13 @@ def Maps( fields , lons, lats, **kwargs ):
             title_ = titles[ipo]
         else:
             title_ = titles[0]
+        if insets is not None:
+            if ( ipo < len(insets)  ):
+                inset=insets[ipo]
+            else:
+                inset = None
+        else:
+            inset = None
 
         if( verbose_==True ):
             print( f' color map={cmap_} clevels={clev_} ' )
@@ -185,8 +202,26 @@ def Maps( fields , lons, lats, **kwargs ):
         cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
         ax1.set_title( title_ , fontsize=16)
         #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
+        if (add_landmask==True):
+            print('Adding Landmask' )
+            ax1.add_feature(cfeature.LAND, facecolor='tan', zorder=10) 
+        else:
+            print('no Landmask')
+
+
         ax1.text(-0.08, 1.05, f"{chr(97 +npo-1)})", transform=ax1.transAxes,
             fontsize=16, fontweight='bold', va='top')
+
+        if inset is not None:
+            ax1.text(
+                inset['x'], inset['y'],  # X, Y position in axes coordinates
+                inset['text'],  # Text content
+                transform=ax1.transAxes,  # Use axes coordinates
+                fontsize=10,
+                verticalalignment='top',
+                bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='lightgrey')
+                )
+
 
 
 def Maps_NoProj( fields , lons, lats, **kwargs ):

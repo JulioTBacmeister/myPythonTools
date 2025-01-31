@@ -24,8 +24,8 @@ conda activate npl-2024b
 
 
 #./regrid_gwana_wrt.py
-#./regrid_gwana_latSlice_wrt.py
+./regrid_gwana_latSlice_wrt.py
 #./phs2_xy_gwana.py
 
-./regrid_vorticity_wrt.py
-./regrid_PBLq_wrt.py
+#./regrid_vorticity_wrt.py
+#./regrid_PBLq_wrt.py
