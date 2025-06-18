@@ -1,0 +1,7 @@
+Resubmit: 11
+modes:
+- hourly
+- daily
+- monthly
+month: 3
+year: 1996

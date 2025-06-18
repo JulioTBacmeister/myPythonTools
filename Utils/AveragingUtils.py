@@ -205,6 +205,10 @@ def Seasonal( ds, season, **kwargs ):
         contiguous = kwargs['contiguous']
     else:
         contiguous=True
+    if 'verbose' in kwargs:
+        verbose = kwargs['verbose']
+    else:
+        verbose=False
 
     if ( (season=='djf')and(contiguous==True) ):
         try:
@@ -236,7 +240,16 @@ def Seasonal( ds, season, **kwargs ):
     #-------------------------------------------
     if 'fld' in kwargs:
         fld = kwargs['fld']
-        A = ds[fld]
+        try:
+            A = ds[fld]
+        except:
+            print(f'{fld} not dataset')
+            A_mmm=-999.e9
+            if kwargs['return_time']==True:
+                return A_mmm,years_in_av,months_in_av
+            else:
+                return A_mmm
+        
     elif 'data' in kwargs:
         A = kwargs['data']
     else:

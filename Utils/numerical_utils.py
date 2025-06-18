@@ -5,6 +5,10 @@ if ( workdir_ not in sys.path ):
     sys.path.append(workdir_)
     print( f" a path to {workdir_} added in {__name__} ")
 
+import numpy as np
+from scipy.interpolate import RegularGridInterpolator
+from scipy.interpolate import interp1d
+
 from myPythonTools.Utils import constants as co
 
 
@@ -231,5 +235,85 @@ def coarse_grain(array, block_size, lsum=False):
     return coarse_grained_array
 
 
+def bilinear_regrid(y_src=None, x_src=None, data_src=None, y_tgt=None, x_tgt=None):
+    """
+    Regrid 2D data using bilinear interpolation on a logically rectangular grid.
+
+    Parameters:
+    - y_src (1D): Source Y coordinates (e.g., lat), can be non-uniform
+    - x_src (1D): Source X coordinates (e.g., lon), must be increasing
+    - data_src (2D): Source data [Y, X]
+    - y_tgt (2D): Target Y coordinates (meshgrid-style)
+    - x_tgt (2D): Target X coordinates (meshgrid-style)
+
+    Returns:
+    - data_tgt (2D): Interpolated data on the target grid
+    """
+    # Create interpolator (note: Y first, then X)
+    interp_func = RegularGridInterpolator(
+        (y_src, x_src), data_src,
+        method='linear', bounds_error=False, fill_value=np.nan
+    )
+
+    # Stack target points as [N, 2] array for evaluation
+    tgt_points = np.column_stack((y_tgt.ravel(), x_tgt.ravel()))
+
+    # Interpolate and reshape
+    data_tgt = interp_func(tgt_points).reshape(y_tgt.shape)
+    return data_tgt
 
     
+
+def ZsY_x_ZtY( y_src, x_src, data_src, y_tgt, x_tgt,
+                    kind='linear', bounds_error=False, fill_value=np.nan):
+    """
+    Perform 2D regridding via sequential 1D interpolations.
+    This routine assumes the X grids are not dependent on Y, 
+    while the Y grids may depend on X, e.g., pressure altitudes 
+    could be a function of latitude. The x_src and x_tgt inputs 
+    could actually be 1D vectors, but are 2D here for consistency(?),
+    readability(?), uniformity(?) ... ???
+    
+    Parameters:
+    - y_src (2D): source Y-axis (e.g., height/pressure)
+    - x_src (2D): source X-axis (e.g., latitude). Note, this coordinate is assumed 
+      to be 'regular', i.e., not dependent on y_src.
+    - data_src (2D): source data with shape as {x,y}_src
+    - y_tgt (2D): target Y-axis
+    - x_tgt (2D): target X-axis. Note, this coordinate is assumed 
+      to be 'regular', i.e., not dependent on y_tgt.
+    - kind: 'linear', 'nearest', 'cubic', etc.
+    - bounds_error: raise error if outside range (default: False)
+    - fill_value: value to use outside domain (default: NaN)
+    
+    Returns:
+    - data_tgt (2D): shape (len(y_tgt), len(x_tgt))
+    """
+
+    
+    ny_tgt, nx_tgt = np.shape ( x_tgt ) 
+    ny_src, nx_src = np.shape ( x_src ) 
+
+
+    # Create intermediate 2D X grid that has
+    # x_tgt values on y_src levels. Not really 
+    # needed, could use x_tgt as a 1D array.
+    x_tgt_on_y_src = np.empty( ( ny_src, nx_tgt ))
+    for i in range( ny_src ):
+        x_tgt_on_y_src[i,:] = x_tgt[0,:]
+    
+    # First interpolate along horz (X) for each layer
+    data_on_y_src_x_tgt = np.empty( ( ny_src, nx_tgt ))
+    for i in range( ny_src ):
+        f = interp1d(x_src[i,:] , data_src[i, :], kind=kind,
+                     bounds_error=bounds_error, fill_value=fill_value)
+        data_on_y_src_x_tgt[i, :] = f( x_tgt_on_y_src[i,:] )
+      
+    # Now interpolate in the vertical (Y) for each column
+    data_tgt = np.empty( ( ny_tgt, nx_tgt)  )
+    for i in range( nx_tgt ):
+        f = interp1d(y_src[:,i] , data_on_y_src_x_tgt[:,i], kind=kind,
+                     bounds_error=bounds_error, fill_value=fill_value)
+        data_tgt[:,i] = f( y_tgt[:,i] )
+    
+    return data_tgt

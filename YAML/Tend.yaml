@@ -1,0 +1,15 @@
+ChkTend2:
+  DstGrid: fv1x1
+  Hkey: c
+  SourceMods:
+    files: []
+  SrcGrid: ne30pg3
+  caseroot: /glade/work/juliob/cam6_4_055_gw_3/cases/
+  hsPat: cam.h1a
+  name: ChkTend2
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'

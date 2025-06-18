@@ -95,15 +95,16 @@ def MakePath( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='
 
 def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,
                  Src=None, Hkey=None, 
+                 cmip_fld=None, 
                  verbose=False, open_dataset=False, help=False, add_coords=False, shift_lons=False ):
     import xarray as xr
     import glob
 
     if (help == True):
-        print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' ")
+        print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' 'CMIP6_WACCM' ")
         return
     
-    if (user in ['juliob','pel','tilmes','hannay','bramberg'] ):
+    if (user in ['juliob','pel','tilmes','hannay','bramberg','islas'] ):
         bpath = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/'  #{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
         bpath = f'/glade/derecho/scratch/juliob/{exp}/run/'  #{exp}.{hsPat}.{ymdPat}.nc' 
@@ -111,16 +112,22 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
         bpath = f'/glade/campaign/cgd/amp/juliob/archive/{exp}/atm/{subd}/' # {exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'amwg_runs' ):
         bpath = f'/glade/campaign/cgd/amp/amwg/runs/{exp}/atm/{subd}/' #{exp}.{hsPat}.{ymdPat}.nc'   
+    elif (user == 'cesm_runs' ):
+        bpath = f'/glade/campaign/cgd/amp/amwg/runs/{exp}/atm/{subd}/' #{exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'omwg_mom6' ):
         bpath = f'/glade/campaign/cesm/development/omwg/projects/MOM6/' #{exp}/atm/{subd}/{exp}.{hsPat}.{ymdPat}.nc'   
-    elif (user == 'CMIP6' ):
+    elif (user == 'CMIP6_WACCM' ):
         dir='/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001/atm/proc/tseries/month_1/'
-        bpath=dir+ 'f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.U.195001-201412.nc'
-
+        bpath=f'{dir}f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.{cmip_fld}.{ymdPat}.nc'
+        PSpath=f'{dir}f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.PS.{ymdPat}.nc'
+    elif (user == 'CMIP6' ):
+        dir='/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/f.e21.FHIST_BGC.f09_f09_mg17.CMIP6-AMIP.001/atm/proc/tseries/month_1/'
+        bpath=f'{dir}f.e21.FHIST_BGC.f09_f09_mg17.CMIP6-AMIP.001.cam.h0.{cmip_fld}.{ymdPat}.nc'
+        PSpath=f'{dir}f.e21.FHIST_BGC.f09_f09_mg17.CMIP6-AMIP.001.cam.h0.PS.{ymdPat}.nc'
 
     if ( isinstance(ymdPat, list ) == False ):
         #print( f'Is ymdPat a list {isinstance(ymdPat, list )}' )
-        if (user == 'CMIP6'):
+        if (user in ('CMIP6','CMIP6_WACCM')):
             path=bpath
         else:
             path=f'{bpath}{exp}.{hsPat}.{ymdPat}.nc'
@@ -156,6 +163,9 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
     
     if (open_dataset==True):
         X = xr.open_mfdataset( path ,data_vars='different', coords='different' )
+        if (user in ('CMIP6','CMIP6_WACCM')):
+            PS = xr.open_mfdataset( PSpath ,data_vars='different', coords='different' )
+            X['PS'] = PS['PS']
 
         if (shift_lons==True):
             X['lon'] = xr.where(X['lon'] > 180, X['lon'] - 360, X['lon'])
@@ -261,5 +271,24 @@ def ymds(year,month=None,day=None,hour=None,append=None):
 
     return ymdPat
 
+################
+def area_from_latlon(lat=None, lon=None):
+    import numpy as np
+    from myPythonTools.Utils import constants as Co
 
+    Re = Co.Rearth()
+    Pi = Co.pi()
+
+    nx=len(lon)
+    ny=len(lat)
+    # np.abs in case grids are ass-backwards like ERA
+    dxr=np.abs( ( lon[1]-lon[0] ) )* (Pi /180. )
+    dyr=np.abs( ( lat[1]-lat[0] ) )* (Pi /180. )
+    Lon,Lat=np.meshgrid(lon,lat)
+    Latr = Lat * (Pi /180. )
+    area = ( Re **2 ) * dxr * dyr * np.cos( Latr )
+
+    return area
+    
+    
 

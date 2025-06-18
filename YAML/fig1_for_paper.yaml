@@ -1,0 +1,72 @@
+ne240_ctl:
+  name: "c153_topfix_ne240pg3_FMTHIST_xic_x02"
+  caseroot: /glade/work/juliob/my_cam_development/cases
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  SrcVgrid: L93
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne120_ctl:
+  name: "c153_topfix_ne120pg3_FMTHIST_xic_x02"
+  caseroot: /glade/work/juliob/my_cam_development/cases
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne120pg3"
+  SrcVgrid: L93
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne120_ctl_alpha04a: 
+  #name: "f.e30_cam6_4_036.FMTHIST.ne120_L93.001"
+  name: "f.e30_alpha04a.FMTHIST.ne30_L93_frontal.006"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fvQxQ"
+  SrcVgrid: L93
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+ne120_ctl_c6436: 
+  #name: "f.e30_cam6_4_036.FMTHIST.ne120_L93.001"
+  name: "f.e30_cam6_4_036.FMTHIST.ne30_L93.001"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fvQxQ"
+  SrcVgrid: L93
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+NOmovmtn:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_ctl_fmt_c6477
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'

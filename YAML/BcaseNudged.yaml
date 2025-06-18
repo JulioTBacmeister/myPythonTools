@@ -1,0 +1,26 @@
+control:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  caseroot: /NA/
+  hsPat: cam.h0a
+  name: b.e30_alpha06b.B1850C_LTso.ne30_t232_wgx3_NUDGED.130
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: islas
+  ymdPat: '20*'
+freerun:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  caseroot: /NA/
+  hsPat: cam.h0a
+  name: b.e30_alpha06b.B1850C_LTso.ne30_t232_wgx3.140
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: hannay
+  ymdPat: ['002*','003*']

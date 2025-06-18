@@ -1,0 +1,45 @@
+##############################
+# Some runs Cecile has done
+##############################
+FLT_control: &c6478flt_ctl
+  name: "f.e30_cam6_4_078.FHISTC_LTso.ne30.001"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+Coriolis_control: 
+  name: "f.e30_cam6_4_078.FHISTC_LTso.ne30.baseline156.001"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+Non_trad_Coriolis: 
+  name: "f.e30_cam6_4_078.FHISTC_LTso.ne30.baseline156_coriolis.001"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2

@@ -45,6 +45,11 @@ def Rearth():
     value= 6_378_137.0
     units='m'
     return value
+def Omega():
+    # Earth rotation in radians/sec
+    value= 2 * pi() / 86400. 
+    units='rad s-1'
+    return value
 
 
 

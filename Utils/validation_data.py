@@ -3,6 +3,7 @@
 ##########
 import sys
 import os
+import glob
 
 workdir_ = '/glade/work/juliob'
 if ( workdir_ not in sys.path ):
@@ -88,7 +89,7 @@ def data(fld,season=None ,months=-999,**kwargs):
              'hybm':Dc.b_model.values,
              'hybi':Dc.b_half.values,
              'date':[year,month,day,hour],
-             'years':ymdh, 'data_path':fileN,'data_source':'ERA5','rcode':0}
+             'years':ymdh, 'data_path':fileN,'data_source':'ERA5','data_exists':True, 'rcode':0}
         
         return dic
 
@@ -146,7 +147,8 @@ def data(fld,season=None ,months=-999,**kwargs):
             #----- Pack output into a 'dict'
             dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
                  'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
-                 'years':yearsA, 'data_path':path_C,'data_source':'ERA5','rcode':0}
+                 'years':yearsA, 'data_path':path_C,'data_source':'ERA5',
+                 'data_Hgrid':'ERA5','data_Vgrid':'ERA5','rcode':0}
             return dic
 
         
@@ -158,7 +160,8 @@ def data(fld,season=None ,months=-999,**kwargs):
         #----- Pack output into a 'dict'
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
              'hyai':hyai,'hyam':hyam,'hybi':hybi,'hybm':hybm,
-             'years':yearsA, 'data_path':path_C,'data_source':'ERA5','rcode':0}
+             'years':yearsA, 'data_exists':True, 'data_path':path_C,'data_source':'ERA5',
+             'data_Hgrid':'ERA5','data_Vgrid':'ERA5','rcode':0}
         
     # /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc
     # need to map names from cesm to obs
@@ -171,7 +174,8 @@ def data(fld,season=None ,months=-999,**kwargs):
         lev =np.asarray( [1000.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld='toa_cre_sw_mon' )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
-             'years':'2001-2020', 'data_path':path_C,'data_source':'CERES-EBAF','rcode':0}
+             'years':'2001-2020', 'data_exists':True, 'data_path':path_C,'data_source':'CERES-EBAF',
+             'data_Hgrid':None,'data_Vgrid':None,'rcode':0}
 
 
     elif (fld in ('SURFACE_STRESS',) ):
@@ -182,7 +186,8 @@ def data(fld,season=None ,months=-999,**kwargs):
         lev =np.asarray( [1000.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld='STRESS_MAG' )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
-             'years':'1979-2000', 'data_path':path_C,'data_source':'Large-Yeager','rcode':0}
+             'years':'1979-2000', 'data_exists':True, 'data_path':path_C,'data_source':'Large-Yeager',
+             'data_Hgrid':None,'data_Vgrid':None,'rcode':0}
 
     elif (fld in ('WIND_STRESS_CURL',) ):
         path_C = f'{ADFobsdir}/LARYEA_climo.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
@@ -194,7 +199,8 @@ def data(fld,season=None ,months=-999,**kwargs):
         tauy = Av.Seasonal( ds=Dc, season=season , fld='TAUY' )
         aa=nuti.Sphere_Curl2( f_x=taux, f_y=tauy , lat=lat , lon=lon , wrap=True )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
-             'years':'1979-2000', 'data_path':path_C,'data_source':'Large-Yeager','rcode':0}
+             'years':'1979-2000', 'data_exists':True, 'data_path':path_C,'data_source':'Large-Yeager',
+             'data_Hgrid':None,'data_Vgrid':None,'rcode':0}
 
     elif (fld in ('STRESS_MAG','TAUX','TAUY',) ):
         path_C = f'{ADFobsdir}/LARYEA_climo.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
@@ -204,11 +210,38 @@ def data(fld,season=None ,months=-999,**kwargs):
         lev =np.asarray( [1000.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld=fld )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
-             'years':'1979-2000', 'data_path':path_C,'data_source':'Large-Yeager','rcode':0}
+             'years':'1979-2000', 'data_exists':True, 'data_path':path_C,'data_source':'Large-Yeager',
+             'data_Hgrid':None,'data_Vgrid':None,'rcode':0}
 
+    elif (fld in ('VQ') ):
+        SuperDir = "/glade/campaign/cgd/amp/juliob/ERA5"
+        Dst='fv1x1'
+        years=[1991,1992,1993,1994]
+        path=[]
+        for year in years:
+            regrd_monthly_dir = f"{SuperDir}/Fluxes/VQ/monthly/{Dst}-{str(year).zfill(4)}/"
+            regrd_monthly_fil = f"{regrd_monthly_dir}/e5.oper.an.ml.VQ.{Dst}.{str(year).zfill(4)}-*.nc"
+            newpath=sorted( glob.glob( regrd_monthly_fil ) )
+            path = path + newpath
+
+        Dc = xr.open_mfdataset( path ,data_vars='different', coords='different' )
+        aa = Av.Seasonal( ds=Dc, season=season , fld=fld)
+        lev = 1.*Dc.a_model.values +100_000.*Dc.b_model.values 
+        lat=Dc.latitude
+        lon=Dc.longitude
+        print( Dc.VQ.shape )
+        print(list(Dc.data_vars))
+        yearsA='1991-1994'
+        if 'zlev' in kwargs:
+            lev = -7. * np.log( lev /100_000. )
+        #----- Pack output into a 'dict'
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':yearsA, 'data_exists':True, 'data_path':path,'data_source':'ERA5',
+             'data_Hgrid':'fv1x1','data_Vgrid':'ERA5','rcode':0}
+ 
 
     else:
-        dic = {'aa':-999e10,'rcode':-99}
+        dic = {'aa':-999e10, 'data_exists':False, 'rcode':-99}
         
             
     return dic  # aa,lev,lat,lon

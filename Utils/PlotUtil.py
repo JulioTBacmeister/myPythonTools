@@ -70,7 +70,7 @@ def step_cmap(cmapN,levels):
 
     return cmap
 
-def save_link(png_filename):
+def save_link(png_filename,dpi=300):
     
     import matplotlib.pyplot as plt
 
@@ -79,7 +79,7 @@ def save_link(png_filename):
     # Save the plot to a file
 
     Save_png_name = "../PNG_Files/"+png_filename
-    plt.savefig( Save_png_name , bbox_inches='tight', pad_inches=0.3, dpi=300 )
+    plt.savefig( Save_png_name , bbox_inches='tight', pad_inches=0.3, dpi=dpi )
     # Create a downloadable link
     #local_file = FileLink('./my_plot.png', result_html_prefix="Click here to download: ")
     #display(local_file)
