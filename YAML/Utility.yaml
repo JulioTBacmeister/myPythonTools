@@ -292,6 +292,20 @@ cfrntmm_t04:
   subdir: hist
   user: juliob
   ymdPat: '*'
+cfrntmm_t04re:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: cfrntmm_t04re_fmt_c6477
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
 cfrntmm_t05:
   DstGrid: fv1x1
   Hkey: c
