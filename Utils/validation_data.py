@@ -37,6 +37,9 @@ def data(fld,season=None ,months=-999,**kwargs):
     else:
         regrid_x_mgrid = False
 
+    ##################################################################
+    # A block for 'hourly' ERA5. Not even sure it still works.
+    ##################################################################
     if 'ERA5hourly' in kwargs: 
         era5dir = "/glade/campaign/collections/rda/data/ds633.6/e5.oper.an.ml/"
         year,month,day,hour = kwargs['year'],kwargs['month'],kwargs['day'],kwargs['hour']
@@ -92,29 +95,56 @@ def data(fld,season=None ,months=-999,**kwargs):
              'years':ymdh, 'data_path':fileN,'data_source':'ERA5','data_exists':True, 'rcode':0}
         
         return dic
-
+    ##################################################################
+    # This ENDS the 'hourly' ERA block
+    ##################################################################
 
     ADFobsdir = '/glade/campaign/cgd/amp/juliob/ADF_obs' #'/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
     AMWGobsdir = '/glade/campaign/cgd/amp/juliob/amwg_dev/obs_data/'
     
     if (fld in ('U','V','T','Q','PS','OMEGA') ):
+
+        if 'ERA5native' in kwargs:
+            ERA5native=kwargs['ERA5native']
+        else:
+            ERA5native=False
+            
         if 'Years' in kwargs:
             yearsA = kwargs['Years']
             if ( yearsA == '*' ):
-                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+                if ERA5native==True:
+                    ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+                else:
+                    ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly_climo/ZYX/'
                 yearsA = '1979_2022'
             elif ( yearsA == '1979_2022' ):
-                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+                if ERA5native==True:
+                    ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+                else:
+                    ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly_climo/ZYX/'
             else: 
-                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
+                if ERA5native==True:
+                    ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
+                else:
+                    ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly/ZYX/'
         elif 'Timecube' in kwargs:
             yearsA = '*'
-            ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
+            if ERA5native==True:
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
+            else:
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly/ZYX/'
         else:
             yearsA = '1979_2022'
-            ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+            if ERA5native==True:
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
+            else:
+                ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly_climo/ZYX/'
         # get ERA5 pl 
-        path_C = ERA5dir + 'ERA5.native.time.' + yearsA +'-*.nc'
+        if ERA5native==True:
+            path_C = ERA5dir + 'ERA5.native.time.' + yearsA +'-*.nc'
+        else:
+            path_C = ERA5dir + 'ERA5.fv1x1_zERA.time.' + yearsA +'-*.nc'
+
         Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
         print( f" Validation data {fld} has dims {Dc[fld].dims}")
         print( f" Validation data read from {path_C}")
@@ -137,8 +167,14 @@ def data(fld,season=None ,months=-999,**kwargs):
             hyai = Dc.hyai.values
 
         lev = 1_000.*hyam[:] +1_000.*hybm[:] 
-        lon =Dc.longitude.values
-        lat =Dc.latitude.values
+        if ('longitude' in Dc):
+            lon =Dc.longitude.values
+        elif ('lon' in Dc):
+            lon =Dc.lon.values
+        if ('latitude' in Dc):
+            lat =Dc.latitude.values
+        elif ('lat' in Dc):
+            lat =Dc.lat.values
 
         if 'Timecube' in kwargs:
             aa=Dc[fld].values

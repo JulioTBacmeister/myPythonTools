@@ -25,7 +25,7 @@ def KeyFig_Paper():
 def JointGWTune():
     exp_file = 'Utility.yaml'
     #xl= ['control', 'movmtn_t02', 'fronts_t01',    'cfrntmm_t01' , 'cfrntmm_t02' ,  'cfrntmm_t03' , 'cfrntmm_t04' ,  'cfrntmm_t05' , 'cfrormm_t01' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
-    xl= ['control', 'NOmovmtn','cfrntmm_t03' , 'cfrntmm_t04' , 'cfrntmm_t05' , 'cfrntmm_t06' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    xl= ['control', 'NOmovmtn', 'NOfronts' ,'cfrntmm_t03' , 'cfrntmm_t04re' , 'cfrntmm_t04' , 'cfrntmm_t06' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     return exp_file,xl
 
 def RadTest():
