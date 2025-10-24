@@ -33,7 +33,51 @@ control:
   SrcVgrid: L93
   caseroot: /glade/work/juliob/cam6_4_077/cases
   hsPat: cam.h0a
-  name: CTL_fmt_c6477
+  name: CTLre_fmt_c6477
+  desc: 110km resolution MM turned-ON
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+control_2000:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: CTL_2000_fmt_c6477
+  desc: 110km resolution MM turned-ON, init 2000-01-01
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ctl_c6489:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_089/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c6489
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ctl_c64101:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c64101
   parameters:
     param1: 1
     param2: 2
@@ -132,6 +176,22 @@ NOmovmtn:
   caseroot: /glade/work/juliob/cam6_4_077/cases
   hsPat: cam.h0a
   name: NOmovmtn_ctl_fmt_c6477
+  desc: 110km resolution no MM
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+NOmovmtn_2000:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_2000_ctl_fmt_c6477
+  desc: 110km resolution no MM (2000-2014)
   parameters:
     param1: 1
     param2: 2
@@ -334,6 +394,96 @@ cfrntmm_t06:
   subdir: hist
   user: juliob
   ymdPat: '*'
+ModHeat_x02:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_089/cases
+  hsPat: cam.h0a
+  name: ModHeat_x02_fmt_c6489
+  desc: "No moist heating where SGH>100m"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ModHeat_x03:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_089/cases
+  hsPat: cam.h0a
+  name: ModHeat_x03_fmt_c6489
+  desc: "No moist heating where SGH>500m"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ModHeat_x01:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  hsPat: cam.h0a
+  name: ModHeat_x01_fmt_c64101
+  desc: "No moist heating where SGH>200m"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ModHeat_F01:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  hsPat: cam.h0a
+  name: ModHeat_F01_fmt_c64101
+  desc: "Moist heating ramped 500m>SGH>200m"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ModHeat_F02:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  hsPat: cam.h0a
+  name: ModHeat_F02_fmt_c64101
+  desc: "Moist heating ramped 500m>SGH>200m"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+ModHeat_F03:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  hsPat: cam.h0a
+  name: ModHeat_F03_fmt_c64101
+  desc: "Moist heating ramped 1000m>SGH>200m"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
 cfrormm_t01:
   DstGrid: fv1x1
   Hkey: c
@@ -433,7 +583,7 @@ radtest_t06:
     param1: 1
     param2: 2
   subdir: hist
-  user: juliob
+  user: juliob_camp
   ymdPat: '*'
 radtest_Q05_mpas120:
   DstGrid: fv1x1
@@ -450,6 +600,21 @@ radtest_Q05_mpas120:
   subdir: hist
   user: juliob
   ymdPat: '*'
+radtest_mpasa120_c64109:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/my_cam_radiation_dev_109_c/cases
+  hsPat: cam.h0a
+  name: radtest_U03B_mpasa120_fmt_c64109c
+  desc: "MPAS120 radmods in cam6_4_116"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
 radtest_Q07_mpas120:
   DstGrid: fv1x1
   Hkey: c
@@ -459,6 +624,351 @@ radtest_Q07_mpas120:
   hsPat: cam.h0a
   name: radtest_Q07_mpas120_fmt_c6477
   desc: "MPAS120 Fomichev starting above 50 Pa"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_Q08_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_Q08_mpas120_fmt_c6477
+  desc: "MPAS120 Fomichev starting above 50 Pa"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_W01_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_W01_mpas120_fmt_c6477
+  desc: "MPAS120 Fomichev starting above 50 Pa"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_W02_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_W02_mpas120_fmt_c6477
+  desc: "MPAS120 Fomichev starting above 50 Pa"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_W03_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_W03_mpas120_fmt_c6477
+  desc: " 6-layer sponge ~0.5x1e5 diff"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_run
+  ymdPat: '*'
+radtest_W04_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_W04_mpas120_fmt_c6477
+  desc: "7-layer sponge ~0.25x1e5 diff"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_W06_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_W06_mpas120_fmt_c6477
+  desc: "8-layer TANH sponge ~0.25x1e5 diff"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_W07_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_W07_mpas120_fmt_c6477
+  desc: "8-layer TANH sponge ~0.25x1e4!! diff"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_F01_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_F01_mpas120_fmt_c6477
+  desc: "mpasa120, 8-layer TANH sponge ~0.25x1e4 diff w/ Adam's radheat"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_F02_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_F02_mpas120_fmt_c6477
+  desc: "mpasa120, updated rad, mpas_wd=75000."
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_F04_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_F04_mpas120_fmt_c6477
+  desc: "mpasa120, updated rad, mpas_wd=75000. Rayleigh time=500d"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_run
+  ymdPat: '*'
+radtest_F05_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_F05_mpas120_fmt_c6477
+  desc: "mpasa120, updated rad, mpas_wd=75000. Rayleigh time=500d. 5-level sponge"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_run
+  ymdPat: '*'
+radtest_AICN03_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_AICN03_mpas120_fmt_c6477
+  desc: "mpasa120, Ana. ICs"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_AICN04_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_AICN04_mpas120_fmt_c6477
+  desc: "mpasa120, Ana. ICs"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_F01_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_F01_ne30pg3_fmt_c6477
+  desc: "ne30pg3 w/ Adam's radheat and other rad mods"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_flt_H01_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_H01_ne30pg3_flt_c6477
+  desc: "ne30pg3 w/ Adam's radheat and other rad mods"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_run
+  ymdPat: '1979-*'
+radtest_flt_J01_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_J01_ne30pg3_flt_c6477
+  desc: "ne30pg3 w/ Adam's radheat and other rad mods"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '1979-*'
+radtest_flt_J01_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_J01_mpas120_flt_c6477
+  desc: "ne30pg3 w/ Adam's radheat and other rad mods"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_run
+  ymdPat: '1979-*'
+radtest_flt_CTL_mpas120:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: mpasa120
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_CTL_mpas120_flt_c6477
+  desc: "ne30pg3 w/ Adam's radheat and other rad mods"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_run
+  ymdPat: '1979-*'
+radtest_J01_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_J01_ne30pg3_fmt_c6477
+  desc: "p_top_for_rrtmgp=10 Pa" #"ne30pg3 w/ Adam's radheat and other rad mods"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_J02_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_J02_ne30pg3_fmt_c6477
+  desc: "p_top_for_rrtmgp=5 Pa"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_J03_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_J03_ne30pg3_fmt_c6477
+  desc: "p_top_for_rrtmgp=2 Pa"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_ne30pg3_c64109:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/my_cam_radiation_dev_109/cases
+  hsPat: cam.h0a
+  name: radtest_x01_ne30pg3_fmt_c64109
+  desc: "p_top_for_rrtmgp=2 Pa. New tag - 109"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+radtest_flt_CTL_ne30pg3:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: radtest_CTL_ne30pg3_flt_c6477
+  desc: "ne30pg3 w/ Adam's radheat and other rad mods"
   parameters:
     param1: 1
     param2: 2
@@ -487,6 +997,7 @@ CMIP6_WACCM:
   caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
   hsPat: 
   name: f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001
+  desc: WACCM6
   parameters:
     param1: 1
     param2: 2

@@ -43,3 +43,86 @@ Non_trad_Coriolis:
   parameters:
     param1: 1
     param2: 2
+####################
+FMT_control:
+  name: "f.e30_cam6_4_097.FHISTC_MTso.ne30_greendlndantarcsgh30fac2.5.001"
+  desc: "default divergence damping "
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L93"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+FMT_nu_div:
+  name: "f.e30_cam6_4_097.FHISTC_MTso.ne30_greendlndantarcsgh30fac2.5_nu_div.001"
+  desc: "divergence damping mod"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L93"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: "*" #["1985-*","1986-*"]
+  parameters:
+    param1: 1
+    param2: 2
+###############################
+# RECENT B1850-cases
+###############################
+B1850_x195:
+  name: "b.e30_alpha07b_dev.B1850C_LTso.ne30_t232_wgx3.195"
+  desc: "alpha07b + ocean,land changes atmos(?)"
+  user: "gmarques"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,5] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x194:
+  name: "b.e30_beta06.B1850C_LTso.ne30_t232_wgx3.194"
+  desc: "repeat of 192 w/ new ICs?"
+  user: "gmarques"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,5] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x192:
+  name: "b.e30_beta06.B1850C_LTso.ne30_t232_wgx3.192"
+  desc: " new baseline"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,5] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+

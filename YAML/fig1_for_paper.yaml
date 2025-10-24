@@ -3,6 +3,7 @@ ne240_ctl:
   caseroot: /glade/work/juliob/my_cam_development/cases
   user: "juliob"
   subdir: "hist"
+  desc: "14 km resolution"
   SrcGrid: "ne240pg3"
   SrcVgrid: L93
   Hkey: "c"
@@ -12,8 +13,24 @@ ne240_ctl:
   parameters:
     param1: 1
     param2: 2
+ne240_2007:
+  name: "c153_topfix_ne240pg3_FMTHIST_xic_x03"
+  desc: "14 km resolution"
+  caseroot: /glade/work/juliob/my_cam_development/cases
+  user: "juliob"
+  subdir: "hist"
+  SrcGrid: "ne240pg3"
+  SrcVgrid: L93
+  Hkey: "c"
+  DstGrid: "latlonOxO"
+  hsPat: "cam.h0a"
+  ymdPat: "*" 
+  parameters:
+    param1: 1
+    param2: 2
 ne120_ctl:
   name: "c153_topfix_ne120pg3_FMTHIST_xic_x02"
+  desc: "28 km resolution"
   caseroot: /glade/work/juliob/my_cam_development/cases
   user: "juliob"
   subdir: "hist"
@@ -64,6 +81,37 @@ NOmovmtn:
   caseroot: /glade/work/juliob/cam6_4_077/cases
   hsPat: cam.h0a
   name: NOmovmtn_ctl_fmt_c6477
+  desc: "110 km resolution"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+NOmovmtn_2000:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_2000_ctl_fmt_c6477
+  desc: "110 km resolution"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+NOmovmtn_2004_06_01:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_2004_06_01_ctl_fmt_c6477
+  desc: "110 km resolution (init 2004-06-01)"
   parameters:
     param1: 1
     param2: 2

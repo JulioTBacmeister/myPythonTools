@@ -95,16 +95,17 @@ def MakePath( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='
 
 def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdPat='*' ,
                  Src=None, Hkey=None, 
-                 cmip_fld=None, 
+                 cmip_fld=None, ymdPat_is_range=False,
                  verbose=False, open_dataset=False, help=False, add_coords=False, shift_lons=False ):
     import xarray as xr
     import glob
+    import numpy as np
 
     if (help == True):
         print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' 'CMIP6_WACCM' ")
         return
     
-    if (user in ['juliob','pel','tilmes','hannay','bramberg','islas'] ):
+    if (user in ['juliob','pel','tilmes','hannay','bramberg','islas','gmarques',] ):
         bpath = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/'  #{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
         bpath = f'/glade/derecho/scratch/juliob/{exp}/run/'  #{exp}.{hsPat}.{ymdPat}.nc' 
@@ -132,11 +133,26 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
         else:
             path=f'{bpath}{exp}.{hsPat}.{ymdPat}.nc'
     else:
-        path=[]
-        for ymdPat_ in ymdPat :
-            newpath=sorted( glob.glob( f'{bpath}{exp}.{hsPat}.{ymdPat_}.nc' ) )
-            #print(ymdPat_, newpath)
-            path = path + newpath
+        print( 'ymdPat is a list' )
+        if (ymdPat_is_range==False):
+            print( 'ymdPat is a list of year strings' )
+            path=[]
+            for ymdPat_ in ymdPat :
+                newpath=sorted( glob.glob( f'{bpath}{exp}.{hsPat}.{ymdPat_}.nc' ) )
+                #print(ymdPat_, newpath)
+                path = path + newpath
+        else:
+            print( 'ymdPat is a 2 elem list with a range' )
+            year0 = int(ymdPat[0])
+            year1 = int(ymdPat[1])
+            path=[]
+            ipath=0
+            for y in np.arange( start=year0, stop=year1+1 ):
+                ymdPat_ = f'{str(y).zfill(4)}-*'
+                newpath = sorted( glob.glob( f'{bpath}{exp}.{hsPat}.{ymdPat_}.nc' ) )
+                path = path + newpath
+                ipath=ipath+len(newpath)
+            print( f'Range resulted in path with {ipath} members' )
 
     
     ###/glade/u/home/gmarques/campaign_MOM6/b.cesm3_cam058_mom_e.B1850WscMOM.ne30_L58_t061.camdev_cice5.026g

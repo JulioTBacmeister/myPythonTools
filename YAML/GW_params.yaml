@@ -1,3 +1,78 @@
+ModHeat_x01:
+  atm_in_path: /glade/work/juliob/cam6_4_101/cases/ModHeat_x01_fmt_c64101/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.012d0
+    effgw_beres_dp: 0.15D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 10000.0d0
+    movmtn_psteer: 30000.0d0
+    movmtn_source: 1
+    taubgnd: 1.0D-5
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: ModHeat_x01_fmt_c64101
+ModHeat_x02:
+  atm_in_path: /glade/work/juliob/cam6_4_089/cases/ModHeat_x02_fmt_c6489/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_089/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.012d0
+    effgw_beres_dp: 0.15D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 10000.0d0
+    movmtn_psteer: 30000.0d0
+    movmtn_source: 1
+    taubgnd: 1.0D-5
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: ModHeat_x02_fmt_c6489
+ModHeat_x03:
+  atm_in_path: /glade/work/juliob/cam6_4_089/cases/ModHeat_x03_fmt_c6489/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_089/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.012d0
+    effgw_beres_dp: 0.15D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 10000.0d0
+    movmtn_psteer: 30000.0d0
+    movmtn_source: 1
+    taubgnd: 1.0D-5
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: ModHeat_x03_fmt_c6489
 NOfronts:
   atm_in_path: /glade/work/juliob/cam6_4_077/cases/NOfronts_ctl_fmt_c6477/CaseDocs/atm_in
   caseroot: /glade/work/juliob/cam6_4_077/cases
@@ -142,6 +217,31 @@ cfrntmm_t04:
     use_gw_rdg_gamma: .false.
     use_gw_rdg_resid: .true.
   name: cfrntmm_t04_fmt_c6477
+cfrntmm_t04re:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/cfrntmm_t04re_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.012d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 10000.0d0
+    movmtn_psteer: 30000.0d0
+    movmtn_source: 1
+    taubgnd: 1.0D-5
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: cfrntmm_t04re_fmt_c6477
 cfrntmm_t05:
   atm_in_path: /glade/work/juliob/cam6_4_077/cases/cfrntmm_t05_fmt_c6477/CaseDocs/atm_in
   caseroot: /glade/work/juliob/cam6_4_077/cases
@@ -167,6 +267,31 @@ cfrntmm_t05:
     use_gw_rdg_gamma: .false.
     use_gw_rdg_resid: .true.
   name: cfrntmm_t05_fmt_c6477
+cfrntmm_t06:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/cfrntmm_t06_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.012d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 20000.0d0
+    movmtn_psteer: 30000.0d0
+    movmtn_source: 1
+    taubgnd: 1.0D-5
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: cfrntmm_t06_fmt_c6477
 cfrormm_t01:
   atm_in_path: /glade/work/juliob/cam6_4_077/cases/cfrormm_t01_fmt_c6477/CaseDocs/atm_in
   caseroot: /glade/work/juliob/cam6_4_077/cases
@@ -267,6 +392,56 @@ control_re:
     use_gw_rdg_gamma: .false.
     use_gw_rdg_resid: .true.
   name: CTLre_fmt_c6477
+ctl_c64101:
+  atm_in_path: /glade/work/juliob/cam6_4_101/cases/CTL_fmt_c64101/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_101/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.15D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 32500.0d0
+    movmtn_psteer: 65000.0d0
+    movmtn_source: 1
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: CTL_fmt_c64101
+ctl_c6489:
+  atm_in_path: /glade/work/juliob/cam6_4_089/cases/CTL_fmt_c6489/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_089/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.008d0
+    effgw_beres_dp: 0.15D0
+    effgw_cm: 1.D0
+    effgw_movmtn_pbl: 1.0d0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    movmtn_plaunch: 32500.0d0
+    movmtn_psteer: 65000.0d0
+    movmtn_source: 1
+    taubgnd: 1.25D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .true.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: CTL_fmt_c6489
 evap075:
   atm_in_path: /glade/work/juliob/cam6_4_077/cases/evap075_fmt_c6477/CaseDocs/atm_in
   caseroot: /glade/work/juliob/cam6_4_077/cases
@@ -509,6 +684,153 @@ radtest_Q07_mpas120:
     use_gw_rdg_gamma: .false.
     use_gw_rdg_resid: .true.
   name: radtest_Q07_mpas120_fmt_c6477
+radtest_Q08_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_Q08_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_Q08_mpas120_fmt_c6477
+radtest_W01_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_W01_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_W01_mpas120_fmt_c6477
+radtest_W02_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_W02_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_W02_mpas120_fmt_c6477
+radtest_W03_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_W03_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_W03_mpas120_fmt_c6477
+radtest_W04_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_W04_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_W04_mpas120_fmt_c6477
+radtest_W06_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_W06_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_W06_mpas120_fmt_c6477
+radtest_W07_mpas120:
+  atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_W07_mpas120_fmt_c6477/CaseDocs/atm_in
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  gw_settings:
+    alpha_gw_movmtn: 0.0000008d0
+    effgw_beres_dp: 0.70D0
+    effgw_cm: 1.D0
+    effgw_rdg_beta: 0.5D0
+    effgw_rdg_beta_max: 0.5D0
+    effgw_rdg_resid: 0.5
+    taubgnd: 1.5D-3
+    use_gw_convect_dp: .true.
+    use_gw_convect_sh: .false.
+    use_gw_front: .true.
+    use_gw_front_igw: .false.
+    use_gw_movmtn_pbl: .false.
+    use_gw_oro: .false.
+    use_gw_rdg_beta: .true.
+    use_gw_rdg_gamma: .false.
+    use_gw_rdg_resid: .true.
+  name: radtest_W07_mpas120_fmt_c6477
 radtest_t01:
   atm_in_path: /glade/work/juliob/cam6_4_077/cases/radtest_t01_fmt_c6477/CaseDocs/atm_in
   caseroot: /glade/work/juliob/cam6_4_077/cases

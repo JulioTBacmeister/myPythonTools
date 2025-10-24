@@ -1,0 +1,91 @@
+#########################################################################################################################################
+Figure 1 (need U and T)
+
+['NOmovmtn_2004_06_01', 'ne120_ctl', 'ne240_ctl']
+NOmovmtn_2004_06_01_ctl_fmt_c6477 hist ne30pg3 c fv1x1 juliob
+*
+/glade/derecho/scratch/juliob/archive/NOmovmtn_2004_06_01_ctl_fmt_c6477/atm/hist/NOmovmtn_2004_06_01_ctl_fmt_c6477.cam.h0a.*.nc
+SrcVgrid for NOmovmtn_2004_06_01 = L93 
+Vertcal levs - (93,)
+NOmovmtn_2004_06_01_ctl_fmt_c6477 Years 1.0 
+
+c153_topfix_ne120pg3_FMTHIST_xic_x02 hist ne120pg3 c latlonOxO juliob
+*
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne120pg3_FMTHIST_xic_x02/atm/hist/c153_topfix_ne120pg3_FMTHIST_xic_x02.cam.h0a.*.nc
+SrcVgrid for ne120_ctl = L93 
+Vertcal levs - (93,)
+c153_topfix_ne120pg3_FMTHIST_xic_x02 Years 1.0 
+
+c153_topfix_ne240pg3_FMTHIST_xic_x02 hist ne240pg3 c latlonOxO juliob
+*
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne240pg3_FMTHIST_xic_x02/atm/hist/c153_topfix_ne240pg3_FMTHIST_xic_x02.cam.h0a.*.nc
+SrcVgrid for ne240_ctl = L93 
+Vertcal levs - (93,)
+c153_topfix_ne240pg3_FMTHIST_xic_x02 Years 0.6666666666666666 
+
+#########################################################################################################################################
+Figure 2 (U, OMEGA, and OMEGAU needed)
+
+A: exp=NOmovmtn_2004_06_01_ctl_fmt_c6477 from hist, SrcGrid=ne30pg3, Hkey=c, user=juliob 
+/glade/derecho/scratch/juliob/archive/NOmovmtn_2004_06_01_ctl_fmt_c6477/atm/hist/NOmovmtn_2004_06_01_ctl_fmt_c6477.cam.h0a.2004-*.nc
+B: exp=c153_topfix_ne120pg3_FMTHIST_xic_x02 from hist, SrcGrid=ne120pg3, Hkey=c, user=juliob 
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne120pg3_FMTHIST_xic_x02/atm/hist/c153_topfix_ne120pg3_FMTHIST_xic_x02.cam.h0a.2004-*.nc
+C: exp=c153_topfix_ne240pg3_FMTHIST_xic_x02 from hist, SrcGrid=ne240pg3, Hkey=c, user=juliob 
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne240pg3_FMTHIST_xic_x02/atm/hist/c153_topfix_ne240pg3_FMTHIST_xic_x02.cam.h0a.2004-*.nc
+
+
+
+
+#########################################################################################################################################
+Figure 3 
+
+Hovmoeller: 
+PyRegridding.Utils.MyConstants in /glade/work/juliob/PyRegridding/Utils 
+Using Flexible parallel/serial VertRegrid 
+ PyRegridding.Utils.MyConstants in /glade/work/juliob/PyRegridding/Utils 
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne240pg3_FMTHIST_xic_x02/atm/GWana/c153_topfix_ne240pg3_FMTHIST_xic_x02_GWana_xPyP_2004-06-01_2004-06-30.nc
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne240pg3_FMTHIST_xic_x02/atm/GWana/c153_topfix_ne240pg3_FMTHIST_xic_x02_GWana_zeta_2004-06-01_2004-06-30.nc
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne240pg3_FMTHIST_xic_x02/atm/GWana/c153_topfix_ne240pg3_FMTHIST_xic_x02_GWana_PBLq_2004-06-01_2004-06-30.nc
+
+Snapshot:
+
+c153_topfix_ne240pg3_FMTHIST_xic_x02 hist ne240pg3 c latlonOxO juliob
+2004-07-05-00000* jja
+ERA5 *
+/glade/derecho/scratch/juliob/archive/c153_topfix_ne240pg3_FMTHIST_xic_x02/atm/hist/c153_topfix_ne240pg3_FMTHIST_xic_x02.cam.h1i.2004-07-05-00000*.nc
+
+topo:
+/glade/work/juliob/GridFiles/Topo/ne240pg3_gmted2010_modis_bedmachine_nc3000_Laplace0012_noleak_20240329.nc
+
+#########################################################################################################################################
+Figure 4 (need U and T)
+
+['control', 'NOmovmtn', 'CMIP6_WACCM']
+CTLre_fmt_c6477 hist ne30pg3 c fv1x1 juliob
+[1985, 2014]
+ymdPat is a list
+ymdPat is a 2 elem list with a range
+Range resulted in path with 359 members
+/glade/derecho/scratch/juliob/archive/CTLre_fmt_c6477/atm/hist/CTLre_fmt_c6477.cam.h0a.1985-01.nc 
+ /glade/derecho/scratch/juliob/archive/CTLre_fmt_c6477/atm/hist/CTLre_fmt_c6477.cam.h0a.2014-11.nc
+SrcVgrid for control = L93 
+Vertcal levs - (93,)
+CTLre_fmt_c6477 Years 29.916666666666668 
+
+NOmovmtn_ctl_fmt_c6477 hist ne30pg3 c fv1x1 juliob
+[1985, 2014]
+ymdPat is a list
+ymdPat is a 2 elem list with a range
+Range resulted in path with 359 members
+/glade/derecho/scratch/juliob/archive/NOmovmtn_ctl_fmt_c6477/atm/hist/NOmovmtn_ctl_fmt_c6477.cam.h0a.1985-01.nc 
+ /glade/derecho/scratch/juliob/archive/NOmovmtn_ctl_fmt_c6477/atm/hist/NOmovmtn_ctl_fmt_c6477.cam.h0a.2014-11.nc
+SrcVgrid for NOmovmtn = L93 
+Vertcal levs - (93,)
+NOmovmtn_ctl_fmt_c6477 Years 29.916666666666668 
+
+f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001 hist fv1x1 yx fv1x1 CMIP6_WACCM
+*
+/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001/atm/proc/tseries/month_1/f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001.cam.h0.T.*.nc
+SrcVgrid for CMIP6_WACCM = WACCM6 
+Vertcal levs - (70,)
+f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001 Years 65.0 

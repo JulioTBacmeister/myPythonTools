@@ -1,0 +1,91 @@
+control_flt_c6477:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: CTL_c6477
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
+control_c6477:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: CTLre_fmt_c6477
+  desc: Tag=cam6_4_077
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NOmovmtn_c6477:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_ctl_fmt_c6477
+  desc: Tag=cam6_4_077. No MM
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+control_c64116:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_116/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c64116
+  desc: Tag=cam6_4_116
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+CMIP6:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: L32
+  caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
+  hsPat: 
+  name: f.e21.FHIST_BGC.f09_f09_mg17.CMIP6-AMIP.001
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: CMIP6
+  ymdPat: '*'
+CMIP6_WACCM:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: WACCM6
+  caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
+  hsPat: 
+  name: f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001
+  desc: WACCM6
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: CMIP6_WACCM
+  ymdPat: '*'

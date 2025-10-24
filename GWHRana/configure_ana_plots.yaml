@@ -18,6 +18,7 @@ A:
     param2: 2
 ne240x2:
   name: "c153_topfix_ne240pg3_FMTHIST_xic_x02"
+  desc: "14 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne240pg3"
@@ -30,6 +31,7 @@ ne240x2:
     param2: 2
 ne240x2_L56:
   name: "c153_topfix_ne240pg3_FMTHIST_L56_86km_xic_x02"
+  desc: "14 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne240pg3"
@@ -42,6 +44,7 @@ ne240x2_L56:
     param2: 2
 ne240x2_QxQsst:
   name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_xic_x02"
+  desc: "14 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne240pg3"
@@ -54,6 +57,7 @@ ne240x2_QxQsst:
     param2: 2
 ne240x2_QxQsst_smth:
   name: "c153_topfix_ne240pg3_FMTHIST_QxQsst_smth_xic_x02"
+  desc: "14 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne240pg3"
@@ -66,6 +70,7 @@ ne240x2_QxQsst_smth:
     param2: 2
 c153_ne30_x2:
   name: "c153_ne30pg3_FMTHIST_x02"
+  desc: "110 km resolution"
   user: "juliob_camp"
   subdir: "hist"
   SrcGrid: "ne30pg3"
@@ -78,6 +83,7 @@ c153_ne30_x2:
     param2: 2
 c153_ne30_x5:
   name: "c153_ne30pg3_FMTHIST_x05"
+  desc: "110 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne30pg3"
@@ -90,6 +96,7 @@ c153_ne30_x5:
     param2: 2
 c153_ne120_x2:
   name: "c153_topfix_ne120pg3_FMTHIST_xic_x02"
+  desc: "27 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne120pg3"
@@ -102,6 +109,7 @@ c153_ne120_x2:
     param2: 2
 oldCTL:
   name: "c64_gwR2_ne30pg3_FMTHIST_topfix_oldCTL_qbotune_x03"
+  desc: "110 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne30pg3"
@@ -114,6 +122,7 @@ oldCTL:
     param2: 2
 newCTL:
   name: "c64_gwR2_ne30pg3_FMTHIST_topfix_x02"
+  desc: "110 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne30pg3"
@@ -126,6 +135,7 @@ newCTL:
     param2: 2
 c64_rdgres:
   name: "c64_gwR2_ne30pg3_FMTHIST_topfix_rdgres_x02"
+  desc: "110 km resolution"
   user: "juliob"
   subdir: "hist"
   SrcGrid: "ne30pg3"
@@ -138,6 +148,7 @@ c64_rdgres:
     param2: 2
 waccmL135:
   name: "FWscHIST_ne30pg3_cam7phys_t01_L135start1985"
+  desc: "WACCM6+"
   user: "bramberg"
   subdir: "hist"
   SrcGrid: "ne30pg3"
@@ -148,6 +159,21 @@ waccmL135:
   parameters:
     param1: 1
     param2: 2
+NOmovmtn_2004_06_01:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_2004_06_01_ctl_fmt_c6477
+  desc: "110 km resolution (init 2004-06-01)"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: '*'
 ##############################
 # Some runs Cecile has done
 ##############################

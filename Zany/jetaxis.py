@@ -48,7 +48,7 @@ def make_axes_mean_range( X=None , Src=None, Dst='fv1x1' , season=[6,7,8] ):
     AAa = X.U.values
 
     nt = np.shape( AAa )[0]
-    nyears = nt // 12
+    nyears = np.max( (nt // 12,1) )
     
     DstInfo = GrU.gridInfo(Dst) #,Vgrid=DstVgrid)
     lat_a,lon_a = GrU.latlon( scrip= DstInfo['scrip'], Hkey=DstInfo['Hkey'] )
@@ -79,5 +79,61 @@ def make_axes_mean_range( X=None , Src=None, Dst='fv1x1' , season=[6,7,8] ):
     return jaxes,mean,min_,max_,std,nyears
 
 
+
+def make_seasonal_zonal_tzyCube( X=None , fld='U', Src=None, Dst='fv1x1' , season=[6,7,8] ):
+
+    RgObs={}
+
+    
+    AAa = X[fld].values
+
+    nt = np.shape( AAa )[0]
+    nyears = np.max( (nt // 12,1) )
+    
+    DstInfo = GrU.gridInfo(Dst) #,Vgrid=DstVgrid)
+    lat_a,lon_a = GrU.latlon( scrip= DstInfo['scrip'], Hkey=DstInfo['Hkey'] )
+
+    if Src not in ('fv1x1','fv0.9x1.25'):
+        #####################################
+        # For unstructured or higher res data
+        #####################################
+        RegridObj = GrU.regrid_object_lib(RgOb=RgObs, src=Src, dst=Dst)
+        AAa_yx=RgF.Horz(xfld_Src=AAa , Src=Src, Dst=Dst , RegridObj_In= RegridObj )
+    else:
+        AAa_yx = AAa
+    
+    AAa_zav = np.average( AAa_yx , axis=3)
+    iseason = np.array( season ) - 1
+    AAa_zav_s = np.stack([
+        np.average(AAa_zav[y*12 + iseason , :, :], axis=0)
+        for y in np.arange(nyears)
+    ])
+    
+    return AAa_zav_s,lat_a,lon_a
+
+def make_tzyxCube( X=None , fld='U', Src=None, Dst='fv1x1' , season=[6,7,8] ):
+
+    RgObs={}
+
+    
+    AAa = X[fld].values
+
+    nt = np.shape( AAa )[0]
+    nyears = np.max( (nt // 12,1) )
+    
+    DstInfo = GrU.gridInfo(Dst) #,Vgrid=DstVgrid)
+    lat_a,lon_a = GrU.latlon( scrip= DstInfo['scrip'], Hkey=DstInfo['Hkey'] )
+
+    if Src not in ('fv1x1','fv0.9x1.25'):
+        #####################################
+        # For unstructured or higher res data
+        #####################################
+        RegridObj = GrU.regrid_object_lib(RgOb=RgObs, src=Src, dst=Dst)
+        AAa_yx=RgF.Horz(xfld_Src=AAa , Src=Src, Dst=Dst , RegridObj_In= RegridObj )
+    else:
+        AAa_yx = AAa
+    
+   
+    return AAa_yx,lat_a,lon_a
 
 

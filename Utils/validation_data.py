@@ -102,14 +102,14 @@ def data(fld,season=None ,months=-999,**kwargs):
     ADFobsdir = '/glade/campaign/cgd/amp/juliob/ADF_obs' #'/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
     AMWGobsdir = '/glade/campaign/cgd/amp/juliob/amwg_dev/obs_data/'
     
-    if (fld in ('U','V','T','Q','PS','OMEGA') ):
+    if (fld in ('U','V','T','Q','PS',) ): #'OMEGA') ):
 
         if 'ERA5native' in kwargs:
             ERA5native=kwargs['ERA5native']
         else:
             ERA5native=False
             
-        if 'Years' in kwargs:
+        if ('Years' in kwargs) and ('Climo' not in kwargs):
             yearsA = kwargs['Years']
             if ( yearsA == '*' ):
                 if ERA5native==True:
@@ -127,6 +127,12 @@ def data(fld,season=None ,months=-999,**kwargs):
                     ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly/'
                 else:
                     ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly/ZYX/'
+        elif 'Climo' in kwargs:
+            ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly_climo/ZYX/'
+            if 'Years' in kwargs:
+                yearsA = kwargs['Years']
+            else:
+                yearsA = '1979_2022'
         elif 'Timecube' in kwargs:
             yearsA = '*'
             if ERA5native==True:
@@ -139,11 +145,13 @@ def data(fld,season=None ,months=-999,**kwargs):
                 ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/native_monthly_climo/'
             else:
                 ERA5dir = '/glade/campaign/cgd/amp/juliob/ERA5/fv1x1_monthly_climo/ZYX/'
-        # get ERA5 pl 
+        # get ERA5 
         if ERA5native==True:
             path_C = ERA5dir + 'ERA5.native.time.' + yearsA +'-*.nc'
         else:
             path_C = ERA5dir + 'ERA5.fv1x1_zERA.time.' + yearsA +'-*.nc'
+
+        print( f" Trying validation data from {path_C}")
 
         Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
         print( f" Validation data {fld} has dims {Dc[fld].dims}")
@@ -202,12 +210,36 @@ def data(fld,season=None ,months=-999,**kwargs):
     # /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc
     # need to map names from cesm to obs
        
+    elif (fld in ('PRECT',) ):
+        if ('data_source' in kwargs):
+            data_source = kwargs['data_source']
+        else:
+            data_source = 'GPCP'
+            
+        if (data_source=='GPCP'):
+            path_C = f'/glade/campaign/cgd/amp/juliob/cgd_amp/GPCP/gpcp.mon.mean.197901-201607.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
+            Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
+            Dc = Dc.where(Dc.time.dt.year <= 2015, drop=True)
+            print(f'Last time in GPCP {Dc.time[-1].values}')
+            lon =Dc.lon.values
+            lat =Dc.lat.values
+            lev =np.asarray( [9999.] )
+            aa = Av.Seasonal( ds=Dc, season=season , fld='precip' )
+        else:
+            dic = {'aa':-999e10, 'data_exists':False, 'rcode':-99}
+            return dic
+
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':'1979-2015', 'data_exists':True, 'data_path':path_C,'data_source':data_source,
+             'data_Hgrid':None,'data_Vgrid':None,'rcode':0}
+
+
     elif (fld in ('SWCF',) ):
         path_C = f'{ADFobsdir}/CERES_EBAF_Ed4.1_2001-2020.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
         Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
         lon =Dc.lon.values
         lat =Dc.lat.values
-        lev =np.asarray( [1000.] )
+        lev =np.asarray( [9999.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld='toa_cre_sw_mon' )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
              'years':'2001-2020', 'data_exists':True, 'data_path':path_C,'data_source':'CERES-EBAF',
@@ -219,7 +251,7 @@ def data(fld,season=None ,months=-999,**kwargs):
         Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
         lon =Dc.lon.values
         lat =Dc.lat.values
-        lev =np.asarray( [1000.] )
+        lev =np.asarray( [9999.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld='STRESS_MAG' )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
              'years':'1979-2000', 'data_exists':True, 'data_path':path_C,'data_source':'Large-Yeager',
@@ -245,6 +277,8 @@ def data(fld,season=None ,months=-999,**kwargs):
         lat =Dc.lat.values
         lev =np.asarray( [1000.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld=fld )
+        if( fld in ('TAUX','TAUY',) ):
+            aa = -1.0*aa
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
              'years':'1979-2000', 'data_exists':True, 'data_path':path_C,'data_source':'Large-Yeager',
              'data_Hgrid':None,'data_Vgrid':None,'rcode':0}

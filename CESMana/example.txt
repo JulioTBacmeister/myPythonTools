@@ -1,0 +1,11 @@
+# Volia
+
+effgw_param1 = 42
+non_effgw_param = 3.14
+gravitywave_param = "hello"
+  gw_param   =   True
+other_param = False
+poonut = "VooVoo"
+### This is stoopy
+   whack_a_mole = True
+

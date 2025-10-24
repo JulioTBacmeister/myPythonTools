@@ -120,6 +120,32 @@ def rcp85fname(ens=1,sst='',beginyear=2070,endyear=2099,special='',justBaseName=
 #----------------------------
 # --- Utilities
 # ---------------------------
+def basinNUM(wind,basin,power_wind=1.0):
+    
+    nstorm,nt=np.shape( wind )
+    Nb = ( np.nanmax(basin)-np.nanmin(basin) + 1 ).astype(int)
+    bnum = np.zeros( (Nb , nt) )
+    awind = np.nan_to_num( wind )
+    
+    w10m_ms = power_wind*awind
+   
+    bmin=np.nanmin(basin).astype(int)
+    bmax=np.nanmax(basin).astype(int)
+    
+        
+    # Yes, this is an awkward way to do this 
+    for b in np.arange( start=bmin , stop=bmax+1 ):
+        ib = b - bmin
+        for s in np.arange(nstorm):
+            oo=np.where( basin[s,:]==b )
+            if (len(oo[0])>0):
+                indx=oo[0][:]
+                wind_in_s = w10m_ms[ s, indx ]
+                
+                bace[ib,indx] = bace[ib,indx]+aace[s,indx]
+
+    return Bace
+
 def basinACE(wind,basin,power_wind=1.0):
     
     nstorm,nt=np.shape( wind )

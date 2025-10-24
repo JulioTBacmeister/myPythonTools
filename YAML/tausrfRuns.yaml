@@ -1,0 +1,32 @@
+control_c6477:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: CTLre_fmt_c6477
+  desc: Control for Tag=cam6_4_077
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,1996] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+tausrf200_c6477:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: tausrf200_fmt_c6477
+  desc: 2x tau
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob_camp
+  ymdPat: [1985,1996] #["1985-*","1986-*"]
+  ymdPat_is_range: True

@@ -1,0 +1,85 @@
+control:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: CTLre_fmt_c6477
+  desc: 110km resolution MM turned-ON
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  #ymdPat: '*'
+  #ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+control_2000:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: CTL_2000_fmt_c6477
+  desc: 110km resolution MM turned-ON (init 2000-01-01)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  #ymdPat: '*'
+  ymdPat: [2000,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NOmovmtn:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_ctl_fmt_c6477
+  desc: 110km resolution no MM
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  #ymdPat: '*'
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NOmovmtn_2000:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_077/cases
+  hsPat: cam.h0a
+  name: NOmovmtn_2000_ctl_fmt_c6477
+  desc: 110km resolution no MM (init 2000-01-01)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  #ymdPat: '*'
+  ymdPat: [2000,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+CMIP6_WACCM:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: WACCM6
+  caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
+  hsPat: 
+  name: f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001
+  desc: WACCM6
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: CMIP6_WACCM
+  ymdPat: '*'
+

@@ -75,6 +75,11 @@ def Maps( fields , lons, lats, **kwargs ):
     print(" LL 1.0.0 " )
 
     
+    if ( 'map_extent' in kwargs ):
+        map_extent_ = kwargs[ 'map_extent' ]
+    else:
+        map_extent_ = None
+
     if ( 'verbose' in kwargs ):
         verbose_ = kwargs[ 'verbose' ]
     else:
@@ -162,7 +167,13 @@ def Maps( fields , lons, lats, **kwargs ):
         Axes = Pu.axes_def(n=npo,nxplo=nx,nyplo=ny ) 
     
         ax1 = fig.add_axes( Axes , projection=MapProj)
-        ax1.set_global()
+
+        if (map_extent_ is None):
+            ax1.set_global()
+        else:
+            # Set extent: [lon_min, lon_max, lat_min, lat_max]
+            ax1.set_extent( map_extent_ , crs=DataProj)
+
         ax1.coastlines(resolution='110m',color='black',linewidth=CoastWidth )
         print(f" LL 1.0.{ipo} " )
     
@@ -221,8 +232,8 @@ def Maps( fields , lons, lats, **kwargs ):
                 verticalalignment='top',
                 bbox=dict(boxstyle="round,pad=0.3", edgecolor='black', facecolor='lightgrey')
                 )
-
-
+        #ax1.set_xlims(50,100)
+        #ax1.set_ylims(15,50)
 
 def Maps_NoProj( fields , lons, lats, **kwargs ):
     ##################################################
