@@ -1,0 +1,38 @@
+#!/bin/bash -l
+#PBS -N MOAAP
+#PBS -A CESM0024
+###monthly: 300/ bimonthly 500
+#PBS -l select=1:ncpus=1:mem=300GB
+#PBS -l walltime=24:00:00
+#PBS -q casper
+#PBS -o logs/
+#PBS -j oe  
+
+
+cd /glade/u/home/hannay/MOAPP
+
+module load conda
+conda activate npl
+
+# ---- PARAMETERS TO PASS TO PYTHON ----
+#INPUT_FILE="/glade/derecho/scratch/hannay/MOAPP/monthly_files/CAM7_L58_HR_hourly.199003.nc"
+#OUTPUT_DIR="/glade/derecho/scratch/hannay/MOAPP/moaap_output/monthly/"
+
+
+
+# Pass the arguments to python
+#python ./STEP3_MOAAP_tracking-new.py "${INPUT_FILE}" "${OUTPUT_DIR}"
+
+
+#exit 
+
+#for y in {1990..2010}; do
+#  for m in 01 02 03 04 05 06 07 08 09 10 11 12; do
+for y in {1990}; do
+  for m in 04 05 06 07 08 09 10 11 12; do
+    INPUT_FILE="/glade/derecho/scratch/hannay/MOAPP/monthly_files/CAM7_L58_HR_hourly.${y}${m}.nc"
+    OUTPUT_DIR="/glade/derecho/scratch/hannay/MOAPP/moaap_output/monthly/"
+
+    python ./STEP3_MOAAP_tracking-new.py "${INPUT_FILE}" "${OUTPUT_DIR}"
+  done
+done

@@ -1,0 +1,16 @@
+#!/bin/bash -l
+#PBS -N MOAAP
+#PBS -A CESM0024
+#PBS -l select=1:ncpus=1:mem=500GB
+#PBS -l walltime=24:00:00
+#PBS -q casper
+#PBS -o logs/
+#PBS -j oe  
+
+
+cd /glade/u/home/hannay/MOAPP
+module load conda
+conda activate npl
+python ./STEP3_MOAAP_tracking.py 
+
+

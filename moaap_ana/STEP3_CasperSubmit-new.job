@@ -1,0 +1,36 @@
+#!/bin/tcsh
+#PBS -N MOAAP
+#PBS -A CESM0024
+### monthly: 300 / bimonthly: 500
+#PBS -l select=1:ncpus=1:mem=300GB
+#PBS -l walltime=24:00:00
+#PBS -q casper
+#PBS -o logs/
+#PBS -j oe
+
+cd /glade/u/home/hannay/MOAPP
+
+module load conda
+conda activate npl
+
+# ----- tcsh does NOT allow for y in {1990} -----
+# Only simple foreach loops work
+
+foreach y (1990)
+  foreach m (04 05 06 07 08 09 10 11 12)
+
+    set INPUT_FILE = "/glade/derecho/scratch/hannay/MOAPP/monthly_files/CAM7_L58_HR_hourly.${y}${m}.nc"
+    set OUTPUT_DIR = "/glade/derecho/scratch/hannay/MOAPP/moaap_output/monthly/"
+
+    echo "Running MOAAP on $INPUT_FILE"
+
+    if ( -e $INPUT_FILE ) then
+        python ./STEP3_MOAAP_tracking-new.py "$INPUT_FILE" "$OUTPUT_DIR"
+    else
+        echo "Missing file: $INPUT_FILE"
+    endif
+
+  end
+  end
+
+

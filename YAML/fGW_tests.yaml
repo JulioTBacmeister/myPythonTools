@@ -1,110 +1,715 @@
-NOmovmtn_c6477:
+CMIP6_WACCM:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: WACCM6
+  caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
+  hsPat: 
+  name: f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001
+  desc: WACCM6
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: CMIP6_WACCM
+  ymdPat: '*'
+CTL_c64173:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
   SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_077/cases
+  caseroot: /glade/work/juliob/cam6_4_173/cases
   hsPat: cam.h0a
-  name: NOmovmtn_ctl_fmt_c6477
-  desc: Tag=cam6_4_077. No MM
+  name: CTL_fmt_c64173
+  desc: Tag=cam6_4_173, Control
   parameters:
     param1: 1
     param2: 2
   subdir: hist
   user: juliob
-  ymdPat: [1985,1996] #["1985-*","1986-*"]
-  ymdPat_is_range: True
-control_c6477:
-  DstGrid: fv1x1
-  Hkey: c
-  SrcGrid: ne30pg3
-  SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_077/cases
-  hsPat: cam.h0a
-  name: CTLre_fmt_c6477
-  desc: "Control for tag=cam6_4_077"
-  parameters:
-    param1: 1
-    param2: 2
-  subdir: hist
-  user: juliob
-  #ymdPat: '*'
-  #ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
-control_c64116:
+CTLredux_c64173:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
   SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_116/cases
+  caseroot: /glade/work/juliob/cam6_4_173/cases
   hsPat: cam.h0a
-  name: CTL_fmt_c64116
-  desc: "Control for tag=cam6_4_116"
+  name: CTLredux_fmt_c64173
+  desc: mods on cam6_4_173, Redo Control w/ mods
   parameters:
     param1: 1
     param2: 2
   subdir: hist
   user: juliob
-  ymdPat: [1985,2014] #2014] #2014] #["1985-*","1986-*"]
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
-fGWhack01_c64116:
+DMF_c64173:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
   SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_116/cases
+  caseroot: /glade/work/juliob/cam6_4_173/cases
   hsPat: cam.h0a
-  name: fGWhack01_fmt_c64116
-  desc: "fGW sgh hack"
+  name: DMF_fmt_c64173
+  desc: Tag=cam6_4_173, Diagnostic Mom. flux
   parameters:
     param1: 1
     param2: 2
   subdir: hist
   user: juliob
-  ymdPat: [1985,2014] #2014] 
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
-fGWfix01_c64116:
+NewMMsrc_c64173:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
   SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_116/cases
+  caseroot: /glade/work/juliob/cam6_4_173/cases
   hsPat: cam.h0a
-  name: fGWfix01_fmt_c64116
-  desc: "fGW buggy 'fix' from E3SM"
+  name: NewMMsrc_fmt_c64173
+  desc: c64173 - new MM source
   parameters:
     param1: 1
     param2: 2
   subdir: hist
   user: juliob
-  ymdPat: [1985,2014] #2014] #2014] 
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
-fGWfix04_c64116:
+NewMMsrc_NoFr_c64173:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
   SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_116/cases
+  caseroot: /glade/work/juliob/cam6_4_173/cases
   hsPat: cam.h0a
-  name: fGWfix04_fmt_c64116
-  desc: "fGW fixed-fix from E3SM"
+  name: NewMMsrc_NoFr_fmt_c64173
+  desc: c64173 - new MM source No FGW
   parameters:
     param1: 1
     param2: 2
   subdir: hist
   user: juliob
-  ymdPat: [1985,2014] #2014] 
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
-fGWfix01_NOmmGW_c64116:
+NewMMsrc_c64173-x01:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
   SrcVgrid: L93
-  caseroot: /glade/work/juliob/cam6_4_116/cases
+  caseroot: /glade/work/juliob/cam6_4_173/cases
   hsPat: cam.h0a
-  name: fGWfix01_NOmmGW_fmt_c64116
-  desc: "fGW fix E3SM w/o mov. mtn. GW"
+  name: NewMMsrc_fmt_c64173-x01
+  desc: c64173 - new MM source (a=0.04,e=1.0) No FGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x02:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x02
+  desc: c64173 - new MM source (a=0.01,e=2.0) No FGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x03:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x03
+  desc: c64173 - new MM source (a=0.02,e=1.0) No FGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x04:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x04
+  desc: c64173 - new MM source (a=0.02,e=1.0) FGW (t=1.25e-5)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x05:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x05
+  desc: c64173 - new MM source (a=0.01,e=1.0) FGW (t=1.25e-4)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x06:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x06
+  desc: c64173 - new MM source (#3) (a=0.01,e=1.0) FGW (t=1.25e-4) should b4b 05
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x07:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x07
+  desc: c64173 - new MM source (#4) (a=1.0,e=1.0) FGW (t=1.25e-4)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x08:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x08
+  desc: c64173 - new MM source (#5) (a=1.0,e=1.0) FGW (t=1.25e-4)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x09:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x09
+  desc: c64173 - new MM source (#5) (a=0.5,e=1.0) FGW (t=1.25e-4)
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x10:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x10
+  desc: c64173 - new MM source (#5) (a=1.0,e=1.0) NO FGW, DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x11:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x11
+  desc: c64173 - new MM source (#5) (a=1.0,e=1.0) NO FGW, DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+CLUBBmod_c64173-x02:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: CLUBBmod_CTL_fmt_c64173-x02
+  desc: c64173 - inversion buster. ctl= NewMM...x11
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+CLUBBmod_c64173-x03:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: CLUBBmod_CTL_fmt_c64173-x03
+  desc: c64173 - STRONGER inversion buster.
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST01_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST01_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST02_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST02_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=0.5,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST03_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST03_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=1.0,e=0.5) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST04_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST04_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=0.8,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST04_Adpht01_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST04_Adpht01_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=0.8,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST01_Xsgh_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST01_Xsgh_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW, exclude SGH>100.
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST01_PBLfix_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST01_PBLfix_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW, PBL fix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST01_PBLfix_Xsgh200_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST01_PBLfix_Xsgh200_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW, PBL fix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+TST01_Vortfix_PBLfix_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: TST01_Vortfix_PBLfix_fmt_aphysPR448
+  desc: atmos phys PR 448.  new MM source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW, PBL fix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+RV02_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: RV02_fmt_aphysPR448
+  desc: atmos phys PR 448.  Heavy revs. Source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW, PBL fix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+RV03_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: RV03_fmt_aphysPR448
+  desc: APPR448.  Heavy revs v3 Source (#5) (a=1.0,e=1.0) NO FGW, NO DCGW, PBL fix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+RV03_x02_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: RV03_x02_fmt_aphysPR448
+  desc: APPR448. Heavy revs v3 Source (#5) (a=0.8,e=1.0) NO FGW, NO DCGW, PBL fix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+RV03_x03_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: RV03_x03_fmt_aphysPR448
+  desc: APPR448. Source (#5) 100hPa GW ceiling (a=0.8,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NewMMsrc_c64173-x05-bugtest-MM:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NewMMsrc_fmt_c64173-x05-bugtest-MM
+  desc: c64173 - new MM source (a=0.01,e=1.0) FGW (t=1.25e-4) bugfix
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NoFr_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: NoFr_fmt_c64173
+  desc: Tag=cam6_4_173, No FGW. Default MMGW.
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+LatMM_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: LatMM_fmt_c64173
+  desc: Tag=cam6_4_173, MM ramped to zero polerwrd of 60
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+LatMM_45_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: LatMM_45_fmt_c64173
+  desc: Tag=cam6_4_173, MM ramped to zero polerwrd of 45
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+LatMM_LatFr_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: LatMM_LatFr_fmt_c64173
+  desc: Tag=cam6_4_173, MM ramped to zero polerw of 60, Fr shut off polew of 60
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+LatMM_Lat2Fr_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: LatMM_Lat2Fr_fmt_c64173
+  desc: Tag=cam6_4_173, MM and Fr ramped to zero polerw of 60
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+Lat3Fr_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: Lat3Fr_fmt_c64173
+  desc: Tag=cam6_4_173, cos(lat) ramp on Fr
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+Lat3Fr_NoMM_c64173:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_173/cases
+  hsPat: cam.h0a
+  name: Lat3Fr_NoMM_fmt_c64173
+  desc: Tag=cam6_4_173, cos(lat) ramp on Fr, No MM
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+CTL_c64144:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_144/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c64144
+  desc: Tag=cam6_4_144, Control
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NoFGW_c64144:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_144/cases
+  hsPat: cam.h0a
+  name: NoFGW_fmt_c64144
+  desc: Tag=cam6_4_144, No Frontal GW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NoMMGW_c64144:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_144/cases
+  hsPat: cam.h0a
+  name: NoMMGW_fmt_c64144
+  desc: Tag=cam6_4_144, No Moving Mtn GW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+NoFGW_latMM_c64144:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_144/cases
+  hsPat: cam.h0a
+  name: NoFGW_latMM_fmt_c64144
+  desc: Tag=cam6_4_144, No Frontal GW, No MM polew of 60
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+X01_RdFGW_latMM_c64144:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_144/cases
+  hsPat: cam.h0a
+  name: X01_RdFGW_latMM_fmt_c64144
+  desc: Tag=cam6_4_144, 0.01xFrontal GW, MM polew of 60 ramped to 0
   parameters:
     param1: 1
     param2: 2

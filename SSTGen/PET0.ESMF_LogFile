@@ -1,0 +1,108 @@
+20241020 090629.244 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:845 ESMCI_meshaddelements() Value unrecognized or out of range  -  element connectivity list contains elems with less than 3 sides.
+20241020 090629.244 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 090629.244 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 090629.259 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 101619.854 INFO             PET0 Finalizing ESMF
+20241020 202405.554 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:845 ESMCI_meshaddelements() Value unrecognized or out of range  -  element connectivity list contains elems with less than 3 sides.
+20241020 202405.556 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 202405.556 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 202405.575 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 202659.042 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:845 ESMCI_meshaddelements() Value unrecognized or out of range  -  element connectivity list contains elems with less than 3 sides.
+20241020 202659.043 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 202659.043 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 202659.074 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 203057.943 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:845 ESMCI_meshaddelements() Value unrecognized or out of range  -  element connectivity list contains elems with less than 3 sides.
+20241020 203057.943 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 203057.943 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 203057.968 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 204721.813 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3550 ESMCI_getlocalelemcoords() Arguments are incompatible  -  - elem_coordinates not found in Mesh
+20241020 204721.816 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3565 ESMCI_getlocalelemcoords() Arguments are incompatible  - Internal subroutine call returned Error
+20241020 204721.818 ERROR            PET0 ESMC_Mesh.C:348 ESMC_MeshGetElemCoord() Arguments are incompatible  - Internal subroutine call returned Error
+20241020 211929.501 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3550 ESMCI_getlocalelemcoords() Arguments are incompatible  -  - elem_coordinates not found in Mesh
+20241020 211929.514 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3565 ESMCI_getlocalelemcoords() Arguments are incompatible  - Internal subroutine call returned Error
+20241020 211929.514 ERROR            PET0 ESMC_Mesh.C:348 ESMC_MeshGetElemCoord() Arguments are incompatible  - Internal subroutine call returned Error
+20241020 212516.705 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:845 ESMCI_meshaddelements() Value unrecognized or out of range  -  element connectivity list contains elems with less than 3 sides.
+20241020 212516.716 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 212516.716 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 212516.718 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241020 212905.090 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3550 ESMCI_getlocalelemcoords() Arguments are incompatible  -  - elem_coordinates not found in Mesh
+20241020 212905.091 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3565 ESMCI_getlocalelemcoords() Arguments are incompatible  - Internal subroutine call returned Error
+20241020 212905.091 ERROR            PET0 ESMC_Mesh.C:348 ESMC_MeshGetElemCoord() Arguments are incompatible  - Internal subroutine call returned Error
+20241020 235610.552 INFO             PET0 Finalizing ESMF
+20241021 080806.001 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3550 ESMCI_getlocalelemcoords() Arguments are incompatible  -  - elem_coordinates not found in Mesh
+20241021 080806.001 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:3565 ESMCI_getlocalelemcoords() Arguments are incompatible  - Internal subroutine call returned Error
+20241021 080806.001 ERROR            PET0 ESMC_Mesh.C:348 ESMC_MeshGetElemCoord() Arguments are incompatible  - Internal subroutine call returned Error
+20241021 101718.064 INFO             PET0 Finalizing ESMF
+20241022 072734.219 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:990 ESMCI_meshaddelements() Value unrecognized or out of range  - - elemConn entries should not be greater than number of nodes on processor
+20241022 072734.244 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241022 072734.244 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241022 072734.262 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241022 073119.639 INFO             PET0 Finalizing ESMF
+20241025 094149.091 ERROR            PET0 Destination id=0 NOT found in weight matrix.
+20241025 094149.120 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:359 ESMCI_regrid_create() Arguments are incompatible  - - There exist destination points (e.g. id=0) which can't be mapped to any source cell
+20241025 094149.128 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:582 ESMCI_regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094149.128 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094149.128 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094149.128 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094149.128 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094149.128 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094149.128 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094908.720 INFO             PET0 Finalizing ESMF
+20241025 094959.703 ERROR            PET0 Destination id=0 NOT found in weight matrix.
+20241025 094959.703 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:359 ESMCI_regrid_create() Arguments are incompatible  - - There exist destination points (e.g. id=0) which can't be mapped to any source cell
+20241025 094959.703 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:582 ESMCI_regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094959.703 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094959.703 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094959.703 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094959.703 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094959.703 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 094959.703 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 123852.759 INFO             PET0 Finalizing ESMF
+20241025 124253.247 ERROR            PET0 Destination id=0 NOT found in weight matrix.
+20241025 124253.247 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:359 ESMCI_regrid_create() Arguments are incompatible  - - There exist destination points (e.g. id=0) which can't be mapped to any source cell
+20241025 124253.247 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:582 ESMCI_regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 124253.247 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 124253.247 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 124253.247 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Arguments are incompatible  - Internal subroutine call returned Error
+20241025 124253.247 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 124253.247 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 124253.268 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125040.930 INFO             PET0 Finalizing ESMF
+20241025 125055.271 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:990 ESMCI_meshaddelements() Value unrecognized or out of range  - - elemConn entries should not be greater than number of nodes on processor
+20241025 125055.276 ERROR            PET0 /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/ESMCI_Mesh_Glue.C:1587 ESMCI_meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241025 125055.276 ERROR            PET0 ESMCI_MeshCap.C:582 MeshCap::meshaddelements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241025 125055.277 ERROR            PET0 ESMC_Mesh.C:244 ESMC_MeshAddElements() Value unrecognized or out of range  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 Destination id=0 NOT found in weight matrix.
+20241025 125600.460 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:359 ESMCI_regrid_create() Arguments are incompatible  - - There exist destination points (e.g. id=0) which can't be mapped to any source cell
+20241025 125600.460 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:582 ESMCI_regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 125600.460 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.401 ERROR            PET0 Destination id=0 NOT found in weight matrix.
+20241025 172320.423 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:359 ESMCI_regrid_create() Arguments are incompatible  - - There exist destination points (e.g. id=0) which can't be mapped to any source cell
+20241025 172320.423 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:582 ESMCI_regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.423 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.423 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.423 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.423 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.423 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 172320.423 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Arguments are incompatible  - Internal subroutine call returned Error
+20241025 182902.427 INFO             PET0 Finalizing ESMF
+20241026 080156.596 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:572 ESMCI_regrid_create() Internal error: Bad condition  - Condition {sdim == dst_dim} failed at /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/Legacy/ESMCI_GeomRendezvous.C, line:217
+20241026 080156.663 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080156.663 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080156.663 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080156.663 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080156.663 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080156.663 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080218.048 ERROR            PET0 ESMCI_Mesh_Regrid_Glue.C:572 ESMCI_regrid_create() Internal error: Bad condition  - Condition {sdim == dst_dim} failed at /home/conda/feedstock_root/build_artifacts/esmf_1693581304126/work/src/Infrastructure/Mesh/src/Legacy/ESMCI_GeomRendezvous.C, line:217
+20241026 080218.048 ERROR            PET0 ESMCI_MeshCap.C:1676 MeshCap::regrid_create() Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080218.048 ERROR            PET0 ESMF_Regrid.F90:368 ESMF_RegridStore Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080218.048 ERROR            PET0 ESMF_FieldRegrid.F90:1202 ESMF_FieldRegridStoreNX Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080218.048 ERROR            PET0 ESMF_Field_C.F90:1137 f_esmf_regridstore Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080218.048 ERROR            PET0 ESMCI_Field.C:1468 ESMCI::Field::regridstore() Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 080218.048 ERROR            PET0 ESMC_Field.C:449 ESMC_FieldRegridStore() Internal error: Bad condition  - Internal subroutine call returned Error
+20241026 202106.614 INFO             PET0 Finalizing ESMF

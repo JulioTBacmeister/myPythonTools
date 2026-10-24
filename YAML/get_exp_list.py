@@ -16,13 +16,19 @@ def fGW_tests():
     #xl= ['control_c6477' ,'control_c64116' ,'fGWfix01_c64116' ,'fGWhack01_c64116' ,'fGWfix01_NOmmGW_c64116' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     #xl= ['NOmovmtn_c6477' ,'control_c64116' ,'fGWfix01_c64116' ,'fGWhack01_c64116' ,'fGWfix01_NOmmGW_c64116' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     #xl= ['control_c64116' , 'fGWfix01_c64116' ,'fGWhack01_c64116' ,]
-    xl= ['control_c64116' , 'fGWfix01_c64116' ,'fGWhack01_c64116' ,'NOmovmtn_c6477' , 'fGWfix01_NOmmGW_c64116' , ]
-    xl= ['control_c64116' , 'fGWfix01_c64116' ,'fGWfix04_c64116' , ]
+    #xl= ['control_c64116' , 'fGWfix01_c64116' ,'fGWhack01_c64116' ,'NOmovmtn_c6477' , 'fGWfix01_NOmmGW_c64116' , ]
+    #xl= ['control_c64116' , 'fGWfix01_c64116' ,'fGWfix04_c64116' , ]
+    #xl= ['control_c64116' ,'fGWfix04_c64116' ,'fGWfix04_divdamp_c64116' , ]
+    #xl= ['control_c64116' ,'fGWfix04_divdamp_c64116' ,'fGWfix04_divdamp_momcon_c64116' , 'control_c64126' ,]
+    #xl= ['control_c64126' ,'NoFGW_c64126' ,'Sponge_c64126' ,]
+    xl= ['CTL_c64144', 'NoMMGW_c64144', 'NoFGW_c64144' ,]
     return exp_file,xl
 
 def tausrfRuns():
-    exp_file = 'tausrfRuns.yaml'
-    xl= ['control_c6477','tausrf200_c6477' ] 
+    #exp_file = 'tausrfRuns.yaml'
+    #xl= ['control_c6477','tausrf200_c6477' ] 
+    exp_file = 'OfficialRuns.yaml'
+    xl= ['B1850_x234', 'B1850_x244', ] 
     return exp_file,xl
 
 def DevelControlRuns():
@@ -47,6 +53,16 @@ def Fig1Paper():
     #xl= [ 'NOmovmtn', 'NOmovmtn_2000', 'ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     #xl= [ 'NOmovmtn', 'ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     xl= [ 'NOmovmtn_2004_06_01', 'ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    #xl= [ 'NOmovmtn_2000', 'NOmovmtn_2004_06_01','ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    #xl= [ 'NOmovmtn_2000','ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    #xl= [ 'NOmovmtn', 'ne120_ctl', 'ne240_2007' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    return exp_file,xl
+
+def Fig_for_NSC2026():
+    exp_file = 'fig1_for_paper.yaml'
+    #xl= [ 'NOmovmtn', 'NOmovmtn_2000', 'ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    #xl= [ 'NOmovmtn', 'ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
+    xl= [ 'NOmovmtn', 'ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     #xl= [ 'NOmovmtn_2000', 'NOmovmtn_2004_06_01','ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     #xl= [ 'NOmovmtn_2000','ne120_ctl', 'ne240_ctl' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
     #xl= [ 'NOmovmtn', 'ne120_ctl', 'ne240_2007' , ] #'fmt_tau_amplify_150'] #,'tau_reduce_50','tau_amplify_200'] #'ne240x2_QxQsst']
@@ -132,6 +148,7 @@ def Official():
     exp_file='OfficialRuns.yaml'
     #xl=['FMT_control','FMT_nu_div',]
     xl=['B1850_x194','B1850_x195',]
+    xl=['B1850_x234','B1850_x245','B1850_x249','B1850_x254',]
     #xl=['ne30_ctl',]  
     return exp_file,xl
 

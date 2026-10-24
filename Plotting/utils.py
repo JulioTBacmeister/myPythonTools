@@ -9,6 +9,10 @@ def contour_intervals( fld, **kwargs ):
             flev=np.linspace( 180,300,num=21) 
             dlev=np.linspace( -20,20,num=21) 
             scale=1.0
+        if 'yx' in kwargs:
+            flev=np.linspace( 180,300,num=21) 
+            dlev=np.linspace( -20,20,num=21) 
+            scale=1.0
     elif (fld=='U') or (fld=='V'):
         if 'zonal_mean' in kwargs:
             flev=np.linspace( -60,140,num=21) 
@@ -43,6 +47,40 @@ def contour_intervals( fld, **kwargs ):
                 flev=np.linspace( -60,140,num=21) 
                 dlev=np.linspace( -20,20,num=21) 
         scale=1.0
+    elif (fld=='WSP'):
+        if 'zonal_mean' in kwargs:
+            flev=np.linspace( 0,140,num=15) 
+            dlev=np.linspace( -20,20,num=21) 
+        elif 'yx' in kwargs:
+            if 'plev' in kwargs:
+                plev=kwargs['plev']  #This should be in hPa
+                if ((plev >=50.) and (plev<500.)):
+                    flev=np.linspace( 0,140,num=15) 
+                    dlev=np.linspace( -20,20,num=21) 
+            if 'zlev' in kwargs:
+                zlev=kwargs['zlev']  #This should be in hPa
+                if ((zlev >=20.) and (zlev<90.)):
+                    flev=np.linspace( 0,140,num=15) 
+                    dlev=np.linspace( -20,20,num=21) 
+                elif ((zlev >=6.) and (zlev<20.)):
+                    flev=np.linspace( 0,140,num=15) 
+                    dlev=np.linspace( -20,20,num=21) 
+                elif ((zlev >=1.) and (zlev<6.)):
+                    flev=0.5*np.linspace( 0,140,num=15) 
+                    dlev=0.5*np.linspace( -20,20,num=21) 
+                elif ((zlev >=0.5) and (zlev<1.)):
+                    flev=0.25*np.linspace( 0,140,num=15) 
+                    dlev=0.25*np.linspace( -20,20,num=21) 
+                elif ((zlev >=0.0) and (zlev<0.5)):
+                    flev=np.linspace( 0.,14.,num=15) 
+                    dlev=np.linspace( -5,5,num=21) 
+                else: 
+                    flev=np.linspace( 0,140,num=15) 
+                    dlev=np.linspace( -20,20,num=21) 
+            else:
+                flev=np.linspace( 0,140,num=15) 
+                dlev=np.linspace( -20,20,num=21) 
+        scale=1.0
     elif (fld[0:2]=='U_'):
         if 'zonal_mean' in kwargs:
             flev=np.linspace( -60,140,num=21) 
@@ -64,9 +102,22 @@ def contour_intervals( fld, **kwargs ):
         dlev=np.linspace(-5,5,num=21)
         scale=86_400. * 1_000.
         cmap='Blues_r'
+    elif (fld=='ICEFRAC'):
+        flev= np.linspace(0,1.,num=21)
+        dlev=np.linspace(-.5,.5,num=21)
+        scale=1.
+        cmap='Blues_r'
     elif (fld=='LHFLX'):
         flev= np.linspace(-20,240,num=27)
         dlev=np.linspace(-30,30,num=31)
+        scale=1.
+    elif (fld=='SWCF'):
+        flev= np.linspace(-120,20,num=29)
+        dlev=np.linspace(-20,20,num=21)
+        scale=1.
+    elif (fld=='LWCF'):
+        flev= np.linspace(0,72,num=25)
+        dlev=np.linspace(-20,20,num=21)
         scale=1.
     elif (fld=='TAUX'):
         flev= np.linspace(-0.2,0.2,num=21)
@@ -78,6 +129,10 @@ def contour_intervals( fld, **kwargs ):
         scale=1.
     elif (fld=='U10'):
         flev= np.linspace(0,16,num=21)
+        dlev=np.linspace(-2,2,num=21)
+        scale=1.
+    elif (fld=='WSPBOT'):
+        flev= np.linspace(0,20,num=21)
         dlev=np.linspace(-2,2,num=21)
         scale=1.
     elif (fld=='QRS'):

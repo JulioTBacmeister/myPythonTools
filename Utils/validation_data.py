@@ -102,7 +102,7 @@ def data(fld,season=None ,months=-999,**kwargs):
     ADFobsdir = '/glade/campaign/cgd/amp/juliob/ADF_obs' #'/glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/'
     AMWGobsdir = '/glade/campaign/cgd/amp/juliob/amwg_dev/obs_data/'
     
-    if (fld in ('U','V','T','Q','PS',) ): #'OMEGA') ):
+    if (fld in ('U','V','T','Q','PS','WSP',) ): #'OMEGA') ):
 
         if 'ERA5native' in kwargs:
             ERA5native=kwargs['ERA5native']
@@ -153,9 +153,13 @@ def data(fld,season=None ,months=-999,**kwargs):
 
         print( f" Trying validation data from {path_C}")
 
-        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
-        print( f" Validation data {fld} has dims {Dc[fld].dims}")
-        print( f" Validation data read from {path_C}")
+        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different', compat='no_conflicts' )
+        
+        if (fld in Dc):
+            print( f" Validation data {fld} has dims {Dc[fld].dims}")
+            print( f" Validation data read from {path_C}")
+        elif (fld == 'WSP' ):
+            Dc['WSP']=np.sqrt( Dc.U**2 + Dc.V**2 )
         
         if (Dc.hybm.dims[0] == 'time'):
             hybm = Dc.hybm.values[0,:]
@@ -241,6 +245,17 @@ def data(fld,season=None ,months=-999,**kwargs):
         lat =Dc.lat.values
         lev =np.asarray( [9999.] )
         aa = Av.Seasonal( ds=Dc, season=season , fld='toa_cre_sw_mon' )
+        dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
+             'years':'2001-2020', 'data_exists':True, 'data_path':path_C,'data_source':'CERES-EBAF',
+             'data_Hgrid':None,'data_Vgrid':None,'rcode':0}
+
+    elif (fld in ('LWCF',) ):
+        path_C = f'{ADFobsdir}/CERES_EBAF_Ed4.1_2001-2020.nc' #   /glade/work/nusbaume/SE_projects/model_diagnostics/ADF_obs/CERES_EBAF_Ed4.1_2001-2020.nc'
+        Dc = xr.open_mfdataset( path_C ,data_vars='different', coords='different' )
+        lon =Dc.lon.values
+        lat =Dc.lat.values
+        lev =np.asarray( [9999.] )
+        aa = Av.Seasonal( ds=Dc, season=season , fld='toa_cre_lw_mon' )
         dic={'aa':aa,'lev':lev,'lat':lat,'lon':lon,
              'years':'2001-2020', 'data_exists':True, 'data_path':path_C,'data_source':'CERES-EBAF',
              'data_Hgrid':None,'data_Vgrid':None,'rcode':0}

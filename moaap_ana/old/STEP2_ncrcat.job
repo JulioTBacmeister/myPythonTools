@@ -1,0 +1,40 @@
+#!/bin/bash -l
+### bash users replace /tcsh with /bash -l
+#PBS -N 2000cat
+#PBS -A CESM0019
+#PBS -l select=1:ncpus=1:mem=100GB
+####PBS -l place=scatter
+#PBS -l walltime=24:00:00
+#PBS -q casper
+#PBS -m abe
+#PBS -j oe
+module load nco
+#ncrcat -h -O CAM7_L58_HR_hourly.20000[1234]*  TEST_CAM7_L58_HR_hourly.200001.nc
+#ncrcat -h -O CAM7_L58_HR_hourly.20000[5678]*  TEST_CAM7_L58_HR_hourly.200005.nc
+#ncrcat -h -O CAM7_L58_HR_hourly.200009* CAM7_L58_HR_hourly.20001* #TEST_CAM7_L58_HR_hourly.200009.nc
+
+### make record UNLIMITED to be able to concat
+cd /glade/derecho/scratch/hannay/MOAPP/test_merged
+mkdir -p tmp_rec
+
+foreach f (MERGED_CAM7_L58_HR_hourly.1990-0[1234]*.nc)
+    set base = `basename $f`
+    set g = tmp_rec/$base
+
+    # If output already exists, skip
+    if ( -e $g ) then
+        echo "Skipping $f → $g (already exists)"
+        continue
+    endif
+
+    echo "Making time UNLIMITED in $f → $g"
+    ncks -O --mk_rec_dmn time $f $g
+end
+
+## after that we may wnt to concat the files 
+cd /glade/derecho/scratch/hannay/MOAPP/test_merged
+ncrcat -O tmp_rec/MERGED_CAM7_L58_HR_hourly.1990-0[1234]*.nc  TEST_CAM7_L58_HR_hourly.199001.nc
+ncrcat -O tmp_rec/MERGED_CAM7_L58_HR_hourly.1990-0[12]*.nc    TEST_CAM7_L58_HR_hourly.199001b.nc
+ncrcat -O tmp_rec/MERGED_CAM7_L58_HR_hourly.1990-0[1]*.nc     TEST_CAM7_L58_HR_hourly.199001c.nc
+ncrcat -O tmp_rec/MERGED_CAM7_L58_HR_hourly.1990-0[2]*.nc     TEST_CAM7_L58_HR_hourly.199002c.nc
+ncrcat -O tmp_rec/MERGED_CAM7_L58_HR_hourly.1990-0[3]*.nc     TEST_CAM7_L58_HR_hourly.199003c.nc

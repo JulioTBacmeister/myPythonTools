@@ -3,3 +3,13 @@
 .ipynb_checkpoints
 */__pycache__
 __pycache__
+*.npy
+*.pyc
+*.nc
+*.dat
+*.png
+Datasets/
+handson-ml2/
+AnimationFiles/
+Fortran/
+NudgingDataPrep/logfiles/

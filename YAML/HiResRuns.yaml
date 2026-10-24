@@ -1,0 +1,132 @@
+###########################################################################################################################
+#quarter degree PMF:
+#  /glade/work/stepheba/post/tempestextremes/high-res-l93-pmf_update/trajectories.txt.high-res-ne120-l93-issue590
+#  /glade/campaign/cesm/community/amwg/cam_hr/f.e30_cam6_4_036.FMTHIST.ne120_L93.001/atm/hist/
+#quarter degree DMF:
+#  /glade/work/stepheba/post/tempestextremes/high-res-l93-dmf_update/trajectories.txt.high-res-ne120-l93-diagmom-issue594
+#  /glade/campaign/cesm/community/amwg/cam_hr/f.e30_cam6_4_036.FMTHIST.ne120_L93.prog_mom_off.001/atm/hist/
+#quarter degree PMF with tau_ZM = 1200:
+#  /glade/work/stepheba/post/tempestextremes/high-res-l93-pmf_zmconv1200/trajectories.txt.high-res-ne120-l93-zmconv1200
+#  /glade/campaign/cesm/community/amwg/cam_hr/f.e30_cam6_4_036.FMTHIST.ne120_L93.tau1200.001/atm/hist/
+#VR c_uu_shr=0.1:
+#  /glade/work/stepheba/post/tempestextremes/regref_l58_pmf_cntl/trajectories.txt.regref_l58_pmf_cntl
+#  /glade/campaign/cgd/amp/stepheba/archive/ne120_rr_dflt/atm/hist/
+#VR c_uu_shr=0.5:
+#  /glade/work/stepheba/post/tempestextremes/regref_l58_pmf_cuushr2/trajectories.txt.regref_l58_pmf_cuushr
+#  /glade/campaign/cgd/amp/stepheba/archive/ne120_rr_c_uu_shr2/atm/hist/
+#VR c_uu_shr=0.6:
+# /glade/work/stepheba/post/tempestextremes/regref_l58_pmf_cuushr3/trajectories.txt.regref_l58_pmf_cuushr3
+# /glade/campaign/cgd/amp/stepheba/archive/ne120_rr_c_uu_shr3/atm/hist/
+###########################################################################################################################
+#/glade/campaign/cesm/community/amwg/cam_hr/f.e30_cam6_4_134.FHISTC_LTso.ne30_L58.001
+cam_hr_LR:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: latlon1x1e
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_116/cases
+  hsPat: cam.h0a
+  name: f.e30_cam6_4_134.FHISTC_LTso.ne30_L58.001
+  desc: CAM LR Control
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: cam_hr
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+#/glade/campaign/cesm/community/amwg/cam_hr/f.e30_cam6_4_116.FHISTC_LTso.ne120_L58.c6aero.001
+cam_hr_HR:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: latlonQxQ
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_116/cases
+  hsPat: cam.h0a
+  name: f.e30_cam6_4_116.FHISTC_LTso.ne120_L58.c6aero.001
+  desc: CAM HR (ne120) 
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: cam_hr
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+control_c64116:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_116/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c64116
+  desc: Tag=cam6_4_116
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+ne120_flt_c64116:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: latlonQxQe
+  SrcVgrid: L58
+  caseroot: /glade/work/juliob/cam6_4_116/cases
+  hsPat: cam.h0a
+  name: f.e30_cam6_4_116.FHISTC_LTso.ne120_L58.c6aero.001
+  desc: ne120 tag=cam6_4_116
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: cam_hr
+  ymdPat: [1990,2001] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+ne240_c63153_2004:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne240pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/my_cam_development/cases
+  hsPat: cam.h0a
+  name: c153_topfix_ne240pg3_FMTHIST_xic_x02
+  desc: ne240 tag=cam6_3_153
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [2004,2005] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+#########################
+CMIP6:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: L32
+  caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
+  hsPat: 
+  name: f.e21.FHIST_BGC.f09_f09_mg17.CMIP6-AMIP.001
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: CMIP6
+  ymdPat: '*'
+CMIP6_WACCM:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: WACCM6
+  caseroot: /glade/campaign/collections/cmip/CMIP6/timeseries-cmip6
+  hsPat: 
+  name: f.e21.FWHISTBgcCrop.f09_f09_mg17.CMIP6-AMIP-WACCM.001
+  desc: WACCM6
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: CMIP6_WACCM
+  ymdPat: '*'

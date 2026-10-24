@@ -1,0 +1,34 @@
+#!/bin/bash -l
+### bash users replace /tcsh with /bash -l
+#PBS -N 2000cat
+#PBS -A CESM0024
+#PBS -l select=1:ncpus=1:mem=100GB
+####PBS -l place=scatter
+#PBS -l walltime=24:00:00
+#PBS -q casper
+#PBS -m abe
+#PBS -j oe
+
+module load nco
+export HDF5_USE_FILE_LOCKING=FALSE
+
+cd /glade/derecho/scratch/hannay/MOAPP/test_merged
+
+TEMPLATE=CAM7_L58_HR_XY_template.nc
+
+# Adjust pattern here depending on your current naming:
+#   MERGED_CAM7_L58_HR_hourly.*.nc  or  CAM7_L58_HR_hourly.*.nc
+for f in MERGED_CAM7_L58_HR_hourly.*.nc; do
+  echo "File: $f"
+
+  # Check if X already exists in the file
+  if ncdump -h "$f" | grep -q " X("; then
+    echo "  -> X/Y already present, skipping"
+    continue
+  fi
+
+  echo "  -> Adding X,Y from $TEMPLATE"
+  ncks -A -v X,Y "$TEMPLATE" "$f"
+done
+
+

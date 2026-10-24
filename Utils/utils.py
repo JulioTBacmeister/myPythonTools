@@ -104,11 +104,18 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
     if (help == True):
         print( f" Possible 'users': 'juliob','pel','tilmes''juliob_run' 'juliob_camp' 'amwg_runs'  'omwg_mom6' 'CMIP6' 'CMIP6_WACCM' ")
         return
-    
-    if (user in ['juliob','pel','tilmes','hannay','bramberg','islas','gmarques',] ):
+
+    #/glade/campaign/cesm/community/amwg/cam_hr/
+
+
+    if (user in ['juliob','pel','tilmes','hannay','bramberg','islas','gmarques','aherring','rneale',] ):
         bpath = f'/glade/derecho/scratch/{user}/archive/{exp}/atm/{subd}/'  #{exp}.{hsPat}.{ymdPat}.nc' 
     elif (user == 'juliob_run' ):
         bpath = f'/glade/derecho/scratch/juliob/{exp}/run/'  #{exp}.{hsPat}.{ymdPat}.nc' 
+    elif (user == 'stepheba_vr' ):
+        bpath = f'/glade/campaign/cgd/amp/stepheba/archive/{exp}/atm/hist/'
+    elif (user == 'cam_hr' ):
+        bpath = f'/glade/campaign/cesm/community/amwg/cam_hr/{exp}/atm/hist/'
     elif (user == 'juliob_camp' ):
         bpath = f'/glade/campaign/cgd/amp/juliob/archive/{exp}/atm/{subd}/' # {exp}.{hsPat}.{ymdPat}.nc'   
     elif (user == 'amwg_runs' ):
@@ -142,7 +149,7 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
                 #print(ymdPat_, newpath)
                 path = path + newpath
         else:
-            print( 'ymdPat is a 2 elem list with a range' )
+            print( f'ymdPat is a 2 elem list with a range' )
             year0 = int(ymdPat[0])
             year1 = int(ymdPat[1])
             path=[]
@@ -152,6 +159,7 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
                 newpath = sorted( glob.glob( f'{bpath}{exp}.{hsPat}.{ymdPat_}.nc' ) )
                 path = path + newpath
                 ipath=ipath+len(newpath)
+            print( f' search path {bpath}{exp}.{hsPat}.{ymdPat_}.nc' )
             print( f'Range resulted in path with {ipath} members' )
 
     
@@ -178,9 +186,9 @@ def MakeDict4Exp( user='juliob' , exp='YaYa', subd='hist', hsPat='cam.h0' , ymdP
         
     
     if (open_dataset==True):
-        X = xr.open_mfdataset( path ,data_vars='different', coords='different' )
+        X = xr.open_mfdataset( path ,data_vars='different', coords='different', compat='no_conflicts' )
         if (user in ('CMIP6','CMIP6_WACCM')):
-            PS = xr.open_mfdataset( PSpath ,data_vars='different', coords='different' )
+            PS = xr.open_mfdataset( PSpath ,data_vars='different', coords='different', compat='no_conflicts' )
             X['PS'] = PS['PS']
 
         if (shift_lons==True):

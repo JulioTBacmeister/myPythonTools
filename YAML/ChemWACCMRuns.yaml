@@ -1,0 +1,79 @@
+##############################
+# Some runs Simone has done
+##############################
+control_c64116:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_116/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c64116
+  desc: "Control for tag=cam6_4_116"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #2014] #2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+fmt_cam: 
+  name: "f.e30.cesm.FHISTC_MTt4s.cam_physcis.001"
+  user: "tilmes"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L93"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  parameters:
+    param1: 1
+    param2: 2
+  ymdPat: [1980,1980] #2014] #2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+fmt_waccm: 
+  name: "f.e30.cesm.FHISTC_MTt4s.waccm_physcis.001"
+  user: "tilmes"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L93"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  parameters:
+    param1: 1
+    param2: 2
+  ymdPat: [1980,1980] #2014] #2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+bmt_control: 
+  name: "b.e30_alpha07c_cesm.B1850C_MTt4s.ne30_t232_wgx3.251.001"
+  user: "tilmes"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L93"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  parameters:
+    param1: 1
+    param2: 2
+  ymdPat: [0,20] #2014] #2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+bmt_waccm: 
+  name: "b.e30_alpha07c_cesm.B1850C_MTt4s.ne30_t232_wgx3.251.waccm_phys"
+  user: "tilmes"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L93"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  parameters:
+    param1: 1
+    param2: 2
+  ymdPat: [0,20] #2014] #2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True

@@ -101,10 +101,21 @@ def readtrx( fileN ,columns=None, power_wind=1.0):
         data = create_2d_storm_array ( nt=nt ,nstorm= nstorm, dS=dS, fld=tfld ) 
         struc[mfld]=data
 
+    year=struc['year']
+    startyear = year[0,0]
+    endyear = year[-1,0]
+
     struc['date'] = struc['year']*10000. + struc['month']*100. + struc['day'] + struc['hour']/24.
     struc['basin'] = np.asarray(empty, dtype=float).astype(int) 
     struc['sub_basin'] = np.asarray(empty, dtype=float).astype(int) 
-        
+
+    struc['wind'] = struc['wind'] * power_wind
+
+    # "metadata" ...
+    struc['startyear'] = startyear
+    struc['endyear'] = endyear
+    struc['sourcefile'] = fileN
+
     Atruc = AttrDict( struc )
     
     return Atruc

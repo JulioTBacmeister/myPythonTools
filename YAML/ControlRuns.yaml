@@ -44,7 +44,7 @@ NOmovmtn_c6477:
   user: juliob
   ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
-control_c64116:
+CTL_c64116:
   DstGrid: fv1x1
   Hkey: c
   SrcGrid: ne30pg3
@@ -53,6 +53,22 @@ control_c64116:
   hsPat: cam.h0a
   name: CTL_fmt_c64116
   desc: Tag=cam6_4_116
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+CTL_c64144:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/cam6_4_144/cases
+  hsPat: cam.h0a
+  name: CTL_fmt_c64144
+  desc: Tag=cam6_4_144
   parameters:
     param1: 1
     param2: 2

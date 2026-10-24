@@ -1,0 +1,16 @@
+tiedtke3K:
+  DstGrid: fv1x1
+  Hkey: yx
+  SrcGrid: fv1x1
+  SrcVgrid: L58
+  caseroot: /glade/work/rneale
+  hsPat: cam.h0a
+  name: f.cam6_4_089.FLTHIST_ne30.cam7_zm_tiedke3K.001
+  desc: "fGW sgh hack"
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: rneale
+  ymdPat: [1995,2014] #2014] 
+  ymdPat_is_range: True

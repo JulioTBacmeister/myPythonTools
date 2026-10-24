@@ -1,0 +1,16 @@
+#!/bin/bash -l
+### bash users replace /tcsh with /bash -l
+#PBS -N 2000cat
+#PBS -A CESM0019
+#PBS -l select=1:ncpus=1:mem=100GB
+####PBS -l place=scatter
+#PBS -l walltime=24:00:00
+#PBS -q casper
+#PBS -m abe
+#PBS -j oe
+module load nco
+ncrcat -h -O CAM7_L58_HR_hourly.20000[1234]*  TEST_CAM7_L58_HR_hourly.200001.nc
+ncrcat -h -O CAM7_L58_HR_hourly.20000[5678]*  TEST_CAM7_L58_HR_hourly.200005.nc
+ncrcat -h -O CAM7_L58_HR_hourly.200009* CAM7_L58_HR_hourly.20001* TEST_CAM7_L58_HR_hourly.200009.nc
+
+

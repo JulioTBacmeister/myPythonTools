@@ -125,4 +125,148 @@ B1850_x192:
   parameters:
     param1: 1
     param2: 2
-
+B1850_x238:
+  name: "b.e30_alpha07c_cesm.B1850C_LTso.ne30_t232_wgx3.238"
+  desc: "exp 238 "
+  user: "aherring"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [30,45] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+#########################################
+B1850_x254:
+  name: "b.e30_alpha07c_cesm.B1850C_LTso.ne30_t232_wgx3.254"
+  desc: "254: dust, seasalt, zmconv0_lnd (ctl=249)"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x249:
+  name: "b.e30_alpha07c_cesm.B1850C_LTso.ne30_t232_wgx3.249"
+  desc: "249: atune c (ctl=245)"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x245:
+  name: "b.e30_alpha07c_cesm.B1850C_LTso.ne30_t232_wgx3.245"
+  desc: "245: new dust(ctl=234)"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x244:
+  name: "b.e30_alpha07c_cesm.B1850C_LTso.ne30_t232_wgx3.244"
+  desc: "1.5x enhanced sfc drag"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,30] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x234:
+  name: "b.e30_alpha07c_cesm.B1850C_LTso.ne30_t232_wgx3.234"
+  desc: "234: no wave atten. NH. Control for 1.5x drag"
+  user: "gmarques"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x271:
+  name: "b.e30_alpha07g.BHISTC_LTso.ne30_t232_wgx3.271"  
+  desc: " mmm ?"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x297:
+  name: "b.e30_alpha07g.B1850C_LTso.ne30_t232_wgx3.297"
+  desc: " mmm ?"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x156:
+  name: "b.e30_alpha06e.B1850C_LTso.ne30_t232_wgx3.156"
+  desc: " mmm ?"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2

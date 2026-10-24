@@ -4,6 +4,7 @@ sys.path.append('../Utils/')
 
 import numpy as np
 import xarray as xr
+import pandas as pd
 
 #import MyConstants as Con
 import constants as Con
@@ -41,16 +42,26 @@ def readtrx( fileN ,power_wind=1.0):
     
     wind = dS.wind.values * power_wind
 
+    startyear = year[0,0]
+    endyear = year[-1,0]
+
     speed   = translation_speed( dS.lon.values , dS.lat.values ) 
     intfW3,intfP3 = intensification( wind, dS.pres.values , dTime=3. ) 
     intfW24,intfP24 = intensification( wind, dS.pres.values , dTime=24. ) 
-    
+
+    # "Mutate" basins to -1 at NaNs and make int everywhere
+    basins=dS.basin.values
+    m = np.isnan(basins)
+    basins[m] = -1        # still float
+    basins = basins.astype(int)
+   
     struc = {'date':date,'year':year,'month':month,'day':day,'hour':hour,
-            'basin':dS.basin.values, 'lon':dS.lon.values , 'lat':dS.lat.values ,
+            'basin':basins, 'lon':dS.lon.values , 'lat':dS.lat.values ,
             'wind':wind , 'speed':speed , 
             'intfW3':intfW3 , 'intfP3':intfP3 ,
             'intfW24':intfW24 , 'intfP24':intfP24 ,
-            'pres':dS.pres.values, 'sub_basin': 0*dS.basin.values - 99 }
+            'pres':dS.pres.values, 'sub_basin': 0*dS.basin.values - 99,
+            'sourcefile':fileN,'startyear':startyear,'endyear':endyear}
     
     Atruc = AttrDict( struc )
     
@@ -146,7 +157,7 @@ def basinNUM(wind,basin,power_wind=1.0):
 
     return Bace
 
-def basinACE(wind,basin,power_wind=1.0):
+def basinACE(wind,basin,power_wind=1.0, delta_t_trax=1.0 , year=None ):
     
     nstorm,nt=np.shape( wind )
     Nb = ( np.nanmax(basin)-np.nanmin(basin) + 1 ).astype(int)
@@ -154,11 +165,20 @@ def basinACE(wind,basin,power_wind=1.0):
     awind = np.nan_to_num( wind )
     
     w10m_kts = power_wind*1.944*awind
-    aace = 1e-4 * w10m_kts**2 
+    aace = delta_t_trax * 1e-4 * w10m_kts**2 
     
     bmin=np.nanmin(basin).astype(int)
     bmax=np.nanmax(basin).astype(int)
-    
+
+    if year is not None:
+        oo=np.where( year.flatten() > 0)
+        yrmin=np.nanmin( year.flatten()[oo[0]] )
+        yrmax=np.nanmax( year.flatten()[oo[0]] )
+        print( f"Scaling for {yrmin} to {yrmax}" )
+        Nyr = (yrmax - yrmin + 1).astype(int)
+    else:
+        Nyr=1
+
         
     # Yes, this is an awkward way to do this 
     for b in np.arange( start=bmin , stop=bmax+1 ):
@@ -181,9 +201,11 @@ def basinACE(wind,basin,power_wind=1.0):
                 Bace[ib] = np.sum(aace.flatten()[indx])
  
 
+    Bace=Bace/Nyr
+    
     return Bace
 
-def basinACEyear(wind,basin,year,power_wind=1.0):
+def basinACEyear(wind,basin,year,power_wind=1.0,auto_scale=True):
 
     nstorm,nt=np.shape( wind )
     Nb = ( np.nanmax(basin)-np.nanmin(basin) + 1 ).astype(int)
@@ -214,8 +236,10 @@ def basinACEyear(wind,basin,year,power_wind=1.0):
             oo=np.where( ( basin.flatten()==b ) & ( year.flatten()==y ) )
             if (len(oo[0])>0):
                 indx=oo[0][:]
-                BaceYr[ib,iy] = np.sum(aace.flatten()[indx])
- 
+                BaceYr[ib,iy] = np.sum(aace.flatten()[indx]) 
+
+    if auto_scale==True:
+       BaceYr=BaceYr/Nyr 
 
     return BaceYr,Years
 
@@ -266,7 +290,7 @@ def basinACEmonth(wind,basin,year,month,power_wind=1.0):
 
     return BaceMon,Years,Months
 
-def basinACEyearHemi(wind,basin,year,month,power_wind=1.0):
+def basinACEyearHemi(wind,basin,year,month,power_wind=1.0,auto_scale=True):
 
     #         -1.       0.        1.         2            3             4              5            6 
     bnames=['None','N \nAtl','S \n Atl' , 'NW \n Pac', 'NE \n Pac', 'SW \n Pac','N \n Indian','S \nIndian']
@@ -313,6 +337,8 @@ def basinACEyearHemi(wind,basin,year,month,power_wind=1.0):
                 BaceYr[ib,iy] = np.sum(aace.flatten()[indx])
                 BaceYr[ib,iy] = np.sum(aace.flatten()[indx])
  
+    if auto_scale==True:
+       BaceYr=BaceYr/Nyr 
 
     return BaceYr,Years
 
@@ -399,8 +425,10 @@ def find_basin(trx,basins):
         
 
     nstorm,nt=np.shape( trx.wind )
-    basin_number = np.zeros( (nstorm,nt) )-9999
-    
+    # minus 1 is basin "None"
+    # best: create as ints, already filled with -1
+    basin_number = np.full((nstorm, nt), -1, dtype=int)
+
     for s in np.arange( nstorm ):
         for t in np.arange( nt ):
             lon0=trx.lon[s,t]
@@ -494,11 +522,14 @@ def intensification(wind,pres,dTime=3.):
     
     return intfW,intfP
 
-def density(trx,x,y,category='TD+',**kwargs):
+def density(trx,x,y,category='TD+',delta_t_trax=1.0,auto_scale=True,**kwargs):
     """
+    Category threshholds
+    Pressure (hPa):
     [1015.28385521  998.72226355  980.69700497  966.90303597  956.40134383
      943.54638758  922.55790847]
-     [1.,18.,33.,43.,50.,58.,70.] 
+    Wind (m/s): 
+    [1.,18.,33.,43.,50.,58.,70.] 
     """
     
     if (category=='TD-only'):
@@ -548,9 +579,6 @@ def density(trx,x,y,category='TD+',**kwargs):
         pthresh0=1.
         pthresh1=922.6
 
-
-        return thresh0,thresh1,pthresh0,pthresh1
-
     if 'limits' in kwargs:
         limits = kwargs['limits']
     if 'genesis' in kwargs:
@@ -567,6 +595,11 @@ def density(trx,x,y,category='TD+',**kwargs):
     yrmax=np.nanmax( trx.year.flatten()[oo[0]] )
     Nyrs = yrmax-yrmin+1
     
+    year0 = trx.year[0,0] #+trx.month[0,0]/12.
+    year1 = trx.year[-1,0] #+trx.month[-1,0]/12.
+    Nyrs0 = year1-year0+1
+    print( "Years in trak file:", Nyrs0 )
+
     nx=np.shape( x )[0]
     ny=np.shape( y )[0]
     
@@ -615,12 +648,15 @@ def density(trx,x,y,category='TD+',**kwargs):
                     js=np.min((ny-2,js))
                     dens[ js, iw ] = dens[ js, iw ] + 1.
    
-    dens = dens/Nyrs
+    if (auto_scale==True):
+        dens = dens * delta_t_trax / Nyrs0
+    else:
+        dens = dens * delta_t_trax
     
     return dens
             
             
-def adensity(trx,x,y,alpha=0,**kwargs):
+def adensity(trx,x,y,alpha=0,delta_t_trax=1.0,auto_scale=False, **kwargs):
     
     if ('byYear' in kwargs):
         doYears=kwargs['byYear']
@@ -636,6 +672,12 @@ def adensity(trx,x,y,alpha=0,**kwargs):
     yrmin=np.nanmin( trx.year.flatten()[oo[0]] )
     yrmax=np.nanmax( trx.year.flatten()[oo[0]] )
     Nyrs = yrmax-yrmin+1
+
+    year0 = trx.year[0,0]  #+trx.month[0,0]/12.
+    year1 = trx.year[-1,0] #+trx.month[-1,0]/12.
+    Nyrs0 = year1-year0+1
+    print( "Years in trak file:", Nyrs0 )
+
     
     nx=np.shape( x )[0]
     ny=np.shape( y )[0]
@@ -712,7 +754,11 @@ def adensity(trx,x,y,alpha=0,**kwargs):
 
                     dens[ js, iw ] = dens[ js, iw ] + (wind0**alpha)
                     
-    
+
+    if (auto_scale==True):
+        dens = dens * delta_t_trax / Nyrs0
+    else:
+        dens = dens * delta_t_trax
     
     return dens
             
@@ -992,6 +1038,55 @@ def categorize_storms(data, wind=True):
     output = output-2
     return output
 
+def select_years(trx,range):
+    nstorm,nt=np.shape( trx.year )
+    year=trx.year
+    oo=np.where( ( year[:,0] >= range[0] )&( year[:,0] <= range[1] ) )
+    for key in trx.keys():
+        if (np.shape(trx[key])==np.shape(year) ):
+            data=trx[key][oo[0][:],:]
+            trx[key]=data
+
+    trx.startyear=range[0]
+    trx.endyear=range[1]
+
+    return trx
+
+def make_time(year, month, day, hour):
+    shape = year.shape
+
+    valid = (
+        (year  > 0) &
+        (month > 0) &
+        (day   > 0) &
+        (hour  >= 0)
+    )
+
+    out = np.full(shape, np.datetime64("NaT"), dtype="datetime64[ns]")
+
+    yy = year[valid]
+    mm = month[valid]
+    dd = day[valid]
+    hh = hour[valid]
+
+    out[valid] = pd.to_datetime(dict(
+        year=yy,
+        month=mm,
+        day=dd,
+        hour=hh
+    )).to_numpy()
+
+    return out
+
+def haversine_km(lat1, lon1, lat2, lon2):
+    R = 6371.0
+    lat1 = np.deg2rad(lat1)
+    lat2 = np.deg2rad(lat2)
+    dlat = lat2 - lat1
+    dlon = np.deg2rad(lon2 - lon1)
+
+    a = np.sin(dlat/2)**2 + np.cos(lat1)*np.cos(lat2)*np.sin(dlon/2)**2
+    return 2 * R * np.arcsin(np.sqrt(a))
 """
 # Example usage
 X = [0, 2, 2, 0]

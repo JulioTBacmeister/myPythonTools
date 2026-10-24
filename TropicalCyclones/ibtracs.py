@@ -97,7 +97,7 @@ def readtrx(Fill_NI_before_1990=True,Add_Precip=False,Always_use_USA_winds=True)
     struc = {'year':year,'month':month,'day':day,'hour':hour,
             'basin':basin, 'lon':dS.lon.values , 'lat':dS.lat.values ,
             'wind':wind , 'speed':speed, 'pres':dS.wmo_pres.values ,
-            'intfW':intfW, 'intfP':intfP }
+            'intfW':intfW, 'intfP':intfP , 'sourcefile':f}
 
     if (Add_Precip==True):
         npSaveFile = '/glade/work/juliob/NumPySaves/PrecTrax/TRMM_IBTrACS-prectrax-1998-2019.npz'

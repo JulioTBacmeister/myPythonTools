@@ -48,7 +48,7 @@ def titleGen( exp,fld,season,years ):
 
 
 
-def Maps( fields , lons, lats, **kwargs ):
+def Maps( fields , lons, lats, overplot=None, **kwargs ):
     ##################################################
     #           "Pretty" latlon plots
     #---------------------------------------------
@@ -97,6 +97,19 @@ def Maps( fields , lons, lats, **kwargs ):
         value = 2
         CoastWidth = [value for _ in range(nplots)]
 
+    if ( 'coastline_res' in kwargs ):
+        if ( kwargs[ 'coastline_res' ].lower()=='low'):
+            coastline_res = '110m'
+        elif ( kwargs[ 'coastline_res' ].lower()=='medium'):
+            coastline_res = '50m'
+        elif ( kwargs[ 'coastline_res' ].lower()=='high'):
+            coastline_res = '10m'
+        else:
+            print( "No valid input for coastline res. Using 110m " )
+            coastline_res = '110m'
+    else:
+        coastline_res = '110m'
+
     if ( 'clevs' in kwargs ):
         clevs = kwargs[ 'clevs' ]
     else:
@@ -121,6 +134,13 @@ def Maps( fields , lons, lats, **kwargs ):
         value = 'Title Placeholder'
         titles = [value for _ in range(nplots)]
 
+    if ( 'cbarlabels' in kwargs ):
+        cbarlabels = kwargs[ 'cbarlabels' ]
+        #print( "Set cbarlabels ")
+    else:
+        value = '.'
+        cbarlabels = [value for _ in range(nplots)]
+
     if ( 'insets' in kwargs ):
         insets = kwargs[ 'insets' ]
     else:
@@ -131,9 +151,16 @@ def Maps( fields , lons, lats, **kwargs ):
     else:
         add_landmask = False 
     
-
+    if ( 'fig_xsize_per_panel' in kwargs ):
+        xsize = kwargs[ 'fig_xsize_per_panel' ]
+    else:
+        xsize = 10.
+    
+    print( f"xsize per panel ={xsize}" )
+    
     if ( 'Arrangement' in kwargs ):
         nx,ny = kwargs['Arrangement']
+        print( f"Overiding arrange with {nx}x{ny} " )
     else:
         if (nplots==1):
             nx,ny=1,1
@@ -151,7 +178,6 @@ def Maps( fields , lons, lats, **kwargs ):
 
     print(" LL 2.0.0 " )
 
-    xsize=10.
     print(f'proj_name = {proj_name}')
     if (proj_name=='PlateCarree'):
         ysize=xsize*0.5
@@ -174,7 +200,14 @@ def Maps( fields , lons, lats, **kwargs ):
             # Set extent: [lon_min, lon_max, lat_min, lat_max]
             ax1.set_extent( map_extent_ , crs=DataProj)
 
-        ax1.coastlines(resolution='110m',color='black',linewidth=CoastWidth )
+        ax1.coastlines(resolution=coastline_res,color=CoastColors,linewidth=CoastWidth )
+
+        # Add state boundaries
+        ax1.add_feature(cfeature.STATES,
+                       edgecolor='black',
+                       linewidth=0.6)
+
+        
         print(f" LL 1.0.{ipo} " )
     
         AAxy = scale[ipo]*field 
@@ -196,6 +229,10 @@ def Maps( fields , lons, lats, **kwargs ):
             title_ = titles[ipo]
         else:
             title_ = titles[0]
+        if ( len(cbarlabels) >= len(fields) ):
+            cbarlabel_ = cbarlabels[ipo]
+        else:
+            cbarlabel_ = None
         if insets is not None:
             if ( ipo < len(insets)  ):
                 inset=insets[ipo]
@@ -208,9 +245,36 @@ def Maps( fields , lons, lats, **kwargs ):
             print( f' color map={cmap_} clevels={clev_} ' )
 
         co1=ax1.contourf(lon_ ,lat_ , AAxy ,transform=DataProj,cmap=cmap_ ,levels=clev_, extend='both' )
+
+        if (overplot is not None):        
+            ovfields,lat2,lon2 = overplot['field'],overplot['lat'],overplot['lon']
+
+            ovfield = ovfields[ipo]
+            
+            if ('clevels' in overplot):
+                clevels = overplot['clevels']
+            else:
+                clevels=21
+            if ('alpha' in overplot):
+                alpha = overplot['alpha']
+            else:
+                alpha = 0.5
+            if ('cmap' in overplot):
+                ovcmap = overplot['cmap']
+            else:
+                ovcmap = 'Greys'
+                
+            co2 = ax1.contourf( lon2 ,lat2 , ovfield ,transform=DataProj,cmap=ovcmap ,levels=clevels, extend='both' ,alpha=alpha)
+            li2 = ax1.contour( lon2 ,lat2 , ovfield ,transform=DataProj, cmap=ovcmap ,levels=clevels, extend='both' ,alpha=0.8 )
+            
+        
         gls=ax1.gridlines(draw_labels=True)
     
         cbar = plt.colorbar(co1, ax=ax1, fraction=0.046, pad=0.04 ,aspect=10)
+
+        if cbarlabel_ is not None:
+            cbar.set_label( cbarlabel_ ,fontsize=18 )
+
         ax1.set_title( title_ , fontsize=16)
         #ax1.set_title( f"{season.upper()} {flds[ipo]} {exps[ipo]}" , fontsize=16)
         if (add_landmask==True):
@@ -220,7 +284,7 @@ def Maps( fields , lons, lats, **kwargs ):
             print('no Landmask')
 
 
-        ax1.text(-0.08, 1.05, f"{chr(97 +npo-1)})", transform=ax1.transAxes,
+        ax1.text(-0.08, 1.05, f"{chr(97 +npo-1+1)})", transform=ax1.transAxes,
             fontsize=16, fontweight='bold', va='top')
 
         if inset is not None:

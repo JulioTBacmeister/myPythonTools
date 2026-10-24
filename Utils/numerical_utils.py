@@ -92,7 +92,7 @@ def Sphere_Div2( f_x, f_y, lat, lon, wrap=True ):
     
     rlat = (Pi/180.)*lat
     rlon = (Pi/180.)*lon
-    dlat=rlat[2]-rlat[0]
+    dlat=rlat[3]-rlat[1]
     dlon=rlon[2]-rlon[0]
     coslat = np.cos( rlat )
 
@@ -104,6 +104,11 @@ def Sphere_Div2( f_x, f_y, lat, lon, wrap=True ):
             divf[j,i] = (1./(R_e * coslat[j]))*( 
                         ( f_x[j,ie]-f_x[j,iw] ) / dlon
                     +   ( coslat[jn]*f_y[jn,i] - coslat[js]*f_y[js,i] )/dlat )
+
+    #print('WTF div')
+    divf[0:2 ,:]=0.
+    divf[ny-2:ny,:]=0.
+
 
     return divf
 
@@ -152,6 +157,7 @@ def Sphere_Curl2( f_x, f_y, lat, lon, wrap=True ):
     # Inputs need to be 2D (ny,nx) !!
     ##################################################
     import numpy as np
+    print( f"this is numerical_utils in myPythonTools")
 
     Pi  = co.pi()
     R_e = co.Rearth()
