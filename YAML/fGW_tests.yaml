@@ -509,6 +509,38 @@ RV03_x03_aphysPR448:
   user: juliob
   ymdPat: [1985,2014] #["1985-*","1986-*"]
   ymdPat_is_range: True
+RV03_x03_dbg_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: RV03_x03_dbg_fmt_aphysPR448
+  desc: APPR448. Source (#5) 100hPa GW ceiling (a=0.8,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+RV03_x03_radfix_aphysPR448:
+  DstGrid: fv1x1
+  Hkey: c
+  SrcGrid: ne30pg3
+  SrcVgrid: L93
+  caseroot: /glade/work/juliob/CAM_dev_gwmods/cases
+  hsPat: cam.h0a
+  name: RV03_x03_radfix_fmt_aphysPR448
+  desc: APPR448. Source (#5) 100hPa GW ceiling (a=0.8,e=1.0) NO FGW, NO DCGW
+  parameters:
+    param1: 1
+    param2: 2
+  subdir: hist
+  user: juliob
+  ymdPat: [1985,2014] #["1985-*","1986-*"]
+  ymdPat_is_range: True
 NewMMsrc_c64173-x05-bugtest-MM:
   DstGrid: fv1x1
   Hkey: c

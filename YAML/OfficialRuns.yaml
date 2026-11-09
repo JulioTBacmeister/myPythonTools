@@ -254,6 +254,38 @@ B1850_x297:
   parameters:
     param1: 1
     param2: 2
+B1850_x416:
+  name: "b.e30_alpha11b.B1850C_MTso.ne30_t233_wgx3.416"
+  desc: " mmm ?"
+  user: "gmarques"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
+B1850_x418:
+  name: "b.e30_alpha11d.B1850_MTso.ne30_t233_wgx3.418"
+  desc: " mmm ?"
+  user: "hannay"
+  caseroot: 
+  subdir: "hist"
+  SrcGrid: "fv1x1"
+  SrcVgrid: "L58"
+  Hkey: "yx"
+  DstGrid: "fv1x1"
+  hsPat: "cam.h0a"
+  ymdPat: [1,100] #["1985-*","1986-*"]
+  ymdPat_is_range: True
+  parameters:
+    param1: 1
+    param2: 2
 B1850_x156:
   name: "b.e30_alpha06e.B1850C_LTso.ne30_t232_wgx3.156"
   desc: " mmm ?"

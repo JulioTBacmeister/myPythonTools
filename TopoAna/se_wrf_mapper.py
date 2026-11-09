@@ -40,6 +40,8 @@ class SE_WRF_Mapper:
         wrf_lat,
         degree_pad=3.0,
         chunk_size=200000,
+        lon0=-97.9,            # <-- PATCH: centre of local projection
+        lat0=39.1,             # <-- PATCH: (defaults = CONUS, as before)
     ):
 
         self.se_lon = _wrap_lon(np.asarray(se_lon))
@@ -94,6 +96,7 @@ class SE_WRF_Mapper:
         sx, sy = _project(
             self.se_lon[self.src_index],
             self.se_lat[self.src_index],
+            lon0=lon0, lat0=lat0,      # <-- PATCH
         )
 
         src_xy = np.column_stack((sx, sy))
@@ -115,6 +118,7 @@ class SE_WRF_Mapper:
         wx, wy = _project(
             self.wrf_lon,
             self.wrf_lat,
+            lon0=lon0, lat0=lat0,      # <-- PATCH
         )
 
         wx = wx.ravel()

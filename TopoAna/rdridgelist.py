@@ -105,25 +105,27 @@ RECORDS = [
     ([("fallq", "f8", "v")], True),
     ([("clngth", "f8", "v")], True),
     ([("mxds2", "f8", "v")], True),
-    ([("rdg_profiles", "f8", "p")], False),
-    ([("crst_profiles", "f8", "p")], False),
+    ([("rdg_profiles", "f8", "p")], True),
+    ([("crst_profiles", "f8", "p")], True),
     ([("crst_silhous", "f8", "p")], False),
     ([("isoht", "f8", "v")], True),
     ([("isowd", "f8", "v")], True),
     ([("isobs", "f8", "v")], True),
     ([("RefFac", "f8", "v")], True),
-    ([("rdg_profiles_x", "f8", "x")], False),
-    ([("xnodes_list", "i4", "p")], False),
-    ([("hnodes_list", "f8", "p")], False),
+    ([("rdg_profiles_x", "f8", "x")], True),
+    ([("xnodes_list", "i4", "p")], True),
+    ([("hnodes_list", "f8", "p")], True),
     ([("dcenter_list", "i4", "v")], True),
     ([("xwedge_list", "i4", "w"), ("hwedge_list", "f8", "w")], True),
     ([("nnodes_list", "i4", "v")], True),
-    ([("hwedge_x", "f8", "x")], False),
-    ([("hnodes_x", "f8", "x")], False),
-    ([("hwedge_o", "f8", "x")], False),
-    ([("hnodes_o", "f8", "x")], False),
+    ([("hwedge_x", "f8", "x")], True),
+    ([("hnodes_x", "f8", "x")], True),
+    ([("hwedge_o", "f8", "x")], True),
+    ([("hnodes_o", "f8", "x")], True),
+    ([("lonc", "f8", "v")], True),
+    ([("latc", "f8", "v")], True),
 ]
-
+OPTIONAL_RECORDS = []
 
 class F77SequentialReader:
     """Fortran ``form="UNFORMATTED"`` sequential reader with byte-order sniffing.
@@ -279,11 +281,17 @@ def rdridgelist(path: str, profiles: bool = False, endian: str = "auto",
 
         r = RidgeList(file=path, npeaks=npeaks, NSW=NSW, PSW=PSW)
 
-        for entries, default in RECORDS:
+        for entries, default, optional in ([(e, d, False) for e, d in RECORDS] +
+                                           [(e, d, True) for e, d in OPTIONAL_RECORDS]):
             want = default or profiles
             expected = sum(int(np.prod(shapes[sk])) * np.dtype(dt).itemsize
                            for _, dt, sk in entries)
-            got = f.peek_size()
+            try:
+                got = f.peek_size()
+            except EOFError:
+                if optional:
+                    break                       # older file without the trailing records
+                raise
             if got != expected:
                 names = ", ".join(n for n, _, _ in entries)
                 raise IOError(
