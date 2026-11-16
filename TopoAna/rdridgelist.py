@@ -122,10 +122,22 @@ RECORDS = [
     ([("hnodes_x", "f8", "x")], True),
     ([("hwedge_o", "f8", "x")], True),
     ([("hnodes_o", "f8", "x")], True),
+]
+OPTIONAL_RECORDS = [
     ([("lonc", "f8", "v")], True),
     ([("latc", "f8", "v")], True),
+    # Written by find_ridges only when ridge_iter > 1 OR --adaptive_window is on (Nov 2026):
+    #   niter_rdg : passes done per peak
+    #   istop_rdg : 1 converged, 2 cap reached (still moving), 3 stopped at panel edge,
+    #               4 stopped in a 2-cycle (hopping between two neighbouring centres)
+    #   xseed/yseed : original seed cell; xs/ys are then the LAST pass's centre
+    ([("niter_rdg", "i4", "v"), ("istop_rdg", "i4", "v")], True),
+    ([("xseed", "f8", "v"), ("yseed", "f8", "v")], True),
+    # Written only with --adaptive_window (Nov 2026):
+    #   sigwin_rdg : Gaussian ridge scale (km) that set the final window;
+    #                0 = seed excluded (no ridge scale); window itself is NSWx_diag
+    ([("sigwin_rdg", "f8", "v")], True),
 ]
-OPTIONAL_RECORDS = []
 
 class F77SequentialReader:
     """Fortran ``form="UNFORMATTED"`` sequential reader with byte-order sniffing.
